@@ -100,9 +100,11 @@ module.exports = class DnD55eSheetPlugin extends Plugin {
     const sheet = el.createDiv({ cls: "dnd55-sheet" });
 
     // ------------------------------------------------------------------------
-    // TOP TOOLBAR: FULLSCREEN & SCROLL MODES
+    // TOP TOOLBAR: FULLSCREEN, SCROLL MODES & BADGE
     // ------------------------------------------------------------------------
     const topBar = sheet.createDiv({ cls: "dnd55-topbar" });
+    topBar.createDiv({ cls: "dnd55-badge-edition", text: "D&D 5.5e (2024)" });
+
     const toolbar = topBar.createDiv({ cls: "dnd55-toolbar" });
 
     // Mode: 3 Columns with Scroll
@@ -139,7 +141,7 @@ module.exports = class DnD55eSheetPlugin extends Plugin {
     };
 
     // ------------------------------------------------------------------------
-    // HEADER BANNER (5.5e 2024)
+    // HEADER BANNER (5.5e 2024 Character Details)
     // ------------------------------------------------------------------------
     const header = sheet.createDiv({ cls: "dnd55-header" });
     const nameBox = header.createDiv({ cls: "dnd55-name-box" });
@@ -148,7 +150,7 @@ module.exports = class DnD55eSheetPlugin extends Plugin {
 
     const metaGrid = header.createDiv({ cls: "dnd55-meta-grid" });
     const metaFields = [
-      { label: "Класс и уровень", val: data.class || "—" },
+      { label: "Класс / Уровень", val: data.class || "—" },
       { label: "Предыстория", val: data.background || "—" },
       { label: "Вид (Species)", val: data.species || "Гоблин" },
       { label: "Мировоззрение", val: data.alignment || "Нейтральный" },
@@ -269,10 +271,12 @@ module.exports = class DnD55eSheetPlugin extends Plugin {
       }
 
       const row = skillsPanel.createDiv({ cls: "dnd55-skill-row" });
+      row.setAttribute("title", `${s.name} (${s.attr.toUpperCase()}): ${this.fmtMod(bonus)}`);
+      
       const sLeft = row.createDiv({ cls: "dnd55-skill-left" });
       sLeft.createDiv({ cls: `dnd55-dot ${isProf ? "prof" : ""}`, text: dot });
-      sLeft.createDiv({ text: s.name });
-      sLeft.createDiv({ cls: "dnd55-skill-attr", text: `(${s.attr.toUpperCase()})` });
+      sLeft.createSpan({ text: s.name, cls: "dnd55-skill-name" });
+      sLeft.createSpan({ cls: "dnd55-skill-attr", text: `(${s.attr.toUpperCase()})` });
 
       row.createDiv({ cls: "dnd55-skill-bonus", text: this.fmtMod(bonus) });
       row.onclick = () => this.rollDice(`1d20${this.fmtMod(bonus)}`, `Навык: ${s.name}`);
@@ -282,9 +286,9 @@ module.exports = class DnD55eSheetPlugin extends Plugin {
     const sensesPanel = col1.createDiv({ cls: "dnd55-panel" });
     sensesPanel.createDiv({ cls: "dnd55-panel-title", text: "Чувства и Владения" });
     const percBonus = (profSkills["внимательность"] ? pb : 0) + wisMod;
-    sensesPanel.createDiv({ text: `👁 Пассивное Восприятие: ${10 + percBonus}` });
-    if (data.languages) sensesPanel.createDiv({ text: `🗣 Языки: ${data.languages}` });
-    if (data.proficiencies) sensesPanel.createDiv({ text: `🛡 Владение: ${data.proficiencies}` });
+    sensesPanel.createDiv({ cls: "dnd55-sense-item", text: `👁 Пассивное Восприятие: ${10 + percBonus}` });
+    if (data.languages) sensesPanel.createDiv({ cls: "dnd55-sense-item", text: `🗣 Языки: ${data.languages}` });
+    if (data.proficiencies) sensesPanel.createDiv({ cls: "dnd55-sense-item", text: `🛡 Владение: ${data.proficiencies}` });
 
     // ========================================================================
     // COLUMN 2: COMBAT VITALS, HP, WEAPON MASTERY
@@ -296,7 +300,7 @@ module.exports = class DnD55eSheetPlugin extends Plugin {
     const vitals = col2.createDiv({ cls: "dnd55-vitals-row" });
     
     const acBox = vitals.createDiv({ cls: "dnd55-vital-badge ac" });
-    acBox.createDiv({ cls: "dnd55-vital-title", text: "Класс Доспеха" });
+    acBox.createDiv({ cls: "dnd55-vital-title", text: "КД" });
     acBox.createDiv({ cls: "dnd55-vital-val", text: String(data.ac || 10 + dexMod) });
 
     const initBonus = data.initiative !== undefined ? data.initiative : dexMod;
@@ -311,7 +315,9 @@ module.exports = class DnD55eSheetPlugin extends Plugin {
 
     const sizeBox = vitals.createDiv({ cls: "dnd55-vital-badge" });
     sizeBox.createDiv({ cls: "dnd55-vital-title", text: "Размер" });
-    sizeBox.createDiv({ cls: "dnd55-vital-val", text: data.size || "Маленький" });
+    const sizeStr = String(data.size || "Малый");
+    const isSizeLong = sizeStr.length > 4;
+    sizeBox.createDiv({ cls: `dnd55-vital-val ${isSizeLong ? "dnd55-vital-text" : ""}`, text: sizeStr });
 
     // Hit Points Card
     const hpCard = col2.createDiv({ cls: "dnd55-hp-card" });
@@ -320,11 +326,11 @@ module.exports = class DnD55eSheetPlugin extends Plugin {
     hpTop.createDiv({ cls: "dnd55-hp-max", text: `МАКС: ${data.max_hp || data.hp || 20}` });
     if (data.temp_hp) hpTop.createDiv({ cls: "dnd55-hp-temp", text: `ВРЕМ: +${data.temp_hp}` });
 
-    // Hit Dice & Interactive Death Saves
+    // Hit Dice & Interactive Death Saves (Responsive)
     const hdDeath = hpCard.createDiv({ cls: "dnd55-hitdice-death" });
     
     // Hit dice
-    const hdBox = hdDeath.createDiv();
+    const hdBox = hdDeath.createDiv({ cls: "dnd55-hd-col" });
     hdBox.createDiv({ cls: "dnd55-badge-label", text: `Кости хитов (${data.hit_dice || "2d10"})` });
     const hdCount = data.hit_dice_count || 2;
     const hdPips = hdBox.createDiv({ cls: "dnd55-pip-group" });
@@ -334,18 +340,19 @@ module.exports = class DnD55eSheetPlugin extends Plugin {
     }
 
     // Death Saves
-    const dsBox = hdDeath.createDiv();
+    const dsBox = hdDeath.createDiv({ cls: "dnd55-death-col" });
     dsBox.createDiv({ cls: "dnd55-badge-label", text: "Спасброски от смерти" });
     
-    const succGroup = dsBox.createDiv({ cls: "dnd55-pip-group" });
-    succGroup.createSpan({ text: "Усп: " });
+    const dsRows = dsBox.createDiv({ cls: "dnd55-death-rows" });
+    const succGroup = dsRows.createDiv({ cls: "dnd55-pip-group" });
+    succGroup.createSpan({ text: "Усп: ", cls: "dnd55-pip-sublabel" });
     for (let i = 0; i < 3; i++) {
       const p = succGroup.createSpan({ cls: "dnd55-pip" });
       p.onclick = () => p.toggleClass("checked-success");
     }
 
-    const failGroup = dsBox.createDiv({ cls: "dnd55-pip-group" });
-    failGroup.createSpan({ text: "Пров: " });
+    const failGroup = dsRows.createDiv({ cls: "dnd55-pip-group" });
+    failGroup.createSpan({ text: "Пров: ", cls: "dnd55-pip-sublabel" });
     for (let i = 0; i < 3; i++) {
       const p = failGroup.createSpan({ cls: "dnd55-pip" });
       p.onclick = () => p.toggleClass("checked-fail");
@@ -357,23 +364,24 @@ module.exports = class DnD55eSheetPlugin extends Plugin {
 
     const attacks = data.attacks || [];
     if (attacks.length > 0) {
-      const table = atkPanel.createEl("table", { cls: "dnd55-attacks-table" });
+      const tableWrap = atkPanel.createDiv({ cls: "dnd55-table-wrap" });
+      const table = tableWrap.createEl("table", { cls: "dnd55-attacks-table" });
       const thead = table.createEl("thead");
       const trh = thead.createEl("tr");
       trh.createEl("th", { text: "Оружие" });
-      trh.createEl("th", { text: "Атака" });
-      trh.createEl("th", { text: "Урон" });
-      trh.createEl("th", { text: "Мастерство 5.5e" });
+      trh.createEl("th", { text: "Атака", cls: "dnd55-th-center" });
+      trh.createEl("th", { text: "Урон", cls: "dnd55-th-center" });
+      trh.createEl("th", { text: "Мастерство", cls: "dnd55-th-center" });
 
       const tbody = table.createEl("tbody");
       attacks.forEach(atk => {
         const tr = tbody.createEl("tr");
-        const tdName = tr.createEl("td");
+        const tdName = tr.createEl("td", { cls: "dnd55-td-name" });
         tdName.createSpan({ text: atk.name, cls: "dnd55-attack-name" });
-        if (atk.range) tdName.createEl("small", { text: ` (${atk.range})`, cls: "dnd55-skill-attr" });
+        if (atk.range) tdName.createEl("span", { text: ` (${atk.range})`, cls: "dnd55-attack-range" });
 
         // Attack roll button
-        const tdAtk = tr.createEl("td");
+        const tdAtk = tr.createEl("td", { cls: "dnd55-td-center" });
         const bStr = this.fmtBonus(atk.bonus);
         const atkBtn = tdAtk.createSpan({ cls: "dnd55-clickable-roll", text: bStr });
         atkBtn.onclick = () => {
@@ -385,13 +393,13 @@ module.exports = class DnD55eSheetPlugin extends Plugin {
         };
 
         // Damage roll button
-        const tdDmg = tr.createEl("td");
+        const tdDmg = tr.createEl("td", { cls: "dnd55-td-center" });
         const dmgStr = String(atk.damage || "1d6+4");
         const dmgBtn = tdDmg.createSpan({ cls: "dnd55-clickable-roll", text: dmgStr });
         dmgBtn.onclick = () => this.rollDice(dmgStr, `Урон: ${atk.name}`);
 
-        // 5.5e Weapon Mastery
-        const tdMast = tr.createEl("td");
+        // 5.5e Weapon Mastery Tag
+        const tdMast = tr.createEl("td", { cls: "dnd55-td-center" });
         if (atk.mastery) {
           tdMast.createSpan({ cls: "dnd55-mastery-tag", text: String(atk.mastery) });
         } else {
@@ -405,10 +413,14 @@ module.exports = class DnD55eSheetPlugin extends Plugin {
       const actPanel = col2.createDiv({ cls: "dnd55-panel" });
       actPanel.createDiv({ cls: "dnd55-panel-title", text: "Бонусные действия и Реакции" });
       if (data.bonus_actions) {
-        actPanel.createDiv({ text: `⚡ Бонусное действие: ${data.bonus_actions}` });
+        const ba = actPanel.createDiv({ cls: "dnd55-action-item" });
+        ba.createSpan({ cls: "dnd55-action-label", text: "⚡ Бонусное действие: " });
+        ba.createSpan({ text: String(data.bonus_actions) });
       }
       if (data.reactions) {
-        actPanel.createDiv({ text: `🛡 Реакция: ${data.reactions}` });
+        const rx = actPanel.createDiv({ cls: "dnd55-action-item" });
+        rx.createSpan({ cls: "dnd55-action-label", text: "🛡 Реакция: " });
+        rx.createSpan({ text: String(data.reactions) });
       }
     }
 
@@ -423,7 +435,7 @@ module.exports = class DnD55eSheetPlugin extends Plugin {
       const spellPanel = col3.createDiv({ cls: "dnd55-panel" });
       spellPanel.createDiv({ cls: "dnd55-panel-title", text: "Заклинания и Магия" });
       
-      const spVitals = spellPanel.createDiv({ cls: "dnd55-vitals-row" });
+      const spVitals = spellPanel.createDiv({ cls: "dnd55-vitals-row dnd55-vitals-2" });
       const dcBox = spVitals.createDiv({ cls: "dnd55-vital-badge" });
       dcBox.createDiv({ cls: "dnd55-vital-title", text: "Сл спаса" });
       dcBox.createDiv({ cls: "dnd55-vital-val", text: String(data.spell_save_dc || 13) });
@@ -434,8 +446,8 @@ module.exports = class DnD55eSheetPlugin extends Plugin {
 
       // Spell Slots pips
       if (data.spell_slots_1) {
-        const slotsRow = spellPanel.createDiv({ cls: "dnd55-hitdice-death" });
-        slotsRow.createSpan({ text: "Ячейки 1 ур: " });
+        const slotsRow = spellPanel.createDiv({ cls: "dnd55-spell-slots-row" });
+        slotsRow.createSpan({ text: "Ячейки 1 круга: ", cls: "dnd55-badge-label" });
         const pipsRow = slotsRow.createSpan({ cls: "dnd55-pip-group" });
         for (let i = 0; i < (data.spell_slots_1 || 3); i++) {
           const p = pipsRow.createSpan({ cls: "dnd55-pip checked-slot" });
@@ -492,21 +504,29 @@ module.exports = class DnD55eSheetPlugin extends Plugin {
     });
 
     if (data.equipment) {
-      eqPanel.createDiv({ text: String(data.equipment), cls: "dnd55-feature-desc" });
+      eqPanel.createDiv({ text: String(data.equipment), cls: "dnd55-feature-desc dnd55-eq-text" });
     }
 
     // Roleplay (5.5e Personality)
     if (data.personality || data.secret_goal) {
       const rpPanel = col3.createDiv({ cls: "dnd55-panel" });
       rpPanel.createDiv({ cls: "dnd55-panel-title", text: "Отыгрыш и Цели" });
+      
+      const addRpItem = (label, val, icon = "•") => {
+        if (!val) return;
+        const div = rpPanel.createDiv({ cls: "dnd55-rp-item" });
+        div.createSpan({ cls: "dnd55-rp-label", text: `${icon} ${label}: ` });
+        div.createSpan({ cls: "dnd55-rp-val", text: String(val) });
+      };
+
       if (data.personality) {
-        if (data.personality.trait) rpPanel.createDiv({ text: `• Черта: ${data.personality.trait}`, cls: "dnd55-feature-desc" });
-        if (data.personality.ideal) rpPanel.createDiv({ text: `• Идеал: ${data.personality.ideal}`, cls: "dnd55-feature-desc" });
-        if (data.personality.bond) rpPanel.createDiv({ text: `• Привязанность: ${data.personality.bond}`, cls: "dnd55-feature-desc" });
-        if (data.personality.flaw) rpPanel.createDiv({ text: `• Слабость: ${data.personality.flaw}`, cls: "dnd55-feature-desc" });
+        addRpItem("Черта", data.personality.trait);
+        addRpItem("Идеал", data.personality.ideal);
+        addRpItem("Привязанность", data.personality.bond);
+        addRpItem("Слабость", data.personality.flaw);
       }
       if (data.secret_goal) {
-        rpPanel.createDiv({ text: `🎯 Секретная цель: ${data.secret_goal}`, cls: "dnd55-feature-desc" });
+        addRpItem("Секретная цель", data.secret_goal, "🎯");
       }
     }
   }
