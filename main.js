@@ -75,6 +75,10 @@ class CharacterEditorModal extends Modal {
     createField(gridMain, "Мировоззрение", this.data.alignment, v => this.data.alignment = v, "text", "Хаотично-нейтральный");
     createField(gridMain, "Опыт (XP)", this.data.xp, v => this.data.xp = v, "text", "300 XP");
     createField(gridMain, "Игрок", this.data.player, v => this.data.player = v, "text", "Имя игрока");
+    createField(gridMain, "Портрет (URL или [[файл.png]])", this.data.portrait || this.data.image, v => {
+      this.data.portrait = v;
+      this.data.image = v;
+    }, "text", "[[portrait.png]] или https://...");
 
     // PANEL 2: STATS
     const pStats = panels["stats"];
@@ -452,6 +456,28 @@ module.exports = class DnD55eSheetPlugin extends Plugin {
     });
   }
 
+  resolveImageUrl(imageRef) {
+    if (!imageRef) return null;
+    let ref = String(imageRef).trim();
+    if (ref.startsWith("[[") && ref.endsWith("]]")) {
+      ref = ref.slice(2, -2).trim();
+    }
+    if (ref.startsWith("http://") || ref.startsWith("https://") || ref.startsWith("data:")) {
+      return ref;
+    }
+    try {
+      if (this.app && this.app.metadataCache && this.app.vault) {
+        const file = this.app.metadataCache.getFirstLinkpathDest(ref, "") || this.app.vault.getAbstractFileByPath(ref);
+        if (file) {
+          return this.app.vault.getResourcePath(file);
+        }
+      }
+    } catch (e) {
+      // fallback
+    }
+    return ref;
+  }
+
   calcMod(score) {
     return Math.floor(((score || 10) - 10) / 2);
   }
@@ -481,6 +507,9 @@ module.exports = class DnD55eSheetPlugin extends Plugin {
     lines.push(`alignment: ${quote(data.alignment || "")}`);
     lines.push(`xp: ${quote(data.xp || "300 XP")}`);
     lines.push(`player: ${quote(data.player || "—")}`);
+    if (data.portrait || data.image) {
+      lines.push(`portrait: ${quote(data.portrait || data.image)}`);
+    }
     lines.push(`inspiration: ${data.inspiration ? "true" : "false"}`);
     lines.push(`pb: ${data.pb !== undefined ? data.pb : 2}`);
     lines.push(`size: ${quote(data.size || "Маленький")}`);
@@ -675,7 +704,7 @@ module.exports = class DnD55eSheetPlugin extends Plugin {
     closeBtn.onclick = closeOverlay;
 
     const scrollContainer = overlay.createDiv({ cls: "dnd55-fs-scroll-container" });
-    const bodyWrap = scrollContainer.createDiv({ cls: "dnd55-fs-body" });
+    const bodyWrap = scrollContainer.createDiv({ cls: "dnd55-fs-body dnd55-sheet" });
     
     this.renderSheetContent(data, bodyWrap, ctx, source, true);
 
@@ -748,15 +777,52 @@ module.exports = class DnD55eSheetPlugin extends Plugin {
     const profSkills = data.skills || {};
 
     // ========================================================================
-    // HEADER BANNER (Authentic D&D 2024 Header Layout)
+    // HEADER BANNER (Authentic D&D 2024 Header Layout with Portrait Frame)
     // ========================================================================
     const header = container.createDiv({ cls: "dnd55-header" });
     
-    const nameBox = header.createDiv({ cls: "dnd55-name-box" });
+    // 1. Character Portrait Frame (Official D&D Appearance Box)
+    const portraitFrame = header.createDiv({ cls: "dnd55-portrait-frame" });
+    const portraitUrl = this.resolveImageUrl(data.portrait || data.image);
+
+    if (portraitUrl) {
+      const img = portraitFrame.createEl("img", { cls: "dnd55-portrait-img" });
+      img.src = portraitUrl;
+      img.alt = data.name || "Портрет";
+    } else {
+      const placeholder = portraitFrame.createDiv({ cls: "dnd55-portrait-placeholder" });
+      placeholder.innerHTML = `
+        <svg class="dnd55-avatar-svg" viewBox="0 0 100 120" preserveAspectRatio="xMidYMid meet">
+          <circle cx="50" cy="38" r="22" class="dnd55-avatar-head" />
+          <path d="M 14,105 C 14,75 32,68 50,68 C 68,68 86,75 86,105 Z" class="dnd55-avatar-body" />
+        </svg>
+        <span class="dnd55-portrait-text">+ Портрет</span>
+      `;
+    }
+    portraitFrame.title = "Кликните для редактирования персонажа или портрета";
+    portraitFrame.onclick = () => {
+      new CharacterEditorModal(this.app, this, data, ctx, source, (updated) => {
+        data = updated;
+        if (isFullscreen) {
+          container.empty();
+          this.renderSheetContent(data, container, ctx, source, true);
+        } else {
+          const parentSheet = container.closest(".dnd55-sheet");
+          if (parentSheet && parentSheet.parentElement) {
+            parentSheet.empty();
+            this.renderSheet(this.serializeYaml(data), parentSheet.parentElement, ctx);
+          }
+        }
+      }).open();
+    };
+
+    const headerRight = header.createDiv({ cls: "dnd55-header-right" });
+
+    const nameBox = headerRight.createDiv({ cls: "dnd55-name-box" });
     nameBox.createDiv({ cls: "dnd55-name-title", text: data.name || "Безымянный герой" });
     nameBox.createDiv({ cls: "dnd55-name-sub", text: `${data.species || "Гоблин"} • ${data.class || "Воин 2"}` });
 
-    const metaGrid = header.createDiv({ cls: "dnd55-meta-grid" });
+    const metaGrid = headerRight.createDiv({ cls: "dnd55-meta-grid" });
     const metaFields = [
       { label: "Класс и уровень", val: data.class || "—" },
       { label: "Предыстория", val: data.background || "—" },
@@ -772,55 +838,114 @@ module.exports = class DnD55eSheetPlugin extends Plugin {
     });
 
     // ========================================================================
-    // READINESS / COMBAT VITALS BAR (D&D 2024 PHB Signature Readiness Cluster)
+    // READINESS / COMBAT VITALS BAR (Authentic D&D Shields & Plaques)
     // ========================================================================
     const readinessBar = container.createDiv({ cls: "dnd55-readiness-bar" });
 
-    // 1. Heroic Inspiration (Interactive Toggle)
-    const inspBox = readinessBar.createDiv({ cls: `dnd55-vital-box dnd55-insp-box ${data.inspiration ? "active" : ""}` });
-    inspBox.createDiv({ cls: "dnd55-vital-label", text: "Вдохновение" });
-    const inspVal = inspBox.createDiv({ cls: "dnd55-vital-val", text: data.inspiration ? "★ ДА" : "☆ НЕТ" });
+    // 1. Heroic Inspiration (Ribbon Banner)
+    const inspBox = readinessBar.createDiv({ cls: `dnd55-vital-box dnd55-insp-box dnd55-ribbon-box ${data.inspiration ? "active" : ""}` });
+    inspBox.innerHTML = `
+      <svg class="dnd55-ribbon-svg" viewBox="0 0 120 70" preserveAspectRatio="none">
+        <path class="dnd55-ribbon-outer" d="M 12,6 L 108,6 L 118,35 L 108,64 L 12,64 L 2,35 Z" />
+        <path class="dnd55-ribbon-inner" d="M 17,11 L 103,11 L 111,35 L 103,59 L 17,59 L 9,35 Z" />
+      </svg>
+      <div class="dnd55-ribbon-body">
+        <div class="dnd55-vital-label">Вдохновение</div>
+        <div class="dnd55-vital-val">${data.inspiration ? "★ ДА" : "☆ НЕТ"}</div>
+      </div>
+    `;
     inspBox.title = "Кликните для переключения героического вдохновения (2024 PHB)";
     inspBox.onclick = async () => {
       data.inspiration = !data.inspiration;
-      inspVal.setText(data.inspiration ? "★ ДА" : "☆ НЕТ");
+      const valEl = inspBox.querySelector(".dnd55-vital-val");
+      if (valEl) valEl.textContent = data.inspiration ? "★ ДА" : "☆ НЕТ";
       inspBox.toggleClass("active", data.inspiration);
       await this.saveCharacterData(data, ctx, source);
     };
 
-    // 2. Proficiency Bonus
-    const pbBox = readinessBar.createDiv({ cls: "dnd55-vital-box dnd55-pb-box" });
-    pbBox.createDiv({ cls: "dnd55-vital-label", text: "Мастерство" });
-    pbBox.createDiv({ cls: "dnd55-vital-val", text: `+${pb}` });
+    // 2. Proficiency Bonus (Medallion)
+    const pbBox = readinessBar.createDiv({ cls: "dnd55-vital-box dnd55-pb-box dnd55-circle-box" });
+    pbBox.innerHTML = `
+      <svg class="dnd55-circle-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+        <circle class="dnd55-circle-outer" cx="50" cy="50" r="46" />
+        <circle class="dnd55-circle-inner" cx="50" cy="50" r="40" />
+      </svg>
+      <div class="dnd55-circle-body">
+        <div class="dnd55-vital-label">Мастерство</div>
+        <div class="dnd55-vital-val">+${pb}</div>
+      </div>
+    `;
 
-    // 3. Armor Class (AC - Iconic Shield Badge)
-    const acBox = readinessBar.createDiv({ cls: "dnd55-vital-box dnd55-ac-box" });
-    acBox.createDiv({ cls: "dnd55-vital-label", text: "КД (Броня)" });
-    acBox.createDiv({ cls: "dnd55-vital-val", text: String(data.ac !== undefined ? data.ac : 10 + dexMod) });
+    // 3. Armor Class (Official Heraldic Shield Shape)
+    const acBox = readinessBar.createDiv({ cls: "dnd55-vital-box dnd55-ac-box dnd55-ac-shield" });
+    acBox.innerHTML = `
+      <svg class="dnd55-shield-svg" viewBox="0 0 100 120" preserveAspectRatio="none">
+        <path class="dnd55-shield-outer" d="M 6,6 L 94,6 Q 94,62 50,114 Q 6,62 6,6 Z" />
+        <path class="dnd55-shield-inner" d="M 12,12 L 88,12 Q 88,60 50,106 Q 12,60 12,12 Z" />
+      </svg>
+      <div class="dnd55-shield-body">
+        <div class="dnd55-shield-title">КЛАСС ДОСПЕХА</div>
+        <div class="dnd55-shield-val">${data.ac !== undefined ? data.ac : 10 + dexMod}</div>
+        <div class="dnd55-shield-sub">КД (AC)</div>
+      </div>
+    `;
+    acBox.title = "Класс доспеха (Armor Class)";
 
-    // 4. Initiative
+    // 4. Initiative (Beveled Plaque)
     const initBonus = data.initiative !== undefined ? data.initiative : dexMod;
-    const initBox = readinessBar.createDiv({ cls: "dnd55-vital-box dnd55-init-box" });
-    initBox.createDiv({ cls: "dnd55-vital-label", text: "Инициатива" });
-    initBox.createDiv({ cls: "dnd55-vital-val", text: this.fmtMod(initBonus) });
+    const initBox = readinessBar.createDiv({ cls: "dnd55-vital-box dnd55-plaque-box dnd55-init-box" });
+    initBox.innerHTML = `
+      <svg class="dnd55-plaque-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+        <polygon class="dnd55-plaque-outer" points="14,4 86,4 96,14 96,86 86,96 14,96 4,86 4,14" />
+        <polygon class="dnd55-plaque-inner" points="18,10 82,10 90,18 90,82 82,90 18,90 10,82 10,18" />
+      </svg>
+      <div class="dnd55-plaque-body">
+        <div class="dnd55-vital-label">Инициатива</div>
+        <div class="dnd55-vital-val">${this.fmtMod(initBonus)}</div>
+      </div>
+    `;
 
-    // 5. Speed
-    const speedBox = readinessBar.createDiv({ cls: "dnd55-vital-box dnd55-speed-box" });
-    speedBox.createDiv({ cls: "dnd55-vital-label", text: "Скорость" });
-    speedBox.createDiv({ cls: "dnd55-vital-val", text: `${data.speed || 30} фт.` });
+    // 5. Speed (Beveled Plaque)
+    const speedBox = readinessBar.createDiv({ cls: "dnd55-vital-box dnd55-plaque-box dnd55-speed-box" });
+    speedBox.innerHTML = `
+      <svg class="dnd55-plaque-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+        <polygon class="dnd55-plaque-outer" points="14,4 86,4 96,14 96,86 86,96 14,96 4,86 4,14" />
+        <polygon class="dnd55-plaque-inner" points="18,10 82,10 90,18 90,82 82,90 18,90 10,82 10,18" />
+      </svg>
+      <div class="dnd55-plaque-body">
+        <div class="dnd55-vital-label">Скорость</div>
+        <div class="dnd55-vital-val">${data.speed || 30}<span class="dnd55-unit"> фт</span></div>
+      </div>
+    `;
 
-    // 6. Size
-    const sizeBox = readinessBar.createDiv({ cls: "dnd55-vital-box dnd55-size-box" });
-    sizeBox.createDiv({ cls: "dnd55-vital-label", text: "Размер" });
+    // 6. Size (Beveled Plaque)
     const sizeStr = String(data.size || "Малый");
-    sizeBox.createDiv({ cls: `dnd55-vital-val ${sizeStr.length > 4 ? "dnd55-vital-text" : ""}`, text: sizeStr });
+    const sizeBox = readinessBar.createDiv({ cls: "dnd55-vital-box dnd55-plaque-box dnd55-size-box" });
+    sizeBox.innerHTML = `
+      <svg class="dnd55-plaque-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+        <polygon class="dnd55-plaque-outer" points="14,4 86,4 96,14 96,86 86,96 14,96 4,86 4,14" />
+        <polygon class="dnd55-plaque-inner" points="18,10 82,10 90,18 90,82 82,90 18,90 10,82 10,18" />
+      </svg>
+      <div class="dnd55-plaque-body">
+        <div class="dnd55-vital-label">Размер</div>
+        <div class="dnd55-vital-val ${sizeStr.length > 5 ? "dnd55-vital-text" : ""}">${sizeStr}</div>
+      </div>
+    `;
 
-    // 7. Passive Perception
+    // 7. Passive Perception (Plaque)
     const percProf = profSkills["внимательность"] || (Array.isArray(data.prof_skills) && data.prof_skills.includes("Внимательность") ? "prof" : "none");
     const percBonus = (percProf === "expert" || percProf === 2 ? pb * 2 : (percProf === "prof" || percProf === 1 ? pb : 0)) + wisMod;
-    const percBox = readinessBar.createDiv({ cls: "dnd55-vital-box dnd55-perc-box" });
-    percBox.createDiv({ cls: "dnd55-vital-label", text: "Пассивное воспр." });
-    percBox.createDiv({ cls: "dnd55-vital-val", text: `${10 + percBonus}` });
+    const percBox = readinessBar.createDiv({ cls: "dnd55-vital-box dnd55-perc-box dnd55-plaque-box" });
+    percBox.innerHTML = `
+      <svg class="dnd55-plaque-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+        <polygon class="dnd55-plaque-outer" points="14,4 86,4 96,14 96,86 86,96 14,96 4,86 4,14" />
+        <polygon class="dnd55-plaque-inner" points="18,10 82,10 90,18 90,82 82,90 18,90 10,82 10,18" />
+      </svg>
+      <div class="dnd55-plaque-body">
+        <div class="dnd55-vital-label">Пасс. воспр.</div>
+        <div class="dnd55-vital-val">${10 + percBonus}</div>
+      </div>
+    `;
 
     // NAVIGATION PILLS (For quick jump on narrow displays)
     const navTabs = container.createDiv({ cls: "dnd55-nav-tabs" });
@@ -1035,17 +1160,24 @@ module.exports = class DnD55eSheetPlugin extends Plugin {
     dsBox.createDiv({ cls: "dnd55-badge-label", text: "Спасброски от смерти" });
     
     const dsRows = dsBox.createDiv({ cls: "dnd55-death-rows" });
-    const succGroup = dsRows.createDiv({ cls: "dnd55-pip-group" });
-    succGroup.createSpan({ text: "Усп: ", cls: "dnd55-pip-sublabel" });
+    
+    // Successes with connected line
+    const succTrack = dsRows.createDiv({ cls: "dnd55-death-track" });
+    succTrack.createSpan({ text: "УСПЕХИ", cls: "dnd55-death-label" });
+    const succLineWrap = succTrack.createDiv({ cls: "dnd55-death-pips-line" });
+    succLineWrap.createSpan({ cls: "dnd55-death-line-connector" });
     for (let i = 0; i < 3; i++) {
-      const p = succGroup.createSpan({ cls: "dnd55-pip" });
+      const p = succLineWrap.createSpan({ cls: "dnd55-pip dnd55-death-pip" });
       p.onclick = () => p.toggleClass("checked-success");
     }
 
-    const failGroup = dsRows.createDiv({ cls: "dnd55-pip-group" });
-    failGroup.createSpan({ text: "Пров: ", cls: "dnd55-pip-sublabel" });
+    // Failures with connected line
+    const failTrack = dsRows.createDiv({ cls: "dnd55-death-track" });
+    failTrack.createSpan({ text: "ПРОВАЛЫ", cls: "dnd55-death-label" });
+    const failLineWrap = failTrack.createDiv({ cls: "dnd55-death-pips-line" });
+    failLineWrap.createSpan({ cls: "dnd55-death-line-connector" });
     for (let i = 0; i < 3; i++) {
-      const p = failGroup.createSpan({ cls: "dnd55-pip" });
+      const p = failLineWrap.createSpan({ cls: "dnd55-pip dnd55-death-pip" });
       p.onclick = () => p.toggleClass("checked-fail");
     }
 

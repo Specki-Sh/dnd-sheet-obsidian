@@ -168,12 +168,12 @@
 }
 
 /* --------------------------------------------------------------------------
-   HEADER BANNER (Authentic D&D Character Card Header)
+   HEADER BANNER (Authentic D&D Character Card Header + Portrait Frame)
    -------------------------------------------------------------------------- */
 .dnd55-header {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
   border-bottom: 2px solid var(--dnd55-border-subtle);
   padding-bottom: 14px;
   margin-bottom: 14px;
@@ -193,8 +193,98 @@
   }
 }
 
+/* Character Portrait Frame (Official D&D Appearance Box) */
+.dnd55-portrait-frame {
+  flex: 0 0 108px;
+  width: 108px;
+  height: 130px;
+  background: var(--dnd55-bg-card-alt);
+  border: 2px solid var(--dnd55-border-subtle);
+  border-radius: var(--dnd55-radius-m);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: var(--dnd55-shadow-s);
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.dnd55-portrait-frame:hover {
+  border-color: var(--dnd55-accent);
+  transform: translateY(-1px);
+  box-shadow: var(--dnd55-shadow-m);
+}
+
+.dnd55-portrait-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.dnd55-portrait-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: 8px;
+  gap: 6px;
+  text-align: center;
+}
+
+.dnd55-avatar-svg {
+  width: 50px;
+  height: 60px;
+  opacity: 0.6;
+  transition: opacity 0.15s ease;
+}
+
+.dnd55-portrait-frame:hover .dnd55-avatar-svg {
+  opacity: 0.9;
+}
+
+.dnd55-avatar-head,
+.dnd55-avatar-body {
+  fill: var(--dnd55-text-muted);
+}
+
+.dnd55-portrait-text {
+  font-size: 0.7em;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--dnd55-text-muted);
+}
+
+.dnd55-header-right {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+
+@container dndsheet (min-width: 780px) {
+  .dnd55-header-right {
+    flex-direction: row;
+    align-items: stretch;
+  }
+}
+@media (min-width: 780px) {
+  .dnd55-header-right {
+    flex-direction: row;
+    align-items: stretch;
+  }
+}
+
 .dnd55-name-box {
-  flex: 0 0 260px;
+  flex: 0 0 240px;
   background: var(--dnd55-bg-card);
   border: 1.5px solid var(--dnd55-border-subtle);
   border-left: 5px solid var(--dnd55-accent);
@@ -278,7 +368,7 @@
 }
 
 /* --------------------------------------------------------------------------
-   READINESS / COMBAT VITALS BAR (Official D&D 2024 PHB Cluster)
+   READINESS / COMBAT VITALS BAR (Authentic D&D Shields & Plaques)
    -------------------------------------------------------------------------- */
 .dnd55-readiness-bar {
   display: grid;
@@ -289,12 +379,12 @@
 
 @container dndsheet (max-width: 720px) {
   .dnd55-readiness-bar {
-    grid-template-columns: repeat(auto-fit, minmax(88px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
   }
 }
 @media (max-width: 720px) {
   .dnd55-readiness-bar {
-    grid-template-columns: repeat(auto-fit, minmax(88px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
   }
 }
 
@@ -302,15 +392,15 @@
   background: var(--dnd55-bg-card);
   border: 1.5px solid var(--dnd55-border-subtle);
   border-radius: var(--dnd55-radius-m);
-  padding: 8px 4px;
+  padding: 6px 4px;
   text-align: center;
   min-width: 0;
-  overflow: hidden;
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-height: 68px;
+  min-height: 72px;
   box-shadow: var(--dnd55-shadow-s);
   transition: all 0.15s ease;
 }
@@ -323,21 +413,26 @@
   font-size: 0.58em;
   text-transform: uppercase;
   font-weight: 800;
-  letter-spacing: 0.2px;
+  letter-spacing: 0.4px;
   color: var(--dnd55-text-muted);
   line-height: 1.15;
   text-align: center;
-  word-break: normal;
-  overflow-wrap: normal;
 }
 
 .dnd55-vital-val {
   font-family: var(--dnd55-font-serif);
-  font-size: 1.38em;
+  font-size: 1.4em;
   font-weight: 900;
   color: var(--dnd55-text-main);
   line-height: 1.1;
   margin-top: 2px;
+}
+
+.dnd55-vital-val .dnd55-unit {
+  font-size: 0.6em;
+  font-weight: 700;
+  color: var(--dnd55-text-muted);
+  margin-left: 2px;
 }
 
 .dnd55-vital-val.dnd55-vital-text {
@@ -349,30 +444,207 @@
   white-space: nowrap;
 }
 
-/* Shield Motif for Armor Class */
-.dnd55-ac-box {
-  border: 2px solid var(--dnd55-accent, var(--dnd55-border-subtle));
-  border-radius: 6px 6px 50% 50% / 6px 6px 20% 20%;
-  background: var(--dnd55-bg-card-alt);
+/* ==========================================================================
+   AUTHENTIC HERALDIC HEATER SHIELD (Armor Class / КД)
+   ========================================================================== */
+.dnd55-ac-shield {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  overflow: visible !important;
 }
 
-.dnd55-ac-box .dnd55-vital-val {
+.dnd55-shield-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  filter: drop-shadow(var(--dnd55-shadow-s));
+}
+
+.dnd55-shield-outer {
+  fill: var(--dnd55-bg-card-alt);
+  stroke: var(--dnd55-accent, var(--dnd55-border-subtle));
+  stroke-width: 2.4;
+  vector-effect: non-scaling-stroke;
+  transition: stroke 0.2s ease;
+}
+
+.dnd55-ac-shield:hover .dnd55-shield-outer {
+  stroke: var(--dnd55-accent-hover, var(--text-accent));
+}
+
+.dnd55-shield-inner {
+  fill: none;
+  stroke: var(--dnd55-accent, var(--dnd55-border-subtle));
+  stroke-width: 1.2;
+  opacity: 0.45;
+  stroke-dasharray: 4 2;
+  vector-effect: non-scaling-stroke;
+}
+
+.dnd55-shield-body {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding-bottom: 6px;
+}
+
+.dnd55-shield-title {
+  font-size: 0.52em;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  color: var(--dnd55-text-muted);
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+.dnd55-shield-val {
+  font-family: var(--dnd55-font-serif);
+  font-size: 1.55em;
+  font-weight: 900;
   color: var(--dnd55-text-accent);
+  line-height: 1;
+  margin: 2px 0;
 }
 
-/* Inspiration Box */
+.dnd55-shield-sub {
+  font-size: 0.58em;
+  font-weight: 800;
+  color: var(--dnd55-text-muted);
+  letter-spacing: 0.5px;
+}
+
+/* ==========================================================================
+   AUTHENTIC BEVELED PLAQUES (Initiative, Speed, Passive Perception)
+   ========================================================================== */
+.dnd55-plaque-box {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  overflow: visible !important;
+}
+
+.dnd55-plaque-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  filter: drop-shadow(var(--dnd55-shadow-s));
+}
+
+.dnd55-plaque-outer {
+  fill: var(--dnd55-bg-card);
+  stroke: var(--dnd55-border-subtle);
+  stroke-width: 2.2;
+  vector-effect: non-scaling-stroke;
+  transition: stroke 0.2s ease;
+}
+
+.dnd55-plaque-box:hover .dnd55-plaque-outer {
+  border-color: var(--dnd55-border-hover);
+  stroke: var(--dnd55-border-hover);
+}
+
+.dnd55-plaque-inner {
+  fill: none;
+  stroke: var(--dnd55-border-subtle);
+  stroke-width: 1;
+  opacity: 0.45;
+  vector-effect: non-scaling-stroke;
+}
+
+.dnd55-plaque-body {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: 6px 4px;
+}
+
+/* ==========================================================================
+   RIBBON BANNER (Heroic Inspiration) & CIRCLE MEDALLION (Proficiency)
+   ========================================================================== */
+.dnd55-ribbon-box,
+.dnd55-circle-box {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  overflow: visible !important;
+}
+
+.dnd55-ribbon-svg,
+.dnd55-circle-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  filter: drop-shadow(var(--dnd55-shadow-s));
+}
+
+.dnd55-ribbon-outer,
+.dnd55-circle-outer {
+  fill: var(--dnd55-bg-card);
+  stroke: var(--dnd55-border-subtle);
+  stroke-width: 2.2;
+  vector-effect: non-scaling-stroke;
+  transition: all 0.2s ease;
+}
+
+.dnd55-ribbon-inner,
+.dnd55-circle-inner {
+  fill: none;
+  stroke: var(--dnd55-border-subtle);
+  stroke-width: 1;
+  opacity: 0.45;
+  vector-effect: non-scaling-stroke;
+}
+
 .dnd55-insp-box {
   cursor: pointer;
   user-select: none;
 }
 
-.dnd55-insp-box.active {
-  background: var(--dnd55-bg-card-alt);
-  border-color: var(--dnd55-accent);
+.dnd55-insp-box.active .dnd55-ribbon-outer {
+  stroke: var(--dnd55-accent);
+  fill: var(--dnd55-bg-card-alt);
 }
-
 .dnd55-insp-box.active .dnd55-vital-val {
   color: var(--dnd55-text-accent);
+}
+
+.dnd55-ribbon-body,
+.dnd55-circle-body {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: 6px 4px;
 }
 
 /* --------------------------------------------------------------------------
@@ -778,7 +1050,73 @@
 .dnd55-death-rows {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 4px;
+}
+
+/* Death Saves Connected Circles */
+.dnd55-death-track {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 3px 0;
+  gap: 6px;
+}
+
+.dnd55-death-label {
+  font-size: 0.65em;
+  font-weight: 800;
+  color: var(--dnd55-text-muted);
+  letter-spacing: 0.5px;
+  width: 56px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.dnd55-death-pips-line {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1 1 auto;
+  justify-content: flex-end;
+}
+
+.dnd55-death-line-connector {
+  position: absolute;
+  top: 50%;
+  left: 6px;
+  right: 6px;
+  height: 2px;
+  background: var(--dnd55-border-subtle);
+  transform: translateY(-50%);
+  z-index: 0;
+}
+
+.dnd55-death-pip {
+  position: relative;
+  z-index: 1;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1.8px solid var(--dnd55-border-subtle);
+  background: var(--dnd55-bg-card);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.dnd55-death-pip:hover {
+  border-color: var(--dnd55-border-hover);
+  transform: scale(1.15);
+}
+
+.dnd55-death-pip.checked-success {
+  background: var(--text-success, #2ecc71) !important;
+  border-color: var(--text-success, #2ecc71) !important;
+}
+
+.dnd55-death-pip.checked-fail {
+  background: var(--text-error, #e74c3c) !important;
+  border-color: var(--text-error, #e74c3c) !important;
 }
 
 .dnd55-pip-group {
@@ -815,16 +1153,6 @@
   border-color: var(--dnd55-accent);
 }
 
-.dnd55-pip.checked-success {
-  background: var(--text-success, #2ecc71);
-  border-color: var(--text-success, #2ecc71);
-}
-
-.dnd55-pip.checked-fail {
-  background: var(--text-error, #e74c3c);
-  border-color: var(--text-error, #e74c3c);
-}
-
 /* Attacks & Weapon Mastery Table */
 .dnd55-table-wrap {
   width: 100%;
@@ -848,6 +1176,7 @@
   border-bottom: 1.5px solid var(--dnd55-border-subtle);
   padding: 5px 6px;
   text-align: left;
+  white-space: nowrap;
 }
 
 .dnd55-attacks-table td {
@@ -991,35 +1320,43 @@
   word-break: break-word;
 }
 
-/* Currency Grid */
+/* Currency Grid - Minted Coins */
 .dnd55-coins-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 6px;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 .dnd55-coin-cell {
   background: var(--dnd55-bg-card-alt);
-  border: 1px solid var(--dnd55-border-subtle);
+  border: 1.5px solid var(--dnd55-border-subtle);
   border-radius: var(--dnd55-radius-s);
-  padding: 4px 2px;
+  padding: 6px 2px;
   text-align: center;
+  position: relative;
+  box-shadow: var(--dnd55-shadow-s);
+  transition: border-color 0.15s ease;
+}
+
+.dnd55-coin-cell:hover {
+  border-color: var(--dnd55-border-hover);
 }
 
 .dnd55-coin-label {
-  font-size: 0.6em;
+  font-size: 0.62em;
   font-weight: 800;
   text-transform: uppercase;
-  color: var(--dnd55-text-muted);
+  color: var(--dnd55-text-accent);
+  letter-spacing: 0.5px;
 }
 
 .dnd55-coin-val {
   font-family: var(--dnd55-font-serif);
-  font-size: 0.9em;
-  font-weight: 800;
+  font-size: 1.05em;
+  font-weight: 900;
   color: var(--dnd55-text-main);
-  margin-top: 1px;
+  margin-top: 2px;
 }
 
 .dnd55-eq-text {
@@ -1115,6 +1452,14 @@
   width: 100% !important;
   margin: 0 auto !important;
   padding: 24px 28px 180px 28px !important; /* Plenty of room to scroll to the very bottom */
+  box-sizing: border-box !important;
+}
+
+.dnd55-fs-body.dnd55-sheet {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
 }
 
 .dnd55-btn-close {
