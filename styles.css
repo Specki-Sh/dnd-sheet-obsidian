@@ -1,7 +1,7 @@
 /* ==========================================================================
    AUTHENTIC D&D 5.5e (2024 Player's Handbook) CHARACTER SHEET
    Pure Obsidian Theme Integration — Adapts natively to light/dark themes,
-   custom fonts, and colors while delivering the canonical D&D sheet layout.
+   custom fonts, and colors while delivering the official 2024 PHB layout.
    ========================================================================== */
 
 :root {
@@ -176,7 +176,7 @@
   gap: 12px;
   border-bottom: 2px solid var(--dnd55-border-subtle);
   padding-bottom: 14px;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
   position: relative;
 }
 
@@ -260,6 +260,89 @@
 }
 
 /* --------------------------------------------------------------------------
+   READINESS / COMBAT VITALS BAR (Official D&D 2024 PHB Cluster)
+   -------------------------------------------------------------------------- */
+.dnd55-readiness-bar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.dnd55-vital-box {
+  background: var(--dnd55-bg-card);
+  border: 1.5px solid var(--dnd55-border-subtle);
+  border-radius: var(--dnd55-radius-m);
+  padding: 8px 4px;
+  text-align: center;
+  min-width: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 68px;
+  box-shadow: var(--dnd55-shadow-s);
+  transition: all 0.15s ease;
+}
+
+.dnd55-vital-box:hover {
+  border-color: var(--dnd55-border-hover);
+}
+
+.dnd55-vital-label {
+  font-size: 0.62em;
+  text-transform: uppercase;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  color: var(--dnd55-text-muted);
+  line-height: 1.1;
+  word-break: break-word;
+}
+
+.dnd55-vital-val {
+  font-family: var(--dnd55-font-serif);
+  font-size: 1.38em;
+  font-weight: 900;
+  color: var(--dnd55-text-main);
+  line-height: 1.1;
+  margin-top: 2px;
+}
+
+.dnd55-vital-val.dnd55-vital-text {
+  font-size: 0.82em;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+/* Shield Motif for Armor Class */
+.dnd55-ac-box {
+  border: 2px solid var(--dnd55-accent, var(--dnd55-border-subtle));
+  border-radius: 6px 6px 50% 50% / 6px 6px 20% 20%;
+  background: var(--dnd55-bg-card-alt);
+}
+
+.dnd55-ac-box .dnd55-vital-val {
+  color: var(--dnd55-text-accent);
+}
+
+/* Inspiration Box */
+.dnd55-insp-box {
+  cursor: pointer;
+  user-select: none;
+}
+
+.dnd55-insp-box.active {
+  background: var(--dnd55-bg-card-alt);
+  border-color: var(--dnd55-accent);
+}
+
+.dnd55-insp-box.active .dnd55-vital-val {
+  color: var(--dnd55-text-accent);
+}
+
+/* --------------------------------------------------------------------------
    ADAPTIVE 3-COLUMN GRID
    -------------------------------------------------------------------------- */
 .dnd55-grid {
@@ -286,7 +369,7 @@
 @container dndsheet (min-width: 1000px) {
   .dnd55-grid {
     display: grid;
-    grid-template-columns: 1fr 1.15fr 1fr;
+    grid-template-columns: 1.15fr 1.25fr 1fr;
     gap: 16px;
   }
 }
@@ -313,9 +396,9 @@
 }
 
 .dnd55-sheet.dnd55-force-scroll .dnd55-col {
-  flex: 0 0 330px !important;
-  min-width: 330px !important;
-  max-width: 350px !important;
+  flex: 0 0 340px !important;
+  min-width: 340px !important;
+  max-width: 360px !important;
   scroll-snap-align: start !important;
 }
 
@@ -359,141 +442,100 @@
 }
 
 /* --------------------------------------------------------------------------
-   COLUMN 1: INSPIRATION, PROFICIENCY, 6 ABILITY BOXES, SAVES & SKILLS
+   COLUMN 1: OFFICIAL D&D 2024 ABILITY & SKILL CARDS
+   Skills and Saves grouped directly under each of the 6 ability scores!
    -------------------------------------------------------------------------- */
-.dnd55-insp-prof-row {
-  display: flex;
-  gap: 8px;
+.dnd55-2024-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 10px;
 }
 
-.dnd55-badge-box {
-  flex: 1;
+.dnd55-2024-card {
   background: var(--dnd55-bg-card);
   border: 1.5px solid var(--dnd55-border-subtle);
   border-radius: var(--dnd55-radius-m);
-  padding: 8px 4px;
-  text-align: center;
-  cursor: pointer;
-  user-select: none;
-  transition: all 0.15s ease;
-  min-width: 0;
   overflow: hidden;
   box-shadow: var(--dnd55-shadow-s);
+  transition: border-color 0.15s ease;
 }
 
-.dnd55-badge-box:hover {
+.dnd55-2024-card:hover {
   border-color: var(--dnd55-border-hover);
 }
 
-.dnd55-badge-box.insp.active {
+.dnd55-2024-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 10px;
   background: var(--dnd55-bg-card-alt);
-  border-color: var(--dnd55-accent);
+  border-bottom: 1px solid var(--dnd55-border-subtle);
 }
-.dnd55-badge-box.insp.active .dnd55-badge-val {
+
+.dnd55-2024-card-name {
+  font-family: var(--dnd55-font-serif);
+  font-size: 0.74em;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
   color: var(--dnd55-text-accent);
 }
 
-.dnd55-badge-label {
-  font-size: 0.64em;
-  text-transform: uppercase;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  color: var(--dnd55-text-muted);
-}
-
-.dnd55-badge-val {
+.dnd55-2024-card-mod {
   font-family: var(--dnd55-font-serif);
-  font-size: 1.2em;
-  font-weight: 800;
-  color: var(--dnd55-text-main);
-  margin-top: 2px;
-}
-
-/* 6 Iconic D&D Ability Score Boxes (Grid) */
-.dnd55-abilities-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-}
-
-@container dndsheet (max-width: 480px) {
-  .dnd55-abilities-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-.dnd55-ability-box {
-  background: var(--dnd55-bg-card);
-  border: 1.5px solid var(--dnd55-border-subtle);
-  border-radius: var(--dnd55-radius-m);
-  padding: 8px 4px 6px 4px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  min-height: 84px;
-  box-shadow: var(--dnd55-shadow-s);
-  transition: border-color 0.15s ease;
-  user-select: none;
-}
-
-.dnd55-ability-box:hover {
-  border-color: var(--dnd55-border-hover);
-}
-
-.dnd55-ab-name {
-  font-size: 0.68em;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.6px;
-  color: var(--dnd55-text-muted);
-  text-align: center;
-}
-
-.dnd55-ab-mod {
-  font-family: var(--dnd55-font-serif);
-  font-size: 1.6em;
+  font-size: 1.45em;
   font-weight: 900;
-  line-height: 1.1;
+  line-height: 1;
   color: var(--dnd55-text-main);
-  margin: 2px 0;
 }
 
-.dnd55-ab-score {
+.dnd55-2024-card-score {
   font-size: 0.72em;
   font-weight: 700;
   color: var(--dnd55-text-muted);
-  background: var(--dnd55-bg-card-alt);
+  background: var(--dnd55-bg-card);
   border: 1px solid var(--dnd55-border-subtle);
   border-radius: 10px;
-  padding: 1px 8px;
-  line-height: 1.2;
+  padding: 1px 7px;
 }
 
-/* Dedicated Saving Throws Block (Canonical 2-column layout) */
-.dnd55-saves-panel {
-  padding: 10px 12px;
+.dnd55-2024-card-body {
+  padding: 6px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
 }
 
-.dnd55-saves-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4px 10px;
-}
-
-.dnd55-save-row {
+.dnd55-2024-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 3px 6px;
   border-radius: var(--dnd55-radius-s);
-  font-size: 0.82em;
+  font-size: 0.8em;
   transition: background 0.1s ease;
 }
 
-.dnd55-save-row.proficient {
-  background: var(--dnd55-bg-card-alt);
+.dnd55-2024-row:hover {
+  background: var(--background-modifier-hover);
+}
+
+.dnd55-2024-save-row {
   font-weight: 700;
+  border-bottom: 1px dashed var(--dnd55-border-subtle);
+  padding-bottom: 4px;
+  margin-bottom: 2px;
+}
+
+.dnd55-2024-save-row.is-prof {
+  background: var(--dnd55-bg-card-alt);
+  font-weight: 800;
+}
+
+.dnd55-2024-skill-row.is-prof {
+  font-weight: 700;
+  color: var(--dnd55-text-main);
 }
 
 .dnd55-dot {
@@ -510,88 +552,37 @@
   font-weight: 900;
 }
 
-.dnd55-save-name {
-  flex: 1 1 auto;
-  margin-left: 6px;
-  font-size: 0.84em;
+.dnd55-2024-row-label {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  flex: 1 1 auto;
+  margin-left: 6px;
 }
 
-.dnd55-save-bonus {
+.dnd55-2024-row-label.save {
+  color: var(--dnd55-text-main);
+  font-weight: 700;
+}
+
+.dnd55-2024-row-bonus {
   font-family: var(--dnd55-font-serif);
   font-weight: 800;
   font-size: 0.88em;
   color: var(--dnd55-text-main);
-  flex-shrink: 0;
-}
-
-.dnd55-save-row.proficient .dnd55-save-bonus {
-  color: var(--dnd55-text-accent);
-}
-
-/* Dedicated Skills List (Canonical Striped D&D Style) */
-.dnd55-skills-panel {
-  padding: 10px 12px;
-}
-
-.dnd55-skill-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 3px 6px;
-  font-size: 0.8em;
-  border-radius: var(--dnd55-radius-s);
-  gap: 6px;
-  transition: background 0.1s ease;
-}
-
-.dnd55-skill-row:nth-child(even) {
-  background: var(--background-modifier-hover);
-}
-
-.dnd55-skill-row:hover {
-  background: var(--background-modifier-hover);
-}
-
-.dnd55-skill-left {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  min-width: 0;
-  overflow: hidden;
-  flex: 1 1 auto;
-}
-
-.dnd55-skill-name {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  font-weight: 500;
-}
-
-.dnd55-skill-row.is-prof .dnd55-skill-name {
-  font-weight: 700;
-  color: var(--dnd55-text-main);
-}
-
-.dnd55-skill-attr {
-  font-size: 0.68em;
-  color: var(--dnd55-text-muted);
-  flex-shrink: 0;
-}
-
-.dnd55-skill-bonus {
-  font-family: var(--dnd55-font-serif);
-  font-weight: 800;
-  color: var(--dnd55-text-main);
-  flex-shrink: 0;
   margin-left: auto;
 }
 
-.dnd55-skill-row.is-prof .dnd55-skill-bonus {
+.dnd55-2024-save-row.is-prof .dnd55-2024-row-bonus,
+.dnd55-2024-skill-row.is-prof .dnd55-2024-row-bonus {
   color: var(--dnd55-text-accent);
+}
+
+.dnd55-2024-empty-note {
+  font-size: 0.72em;
+  color: var(--dnd55-text-faint);
+  font-style: italic;
+  padding: 4px 6px;
 }
 
 .dnd55-sense-item {
@@ -602,72 +593,8 @@
 }
 
 /* --------------------------------------------------------------------------
-   COLUMN 2: COMBAT VITALS, HIT POINTS, WEAPONS & MASTERY
+   COLUMN 2: HIT POINTS, ATTACKS & WEAPON MASTERY, ATTUNEMENT
    -------------------------------------------------------------------------- */
-.dnd55-vitals-row {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 8px;
-}
-
-.dnd55-vitals-row.dnd55-vitals-2 {
-  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-}
-
-.dnd55-vital-box {
-  background: var(--dnd55-bg-card);
-  border: 1.5px solid var(--dnd55-border-subtle);
-  border-radius: var(--dnd55-radius-m);
-  padding: 8px 4px;
-  text-align: center;
-  min-width: 0;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  min-height: 72px;
-  box-shadow: var(--dnd55-shadow-s);
-}
-
-/* Shield Motif for Armor Class */
-.dnd55-ac-box {
-  border: 2px solid var(--dnd55-accent, var(--dnd55-border-subtle));
-  border-radius: 6px 6px 50% 50% / 6px 6px 20% 20%;
-  background: var(--dnd55-bg-card-alt);
-}
-
-.dnd55-ac-box .dnd55-vital-val {
-  color: var(--dnd55-text-accent);
-}
-
-.dnd55-vital-label {
-  font-size: 0.62em;
-  text-transform: uppercase;
-  font-weight: 800;
-  letter-spacing: 0.5px;
-  color: var(--dnd55-text-muted);
-  line-height: 1.1;
-  word-break: break-word;
-}
-
-.dnd55-vital-val {
-  font-family: var(--dnd55-font-serif);
-  font-size: 1.45em;
-  font-weight: 900;
-  color: var(--dnd55-text-main);
-  line-height: 1.1;
-  margin-top: 2px;
-}
-
-.dnd55-vital-val.dnd55-vital-text {
-  font-size: 0.82em;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.4px;
-}
-
-/* Authentic Hit Points Card */
 .dnd55-hp-card {
   border: 2px solid var(--dnd55-border-subtle);
   padding: 12px;
@@ -922,9 +849,24 @@
   color: var(--dnd55-text-accent);
 }
 
+/* Attunement Row */
+.dnd55-attunement-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
+}
+
 /* --------------------------------------------------------------------------
    COLUMN 3: FEATURES, SPELLS, EQUIPMENT & ROLEPLAY
    -------------------------------------------------------------------------- */
+.dnd55-vitals-row.dnd55-vitals-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
 .dnd55-spell-slots-row {
   display: flex;
   align-items: center;
@@ -1317,17 +1259,43 @@ textarea.dnd55-m-input {
   color: var(--dnd55-text-muted);
 }
 
-.dnd55-m-skills-grid {
+/* Skill Groups in Editor Modal */
+.dnd55-m-skill-groups {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 8px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 10px;
+  margin-top: 8px;
 }
 
-.dnd55-m-skill-row {
+.dnd55-m-skill-group-box {
   background: var(--dnd55-bg-card-alt);
   border: 1px solid var(--dnd55-border-subtle);
   border-radius: var(--dnd55-radius-s);
-  padding: 6px 10px;
+  padding: 8px;
+}
+
+.dnd55-m-skill-group-title {
+  font-family: var(--dnd55-font-serif);
+  font-size: 0.76em;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--dnd55-text-accent);
+  margin-bottom: 6px;
+  border-bottom: 1px solid var(--dnd55-border-subtle);
+  padding-bottom: 3px;
+}
+
+.dnd55-m-skills-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.dnd55-m-skill-row {
+  background: var(--dnd55-bg-card);
+  border: 1px solid var(--dnd55-border-subtle);
+  border-radius: var(--dnd55-radius-s);
+  padding: 5px 8px;
   display: flex;
   align-items: center;
   justify-content: space-between;

@@ -1,7 +1,7 @@
 const { Plugin, parseYaml, Notice, Modal } = require("obsidian");
 
 // ============================================================================
-// CHARACTER EDITOR MODAL (Fully Adaptive In-Interface Editor)
+// CHARACTER EDITOR MODAL (Fully Adaptive In-Interface Editor 2024 PHB)
 // ============================================================================
 class CharacterEditorModal extends Modal {
   constructor(app, plugin, data, ctx, originalSource, onSaveCallback) {
@@ -28,8 +28,8 @@ class CharacterEditorModal extends Modal {
       { id: "main", label: "📋 Основное" },
       { id: "stats", label: "💪 Характеристики" },
       { id: "combat", label: "⚔️ Бой и Хиты" },
-      { id: "skills", label: "🎯 Навыки" },
-      { id: "attacks", label: "🗡️ Атаки и Оружие" },
+      { id: "skills", label: "🎯 Навыки 2024" },
+      { id: "attacks", label: "🗡️ Оружие и Мастерство" },
       { id: "spells", label: "✨ Магия и Умения" },
       { id: "equipment", label: "🎒 Снаряжение и Цели" }
     ];
@@ -78,7 +78,7 @@ class CharacterEditorModal extends Modal {
 
     // PANEL 2: STATS
     const pStats = panels["stats"];
-    pStats.createEl("h4", { text: "Базовые характеристики D&D (1–30)", cls: "dnd55-m-section-title" });
+    pStats.createEl("h4", { text: "Базовые характеристики D&D 2024", cls: "dnd55-m-section-title" });
     
     const abGrid = pStats.createDiv({ cls: "dnd55-m-abilities-grid" });
     if (!this.data.abilities) this.data.abilities = { str: 10, dex: 10, con: 10, int: 10, wis: 10, cha: 10 };
@@ -132,7 +132,7 @@ class CharacterEditorModal extends Modal {
     createField(metaRow, "Бонус мастерства (PB)", this.data.pb !== undefined ? this.data.pb : 2, v => this.data.pb = v, "number");
     
     const inspGroup = metaRow.createDiv({ cls: "dnd55-m-group" });
-    inspGroup.createEl("label", { text: "Героическое вдохновение", cls: "dnd55-m-label" });
+    inspGroup.createEl("label", { text: "Героическое вдохновение (2024)", cls: "dnd55-m-label" });
     const inspLabelRow = inspGroup.createDiv({ cls: "dnd55-m-check-row", style: "margin-top: 6px;" });
     const inspCb = inspLabelRow.createEl("input");
     inspCb.type = "checkbox";
@@ -141,89 +141,114 @@ class CharacterEditorModal extends Modal {
     inspCb.onchange = () => this.data.inspiration = inspCb.checked;
 
     createField(pStats, "Языки", this.data.languages, v => this.data.languages = v, "text", "Гоблинский, Общий");
-    createField(pStats, "Владение доспехами и оружием", this.data.proficiencies, v => this.data.proficiencies = v, "text", "Все доспехи, щиты, воинское оружие");
+    createField(pStats, "Владение доспехами, оружием и инструментами", this.data.proficiencies, v => this.data.proficiencies = v, "text", "Все доспехи, щиты, воинское оружие");
 
     // PANEL 3: COMBAT & HP
     const pCombat = panels["combat"];
-    pCombat.createEl("h4", { text: "Боевые показатели", cls: "dnd55-m-section-title" });
+    pCombat.createEl("h4", { text: "Боевые показатели и Здоровье", cls: "dnd55-m-section-title" });
 
     const gridCombat = pCombat.createDiv({ cls: "dnd55-m-grid-4" });
-    createField(gridCombat, "КД (Броня)", this.data.ac !== undefined ? this.data.ac : 10, v => this.data.ac = v, "number");
-    createField(gridCombat, "Инициатива", this.data.initiative !== undefined ? this.data.initiative : 0, v => this.data.initiative = v, "number");
-    createField(gridCombat, "Скорость (фт.)", this.data.speed || 30, v => this.data.speed = v, "number");
-    createField(gridCombat, "Размер", this.data.size || "Маленький", v => this.data.size = v, "text");
+    createField(gridCombat, "КД (Броня)", this.data.ac, v => this.data.ac = v, "number", "15");
+    createField(gridCombat, "Инициатива", this.data.initiative, v => this.data.initiative = v, "number", "3");
+    createField(gridCombat, "Скорость (фт.)", this.data.speed, v => this.data.speed = v, "number", "30");
+    createField(gridCombat, "Размер", this.data.size, v => this.data.size = v, "text", "Маленький");
 
-    pCombat.createEl("h4", { text: "Хиты (Здоровье)", cls: "dnd55-m-section-title", style: "margin-top: 14px;" });
-    const gridHp = pCombat.createDiv({ cls: "dnd55-m-grid-3" });
-    createField(gridHp, "Максимальные HP", this.data.max_hp || this.data.hp || 20, v => {
-      this.data.max_hp = v;
-      if (!this.data.hp) this.data.hp = v;
-    }, "number");
-    createField(gridHp, "Текущие HP", this.data.hp || 20, v => this.data.hp = v, "number");
-    createField(gridHp, "Временные HP", this.data.temp_hp || 0, v => this.data.temp_hp = v, "number");
+    const hpSection = pCombat.createDiv({ cls: "dnd55-m-grid-3", style: "margin-top: 12px;" });
+    createField(hpSection, "Текущие HP", this.data.hp, v => this.data.hp = v, "number", "20");
+    createField(hpSection, "Максимум HP", this.data.max_hp, v => this.data.max_hp = v, "number", "20");
+    createField(hpSection, "Временные HP", this.data.temp_hp, v => this.data.temp_hp = v, "number", "0");
 
-    const gridHd = pCombat.createDiv({ cls: "dnd55-m-grid-2", style: "margin-top: 10px;" });
-    createField(gridHd, "Кость хитов (Hit Dice)", this.data.hit_dice || "2d10", v => this.data.hit_dice = v, "text", "2d10");
-    createField(gridHd, "Количество костей хитов", this.data.hit_dice_count || 2, v => this.data.hit_dice_count = v, "number");
+    const hdSection = pCombat.createDiv({ cls: "dnd55-m-grid-3", style: "margin-top: 12px;" });
+    createField(hdSection, "Тип кости хитов", this.data.hit_dice, v => this.data.hit_dice = v, "text", "1d10");
+    createField(hdSection, "Количество костей хитов", this.data.hit_dice_count, v => this.data.hit_dice_count = v, "number", "2");
+    createField(hdSection, "Настройка на предметы (0-3)", this.data.attunement !== undefined ? this.data.attunement : 0, v => this.data.attunement = v, "number", "0");
 
-    pCombat.createEl("h4", { text: "Действия в бою", cls: "dnd55-m-section-title", style: "margin-top: 14px;" });
-    createField(pCombat, "Бонусные действия", this.data.bonus_actions, v => this.data.bonus_actions = v, "text", "Ловкий побег, Второе дыхание");
-    createField(pCombat, "Реакции", this.data.reactions, v => this.data.reactions = v, "text", "Щит, Парирование");
+    createField(pCombat, "Бонусное действие (Quick Reference)", this.data.bonus_actions, v => this.data.bonus_actions = v, "text", "Второе дыхание (хит 1d10+2)");
+    createField(pCombat, "Реакция (Quick Reference)", this.data.reactions, v => this.data.reactions = v, "text", "Провоцированная атака");
 
-    // PANEL 4: SKILLS
+    // PANEL 4: SKILLS 2024 (Grouped by Ability)
     const pSkills = panels["skills"];
-    pSkills.createEl("h4", { text: "Навыки D&D 2024 • Уровень владения", cls: "dnd55-m-section-title" });
+    pSkills.createEl("h4", { text: "Навыки (сгруппированы по характеристикам D&D 2024)", cls: "dnd55-m-section-title" });
     if (!this.data.skills) this.data.skills = {};
 
-    const standardSkills = [
-      { id: "акробатика", name: "Акробатика", attr: "dex" },
-      { id: "анализ", name: "Анализ", attr: "int" },
-      { id: "атлетика", name: "Атлетика", attr: "str" },
-      { id: "внимательность", name: "Внимательность", attr: "wis" },
-      { id: "выживание", name: "Выживание", attr: "wis" },
-      { id: "выступление", name: "Выступление", attr: "cha" },
-      { id: "запугивание", name: "Запугивание", attr: "cha" },
-      { id: "история", name: "История", attr: "int" },
-      { id: "ловкость рук", name: "Ловкость рук", attr: "dex" },
-      { id: "магия", name: "Магия", attr: "int" },
-      { id: "медицина", name: "Медицина", attr: "wis" },
-      { id: "обман", name: "Обман", attr: "cha" },
-      { id: "природа", name: "Природа", attr: "int" },
-      { id: "проницательность", name: "Проницательность", attr: "wis" },
-      { id: "религия", name: "Религия", attr: "int" },
-      { id: "скрытность", name: "Скрытность", attr: "dex" },
-      { id: "убеждение", name: "Убеждение", attr: "cha" },
-      { id: "уход за животными", name: "Уход за животными", attr: "wis" }
+    const abilitySkillGroups = [
+      {
+        title: "СИЛА (STR)",
+        skills: [{ id: "атлетика", name: "Атлетика" }]
+      },
+      {
+        title: "ЛОВКОСТЬ (DEX)",
+        skills: [
+          { id: "акробатика", name: "Акробатика" },
+          { id: "ловкость рук", name: "Ловкость рук" },
+          { id: "скрытность", name: "Скрытность" }
+        ]
+      },
+      {
+        title: "ИНТЕЛЛЕКТ (INT)",
+        skills: [
+          { id: "анализ", name: "Анализ" },
+          { id: "история", name: "История" },
+          { id: "магия", name: "Магия" },
+          { id: "природа", name: "Природа" },
+          { id: "религия", name: "Религия" }
+        ]
+      },
+      {
+        title: "МУДРОСТЬ (WIS)",
+        skills: [
+          { id: "внимательность", name: "Внимательность" },
+          { id: "выживание", name: "Выживание" },
+          { id: "медицина", name: "Медицина" },
+          { id: "проницательность", name: "Проницательность" },
+          { id: "уход за животными", name: "Уход за животными" }
+        ]
+      },
+      {
+        title: "ХАРИЗМА (CHA)",
+        skills: [
+          { id: "выступление", name: "Выступление" },
+          { id: "запугивание", name: "Запугивание" },
+          { id: "обман", name: "Обман" },
+          { id: "убеждение", name: "Убеждение" }
+        ]
+      }
     ];
 
-    const skillsGrid = pSkills.createDiv({ cls: "dnd55-m-skills-grid" });
-    standardSkills.forEach(s => {
-      const row = skillsGrid.createDiv({ cls: "dnd55-m-skill-row" });
-      row.createDiv({ cls: "dnd55-m-skill-name", text: `${s.name} (${s.attr.toUpperCase()})` });
+    const sGroupsWrap = pSkills.createDiv({ cls: "dnd55-m-skill-groups" });
+    abilitySkillGroups.forEach(grp => {
+      const gBox = sGroupsWrap.createDiv({ cls: "dnd55-m-skill-group-box" });
+      gBox.createEl("div", { text: grp.title, cls: "dnd55-m-skill-group-title" });
       
-      const select = row.createEl("select", { cls: "dnd55-m-select" });
-      [
-        { val: "none", text: "— Нет" },
-        { val: "prof", text: "● Владение" },
-        { val: "expert", text: "✪ Экспертиза" }
-      ].forEach(opt => {
-        const el = select.createEl("option", { value: opt.val, text: opt.text });
-        const curStatus = this.data.skills[s.id] || "none";
-        if (curStatus === opt.val) el.selected = true;
-      });
+      const sGrid = gBox.createDiv({ cls: "dnd55-m-skills-grid" });
+      grp.skills.forEach(s => {
+        const row = sGrid.createDiv({ cls: "dnd55-m-skill-row" });
+        row.createDiv({ cls: "dnd55-m-skill-name", text: s.name });
+        
+        const select = row.createEl("select", { cls: "dnd55-m-select" });
+        [
+          { val: "none", text: "— Нет" },
+          { val: "prof", text: "● Владение" },
+          { val: "expert", text: "✪ Экспертиза" }
+        ].forEach(opt => {
+          const el = select.createEl("option", { value: opt.val, text: opt.text });
+          const curStatus = this.data.skills[s.id] || "none";
+          if (curStatus === opt.val) el.selected = true;
+        });
 
-      select.onchange = () => {
-        if (select.value === "none") {
-          delete this.data.skills[s.id];
-        } else {
-          this.data.skills[s.id] = select.value;
-        }
-      };
+        select.onchange = () => {
+          if (select.value === "none") {
+            delete this.data.skills[s.id];
+          } else {
+            this.data.skills[s.id] = select.value;
+          }
+        };
+      });
     });
 
-    // PANEL 5: ATTACKS
+    // PANEL 5: ATTACKS & WEAPON MASTERY
     const pAttacks = panels["attacks"];
-    pAttacks.createEl("h4", { text: "Оружие и Мастерство оружия 5.5e (Weapon Mastery)", cls: "dnd55-m-section-title" });
+    pAttacks.createEl("h4", { text: "Оружие и Свойства Мастерства (Weapon Mastery 2024)", cls: "dnd55-m-section-title" });
     if (!Array.isArray(this.data.attacks)) this.data.attacks = [];
 
     const atkContainer = pAttacks.createDiv({ cls: "dnd55-m-attacks-list" });
@@ -243,13 +268,13 @@ class CharacterEditorModal extends Modal {
 
         const grid = row.createDiv({ cls: "dnd55-m-grid-4" });
         createField(grid, "Название оружия", atk.name, v => atk.name = v, "text", "Короткий меч");
-        createField(grid, "Атака", atk.bonus, v => atk.bonus = v, "text", "+5");
-        createField(grid, "Урон", atk.damage, v => atk.damage = v, "text", "1d6+3");
+        createField(grid, "Бонус атаки", atk.bonus, v => atk.bonus = v, "text", "+5");
+        createField(grid, "Урон и тип", atk.damage, v => atk.damage = v, "text", "1d6+3 колющий");
         createField(grid, "Дистанция", atk.range, v => atk.range = v, "text", "5 фт.");
         
         const mGroup = row.createDiv({ cls: "dnd55-m-group", style: "margin-top: 6px;" });
-        mGroup.createEl("label", { text: "Свойство Мастерства 5.5e (Mastery)", cls: "dnd55-m-label" });
-        createField(mGroup, "", atk.mastery, v => atk.mastery = v, "text", "Slow, Topple, Push, Vex, Nick, Sap, Cleave");
+        mGroup.createEl("label", { text: "Свойство Мастерства 5.5e (Cleave, Graze, Nick, Push, Sap, Slow, Topple, Vex)", cls: "dnd55-m-label" });
+        createField(mGroup, "", atk.mastery, v => atk.mastery = v, "text", "Задевание (Graze) или Опрокидывание (Topple)");
       });
     };
     renderAttacks();
@@ -262,7 +287,7 @@ class CharacterEditorModal extends Modal {
 
     // PANEL 6: SPELLS & FEATURES
     const pSpells = panels["spells"];
-    pSpells.createEl("h4", { text: "Заклинания и Магия", cls: "dnd55-m-section-title" });
+    pSpells.createEl("h4", { text: "Заклинания и Магия (Spellcasting)", cls: "dnd55-m-section-title" });
     const spGrid = pSpells.createDiv({ cls: "dnd55-m-grid-3" });
     createField(spGrid, "Сл спасброска магии", this.data.spell_save_dc, v => this.data.spell_save_dc = v, "number", "13");
     createField(spGrid, "Бонус атаки магии", this.data.spell_attack, v => this.data.spell_attack = v, "text", "+5");
@@ -414,7 +439,7 @@ class HpPromptModal extends Modal {
 }
 
 // ============================================================================
-// MAIN PLUGIN CLASS (Canonical D&D 5.5e Layout & Native Obsidian Theming)
+// MAIN PLUGIN CLASS (Authentic D&D 2024 Layout & Native Obsidian Theming)
 // ============================================================================
 module.exports = class DnD55eSheetPlugin extends Plugin {
   async onload() {
@@ -467,6 +492,7 @@ module.exports = class DnD55eSheetPlugin extends Plugin {
     if (data.temp_hp) lines.push(`temp_hp: ${data.temp_hp}`);
     lines.push(`hit_dice: ${quote(data.hit_dice || "1d10")}`);
     lines.push(`hit_dice_count: ${data.hit_dice_count !== undefined ? data.hit_dice_count : 1}`);
+    if (data.attunement !== undefined) lines.push(`attunement: ${data.attunement}`);
 
     lines.push(`abilities:`);
     const ab = data.abilities || {};
@@ -678,7 +704,7 @@ module.exports = class DnD55eSheetPlugin extends Plugin {
 
     // Top Toolbar in Normal Mode
     const topBar = sheet.createDiv({ cls: "dnd55-topbar" });
-    topBar.createDiv({ cls: "dnd55-badge-edition", text: "D&D 5.5e (2024)" });
+    topBar.createDiv({ cls: "dnd55-badge-edition", text: "D&D 5.5e (2024 PHB)" });
 
     const toolbar = topBar.createDiv({ cls: "dnd55-toolbar" });
 
@@ -719,6 +745,7 @@ module.exports = class DnD55eSheetPlugin extends Plugin {
 
     const mods = { str: strMod, dex: dexMod, con: conMod, int: intMod, wis: wisMod, cha: chaMod };
     const savesList = Array.isArray(data.saves) ? data.saves.map(s => String(s).toLowerCase()) : [];
+    const profSkills = data.skills || {};
 
     // ========================================================================
     // HEADER BANNER (Authentic D&D 2024 Header Layout)
@@ -744,161 +771,202 @@ module.exports = class DnD55eSheetPlugin extends Plugin {
       item.createDiv({ cls: "dnd55-meta-val", text: String(f.val) });
     });
 
-    // NAVIGATION PILLS (For quick jump between sections)
-    const navTabs = container.createDiv({ cls: "dnd55-nav-tabs" });
-    const tab1 = navTabs.createEl("button", { cls: "dnd55-nav-tab", text: "📊 1. Параметры и навыки" });
-    const tab2 = navTabs.createEl("button", { cls: "dnd55-nav-tab", text: "⚔️ 2. Бой и здоровье" });
-    const tab3 = navTabs.createEl("button", { cls: "dnd55-nav-tab", text: "🔮 3. Магия и особенности" });
-
-    // GRID LAYOUT
-    const grid = container.createDiv({ cls: "dnd55-grid" });
-
     // ========================================================================
-    // COLUMN 1: ABILITIES (Classic Box Matrix), SAVING THROWS & SKILLS
+    // READINESS / COMBAT VITALS BAR (D&D 2024 PHB Signature Readiness Cluster)
     // ========================================================================
-    const col1 = grid.createDiv({ cls: "dnd55-col" });
-    tab1.onclick = () => col1.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+    const readinessBar = container.createDiv({ cls: "dnd55-readiness-bar" });
 
-    // Inspiration & Proficiency Row
-    const inspProf = col1.createDiv({ cls: "dnd55-insp-prof-row" });
-    const inspBox = inspProf.createDiv({ cls: "dnd55-badge-box insp" });
-    inspBox.createDiv({ cls: "dnd55-badge-label", text: "Вдохновение" });
-    const inspVal = inspBox.createDiv({ cls: "dnd55-badge-val", text: data.inspiration ? "★ ДА" : "☆ НЕТ" });
+    // 1. Heroic Inspiration (Interactive Toggle)
+    const inspBox = readinessBar.createDiv({ cls: `dnd55-vital-box dnd55-insp-box ${data.inspiration ? "active" : ""}` });
+    inspBox.createDiv({ cls: "dnd55-vital-label", text: "Вдохновение" });
+    const inspVal = inspBox.createDiv({ cls: "dnd55-vital-val", text: data.inspiration ? "★ ДА" : "☆ НЕТ" });
+    inspBox.title = "Кликните для переключения героического вдохновения (2024 PHB)";
     inspBox.onclick = async () => {
       data.inspiration = !data.inspiration;
       inspVal.setText(data.inspiration ? "★ ДА" : "☆ НЕТ");
       inspBox.toggleClass("active", data.inspiration);
       await this.saveCharacterData(data, ctx, source);
     };
-    if (data.inspiration) inspBox.addClass("active");
 
-    const pbBox = inspProf.createDiv({ cls: "dnd55-badge-box pb" });
-    pbBox.createDiv({ cls: "dnd55-badge-label", text: "Мастерство" });
-    pbBox.createDiv({ cls: "dnd55-badge-val", text: `+${pb}` });
+    // 2. Proficiency Bonus
+    const pbBox = readinessBar.createDiv({ cls: "dnd55-vital-box dnd55-pb-box" });
+    pbBox.createDiv({ cls: "dnd55-vital-label", text: "Мастерство" });
+    pbBox.createDiv({ cls: "dnd55-vital-val", text: `+${pb}` });
 
-    // 6 Iconic D&D Ability Score Boxes (Grid)
-    const abilityDefs = [
-      { key: "str", name: "СИЛА", full: "Сила", score: abilities.str !== undefined ? abilities.str : 10 },
-      { key: "dex", name: "ЛОВКОСТЬ", full: "Ловкость", score: abilities.dex !== undefined ? abilities.dex : 10 },
-      { key: "con", name: "ТЕЛОСЛ.", full: "Телосложение", score: abilities.con !== undefined ? abilities.con : 10 },
-      { key: "int", name: "ИНТЕЛ.", full: "Интеллект", score: abilities.int !== undefined ? abilities.int : 10 },
-      { key: "wis", name: "МУДРОСТЬ", full: "Мудрость", score: abilities.wis !== undefined ? abilities.wis : 10 },
-      { key: "cha", name: "ХАРИЗМА", full: "Харизма", score: abilities.cha !== undefined ? abilities.cha : 10 }
-    ];
-
-    const abGrid = col1.createDiv({ cls: "dnd55-abilities-grid" });
-    abilityDefs.forEach(ab => {
-      const box = abGrid.createDiv({ cls: "dnd55-ability-box" });
-      box.createDiv({ cls: "dnd55-ab-name", text: ab.name });
-      const mod = mods[ab.key];
-      box.createDiv({ cls: "dnd55-ab-mod", text: this.fmtMod(mod) });
-      box.createDiv({ cls: "dnd55-ab-score", text: String(ab.score) });
-    });
-
-    // Dedicated Saving Throws Block (2-column layout like official sheet!)
-    const savesPanel = col1.createDiv({ cls: "dnd55-panel dnd55-saves-panel" });
-    savesPanel.createDiv({ cls: "dnd55-panel-title", text: "Спасброски (Saving Throws)" });
-    const savesGrid = savesPanel.createDiv({ cls: "dnd55-saves-grid" });
-    abilityDefs.forEach(ab => {
-      const isProf = savesList.includes(ab.key);
-      const saveBonus = isProf ? mods[ab.key] + pb : mods[ab.key];
-      const row = savesGrid.createDiv({ cls: `dnd55-save-row ${isProf ? "proficient" : ""}` });
-      row.createDiv({ cls: `dnd55-dot ${isProf ? "prof" : ""}`, text: isProf ? "●" : "○" });
-      row.createDiv({ cls: "dnd55-save-name", text: ab.full });
-      row.createDiv({ cls: "dnd55-save-bonus", text: this.fmtMod(saveBonus) });
-    });
-
-    // Dedicated Skills Panel
-    const skillsPanel = col1.createDiv({ cls: "dnd55-panel dnd55-skills-panel" });
-    skillsPanel.createDiv({ cls: "dnd55-panel-title", text: "Навыки (Skills)" });
-
-    const standardSkills = [
-      { id: "акробатика", name: "Акробатика", attr: "dex" },
-      { id: "анализ", name: "Анализ", attr: "int" },
-      { id: "атлетика", name: "Атлетика", attr: "str" },
-      { id: "внимательность", name: "Внимательность", attr: "wis" },
-      { id: "выживание", name: "Выживание", attr: "wis" },
-      { id: "выступление", name: "Выступление", attr: "cha" },
-      { id: "запугивание", name: "Запугивание", attr: "cha" },
-      { id: "история", name: "История", attr: "int" },
-      { id: "ловкость рук", name: "Ловкость рук", attr: "dex" },
-      { id: "магия", name: "Магия", attr: "int" },
-      { id: "медицина", name: "Медицина", attr: "wis" },
-      { id: "обман", name: "Обман", attr: "cha" },
-      { id: "природа", name: "Природа", attr: "int" },
-      { id: "проницательность", name: "Проницательность", attr: "wis" },
-      { id: "религия", name: "Религия", attr: "int" },
-      { id: "скрытность", name: "Скрытность", attr: "dex" },
-      { id: "убеждение", name: "Убеждение", attr: "cha" },
-      { id: "уход за животными", name: "Уход за животными", attr: "wis" }
-    ];
-
-    const profSkills = data.skills || {};
-
-    standardSkills.forEach(s => {
-      const pStatus = profSkills[s.id] || profSkills[s.name.toLowerCase()] || (Array.isArray(data.prof_skills) && data.prof_skills.includes(s.name) ? "prof" : "none");
-      let bonus = mods[s.attr];
-      let dot = "○";
-      let isExpert = pStatus === "expert" || pStatus === 2;
-      let isProf = pStatus === "prof" || pStatus === 1 || isExpert;
-
-      if (isExpert) {
-        bonus += pb * 2;
-        dot = "✪";
-      } else if (isProf) {
-        bonus += pb;
-        dot = "●";
-      }
-
-      const row = skillsPanel.createDiv({ cls: `dnd55-skill-row ${isProf ? "is-prof" : ""}` });
-      row.setAttribute("title", `${s.name} (${s.attr.toUpperCase()}): ${this.fmtMod(bonus)}`);
-      
-      const sLeft = row.createDiv({ cls: "dnd55-skill-left" });
-      sLeft.createDiv({ cls: `dnd55-dot ${isProf ? "prof" : ""}`, text: dot });
-      sLeft.createSpan({ text: s.name, cls: "dnd55-skill-name" });
-      sLeft.createSpan({ cls: "dnd55-skill-attr", text: `(${s.attr.toUpperCase()})` });
-
-      row.createDiv({ cls: "dnd55-skill-bonus", text: this.fmtMod(bonus) });
-    });
-
-    // Passive Senses & Proficiencies
-    const sensesPanel = col1.createDiv({ cls: "dnd55-panel" });
-    sensesPanel.createDiv({ cls: "dnd55-panel-title", text: "Чувства и Владения" });
-    const percBonus = (profSkills["внимательность"] ? pb : 0) + wisMod;
-    sensesPanel.createDiv({ cls: "dnd55-sense-item", text: `👁 Пассивное Восприятие: ${10 + percBonus}` });
-    if (data.languages) sensesPanel.createDiv({ cls: "dnd55-sense-item", text: `🗣 Языки: ${data.languages}` });
-    if (data.proficiencies) sensesPanel.createDiv({ cls: "dnd55-sense-item", text: `🛡 Владение: ${data.proficiencies}` });
-
-    // ========================================================================
-    // COLUMN 2: COMBAT VITALS, HEALTH, WEAPONS & MASTERY
-    // ========================================================================
-    const col2 = grid.createDiv({ cls: "dnd55-col" });
-    tab2.onclick = () => col2.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
-
-    // Vitals Row: AC, Initiative, Speed, Size
-    const vitals = col2.createDiv({ cls: "dnd55-vitals-row" });
-    
-    const acBox = vitals.createDiv({ cls: "dnd55-vital-box dnd55-ac-box" });
+    // 3. Armor Class (AC - Iconic Shield Badge)
+    const acBox = readinessBar.createDiv({ cls: "dnd55-vital-box dnd55-ac-box" });
     acBox.createDiv({ cls: "dnd55-vital-label", text: "КД (Броня)" });
     acBox.createDiv({ cls: "dnd55-vital-val", text: String(data.ac !== undefined ? data.ac : 10 + dexMod) });
 
+    // 4. Initiative
     const initBonus = data.initiative !== undefined ? data.initiative : dexMod;
-    const initBox = vitals.createDiv({ cls: "dnd55-vital-box dnd55-init-box" });
+    const initBox = readinessBar.createDiv({ cls: "dnd55-vital-box dnd55-init-box" });
     initBox.createDiv({ cls: "dnd55-vital-label", text: "Инициатива" });
     initBox.createDiv({ cls: "dnd55-vital-val", text: this.fmtMod(initBonus) });
 
-    const speedBox = vitals.createDiv({ cls: "dnd55-vital-box dnd55-speed-box" });
+    // 5. Speed
+    const speedBox = readinessBar.createDiv({ cls: "dnd55-vital-box dnd55-speed-box" });
     speedBox.createDiv({ cls: "dnd55-vital-label", text: "Скорость" });
     speedBox.createDiv({ cls: "dnd55-vital-val", text: `${data.speed || 30} фт.` });
 
-    const sizeBox = vitals.createDiv({ cls: "dnd55-vital-box dnd55-size-box" });
+    // 6. Size
+    const sizeBox = readinessBar.createDiv({ cls: "dnd55-vital-box dnd55-size-box" });
     sizeBox.createDiv({ cls: "dnd55-vital-label", text: "Размер" });
     const sizeStr = String(data.size || "Малый");
     sizeBox.createDiv({ cls: `dnd55-vital-val ${sizeStr.length > 4 ? "dnd55-vital-text" : ""}`, text: sizeStr });
 
+    // 7. Passive Perception
+    const percProf = profSkills["внимательность"] || (Array.isArray(data.prof_skills) && data.prof_skills.includes("Внимательность") ? "prof" : "none");
+    const percBonus = (percProf === "expert" || percProf === 2 ? pb * 2 : (percProf === "prof" || percProf === 1 ? pb : 0)) + wisMod;
+    const percBox = readinessBar.createDiv({ cls: "dnd55-vital-box dnd55-perc-box" });
+    percBox.createDiv({ cls: "dnd55-vital-label", text: "Пассивное воспр." });
+    percBox.createDiv({ cls: "dnd55-vital-val", text: `${10 + percBonus}` });
+
+    // NAVIGATION PILLS (For quick jump on narrow displays)
+    const navTabs = container.createDiv({ cls: "dnd55-nav-tabs" });
+    const tab1 = navTabs.createEl("button", { cls: "dnd55-nav-tab", text: "📊 1. Характеристики и навыки 2024" });
+    const tab2 = navTabs.createEl("button", { cls: "dnd55-nav-tab", text: "⚔️ 2. Бой и здоровье" });
+    const tab3 = navTabs.createEl("button", { cls: "dnd55-nav-tab", text: "🔮 3. Магия и умения" });
+
+    // GRID LAYOUT
+    const grid = container.createDiv({ cls: "dnd55-grid" });
+
+    // ========================================================================
+    // COLUMN 1: OFFICIAL D&D 2024 ABILITY & SKILL BLOCKS
+    // Skills and Saving Throws are grouped directly under their base ability!
+    // ========================================================================
+    const col1 = grid.createDiv({ cls: "dnd55-col" });
+    tab1.onclick = () => col1.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+
+    const abPanel = col1.createDiv({ cls: "dnd55-panel" });
+    abPanel.createDiv({ cls: "dnd55-panel-title", text: "Характеристики и Навыки (D&D 2024 PHB)" });
+
+    const ability2024Defs = [
+      {
+        key: "str",
+        name: "СИЛА (STR)",
+        score: abilities.str !== undefined ? abilities.str : 10,
+        skills: [
+          { id: "атлетика", name: "Атлетика" }
+        ]
+      },
+      {
+        key: "dex",
+        name: "ЛОВКОСТЬ (DEX)",
+        score: abilities.dex !== undefined ? abilities.dex : 10,
+        skills: [
+          { id: "акробатика", name: "Акробатика" },
+          { id: "ловкость рук", name: "Ловкость рук" },
+          { id: "скрытность", name: "Скрытность" }
+        ]
+      },
+      {
+        key: "con",
+        name: "ТЕЛОСЛОЖЕНИЕ (CON)",
+        score: abilities.con !== undefined ? abilities.con : 10,
+        skills: []
+      },
+      {
+        key: "int",
+        name: "ИНТЕЛЛЕКТ (INT)",
+        score: abilities.int !== undefined ? abilities.int : 10,
+        skills: [
+          { id: "анализ", name: "Анализ" },
+          { id: "история", name: "История" },
+          { id: "магия", name: "Магия" },
+          { id: "природа", name: "Природа" },
+          { id: "религия", name: "Религия" }
+        ]
+      },
+      {
+        key: "wis",
+        name: "МУДРОСТЬ (WIS)",
+        score: abilities.wis !== undefined ? abilities.wis : 10,
+        skills: [
+          { id: "внимательность", name: "Внимательность" },
+          { id: "выживание", name: "Выживание" },
+          { id: "медицина", name: "Медицина" },
+          { id: "проницательность", name: "Проницательность" },
+          { id: "уход за животными", name: "Уход за животными" }
+        ]
+      },
+      {
+        key: "cha",
+        name: "ХАРИЗМА (CHA)",
+        score: abilities.cha !== undefined ? abilities.cha : 10,
+        skills: [
+          { id: "выступление", name: "Выступление" },
+          { id: "запугивание", name: "Запугивание" },
+          { id: "обман", name: "Обман" },
+          { id: "убеждение", name: "Убеждение" }
+        ]
+      }
+    ];
+
+    const abGrid = abPanel.createDiv({ cls: "dnd55-2024-grid" });
+
+    ability2024Defs.forEach(ab => {
+      const card = abGrid.createDiv({ cls: "dnd55-2024-card" });
+      
+      // Header: Name, Mod, Score
+      const head = card.createDiv({ cls: "dnd55-2024-card-head" });
+      head.createDiv({ cls: "dnd55-2024-card-name", text: ab.name });
+      const mod = mods[ab.key];
+      head.createDiv({ cls: "dnd55-2024-card-mod", text: this.fmtMod(mod) });
+      head.createDiv({ cls: "dnd55-2024-card-score", text: String(ab.score) });
+
+      // Body with Saves and Skills
+      const body = card.createDiv({ cls: "dnd55-2024-card-body" });
+
+      // Saving Throw row
+      const isSaveProf = savesList.includes(ab.key);
+      const saveBonus = isSaveProf ? mod + pb : mod;
+      const saveRow = body.createDiv({ cls: `dnd55-2024-row dnd55-2024-save-row ${isSaveProf ? "is-prof" : ""}` });
+      saveRow.createDiv({ cls: `dnd55-dot ${isSaveProf ? "prof" : ""}`, text: isSaveProf ? "●" : "○" });
+      saveRow.createSpan({ text: "Спасбросок", cls: "dnd55-2024-row-label save" });
+      saveRow.createDiv({ cls: "dnd55-2024-row-bonus", text: this.fmtMod(saveBonus) });
+
+      // Skills rows
+      if (ab.skills.length > 0) {
+        ab.skills.forEach(s => {
+          const pStatus = profSkills[s.id] || profSkills[s.name.toLowerCase()] || (Array.isArray(data.prof_skills) && data.prof_skills.includes(s.name) ? "prof" : "none");
+          let bonus = mod;
+          let dot = "○";
+          let isExpert = pStatus === "expert" || pStatus === 2;
+          let isProf = pStatus === "prof" || pStatus === 1 || isExpert;
+
+          if (isExpert) {
+            bonus += pb * 2;
+            dot = "✪";
+          } else if (isProf) {
+            bonus += pb;
+            dot = "●";
+          }
+
+          const sRow = body.createDiv({ cls: `dnd55-2024-row dnd55-2024-skill-row ${isProf ? "is-prof" : ""}` });
+          sRow.createDiv({ cls: `dnd55-dot ${isProf ? "prof" : ""}`, text: dot });
+          sRow.createSpan({ text: s.name, cls: "dnd55-2024-row-label" });
+          sRow.createDiv({ cls: "dnd55-2024-row-bonus", text: this.fmtMod(bonus) });
+        });
+      } else {
+        body.createDiv({ cls: "dnd55-2024-empty-note", text: "Спасброски от концентрации и стойкости" });
+      }
+    });
+
+    // Training & Proficiencies (Armor, Weapons, Tools, Languages)
+    const trainPanel = col1.createDiv({ cls: "dnd55-panel" });
+    trainPanel.createDiv({ cls: "dnd55-panel-title", text: "Владения и Обучение (Training)" });
+    if (data.proficiencies) trainPanel.createDiv({ cls: "dnd55-sense-item", text: `🛡️ Владение: ${data.proficiencies}` });
+    if (data.languages) trainPanel.createDiv({ cls: "dnd55-sense-item", text: `🗣️ Языки: ${data.languages}` });
+
+    // ========================================================================
+    // COLUMN 2: HIT POINTS, WEAPONS & WEAPON MASTERY 5.5e, ATTUNEMENT
+    // ========================================================================
+    const col2 = grid.createDiv({ cls: "dnd55-col" });
+    tab2.onclick = () => col2.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+
     // Hit Points Card
     const hpCard = col2.createDiv({ cls: "dnd55-panel dnd55-hp-card" });
-    
     const hpHeader = hpCard.createDiv({ cls: "dnd55-hp-header" });
     hpHeader.createDiv({ cls: "dnd55-hp-label", text: "❤️ Очки Здоровья (HP)" });
     
@@ -907,7 +975,6 @@ module.exports = class DnD55eSheetPlugin extends Plugin {
     hpHeader.createDiv({ cls: "dnd55-hp-max", text: `МАКСИМУМ: ${maxHpVal}` });
 
     const hpMain = hpCard.createDiv({ cls: "dnd55-hp-main" });
-    
     const minusBtn = hpMain.createEl("button", { cls: "dnd55-hp-btn minus", text: "−" });
     minusBtn.title = "Получить урон (-1 / с зажатым Shift: -5)";
 
@@ -984,7 +1051,7 @@ module.exports = class DnD55eSheetPlugin extends Plugin {
 
     // 5.5e Attacks & Weapon Mastery Table
     const atkPanel = col2.createDiv({ cls: "dnd55-panel" });
-    atkPanel.createDiv({ cls: "dnd55-panel-title", text: "Атаки и Оружие (Weapon Mastery 5.5e)" });
+    atkPanel.createDiv({ cls: "dnd55-panel-title", text: "Атаки и Оружие (Weapon Mastery 2024)" });
 
     const attacks = data.attacks || [];
     if (attacks.length > 0) {
@@ -1037,6 +1104,28 @@ module.exports = class DnD55eSheetPlugin extends Plugin {
       }
     }
 
+    // Attunement Slots (D&D 2024 Magic Items)
+    const attPanel = col2.createDiv({ cls: "dnd55-panel" });
+    attPanel.createDiv({ cls: "dnd55-panel-title", text: "Настройка на предметы (Attunement 2024)" });
+    const attRow = attPanel.createDiv({ cls: "dnd55-attunement-row" });
+    attRow.createSpan({ text: "Слоты настройки (макс. 3): ", cls: "dnd55-badge-label" });
+    const attPips = attRow.createSpan({ cls: "dnd55-pip-group" });
+    let curAtt = Number(data.attunement) || 0;
+    for (let i = 1; i <= 3; i++) {
+      const isAtt = i <= curAtt;
+      const p = attPips.createSpan({ cls: `dnd55-pip ${isAtt ? "checked-slot" : ""}` });
+      p.title = `Слот настройки #${i}: кликните для переключения`;
+      p.onclick = async () => {
+        curAtt = (isAtt && curAtt === i) ? i - 1 : i;
+        data.attunement = curAtt;
+        await this.saveCharacterData(data, ctx, source);
+        const pips = attPips.querySelectorAll(".dnd55-pip");
+        pips.forEach((pipEl, idx) => {
+          pipEl.toggleClass("checked-slot", idx < curAtt);
+        });
+      };
+    }
+
     // ========================================================================
     // COLUMN 3: FEATURES, SPELLS, EQUIPMENT, ROLEPLAY
     // ========================================================================
@@ -1046,7 +1135,7 @@ module.exports = class DnD55eSheetPlugin extends Plugin {
     // Spells Section
     if (data.spells || data.spell_save_dc) {
       const spellPanel = col3.createDiv({ cls: "dnd55-panel" });
-      spellPanel.createDiv({ cls: "dnd55-panel-title", text: "Заклинания и Магия" });
+      spellPanel.createDiv({ cls: "dnd55-panel-title", text: "Заклинания и Магия (Spellcasting)" });
       
       const spVitals = spellPanel.createDiv({ cls: "dnd55-vitals-row dnd55-vitals-2" });
       const dcBox = spVitals.createDiv({ cls: "dnd55-vital-box" });
@@ -1079,7 +1168,7 @@ module.exports = class DnD55eSheetPlugin extends Plugin {
 
     // Features
     const featPanel = col3.createDiv({ cls: "dnd55-panel" });
-    featPanel.createDiv({ cls: "dnd55-panel-title", text: "Умения и Особенности" });
+    featPanel.createDiv({ cls: "dnd55-panel-title", text: "Умения и Особенности (Features)" });
 
     const features = data.features || [];
     features.forEach(f => {
