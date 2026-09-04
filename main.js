@@ -733,7 +733,7 @@ module.exports = class DnD55eSheetPlugin extends Plugin {
 
     // Top Toolbar in Normal Mode
     const topBar = sheet.createDiv({ cls: "dnd55-topbar" });
-    topBar.createDiv({ cls: "dnd55-badge-edition", text: "D&D 5.5e (2024 PHB)" });
+    topBar.createDiv({ cls: "dnd55-badge-edition", text: "⚔️ D&D 5.5e (2024 PHB)" });
 
     const toolbar = topBar.createDiv({ cls: "dnd55-toolbar" });
 
@@ -777,14 +777,20 @@ module.exports = class DnD55eSheetPlugin extends Plugin {
     const profSkills = data.skills || {};
 
     // ========================================================================
-    // HEADER BANNER (Authentic D&D 2024 Header Layout with Portrait Frame)
+    // ========================================================================
+    // HEADER BANNER (Authentic D&D 2024 Header Layout with Portrait & Identity)
     // ========================================================================
     const header = container.createDiv({ cls: "dnd55-header" });
     
     // 1. Character Portrait Frame (Official D&D Appearance Box)
     const portraitFrame = header.createDiv({ cls: "dnd55-portrait-frame" });
-    const portraitUrl = this.resolveImageUrl(data.portrait || data.image);
+    portraitFrame.title = "Кликните для редактирования персонажа или портрета";
+    portraitFrame.createDiv({ cls: "dnd55-portrait-corner tl" });
+    portraitFrame.createDiv({ cls: "dnd55-portrait-corner tr" });
+    portraitFrame.createDiv({ cls: "dnd55-portrait-corner bl" });
+    portraitFrame.createDiv({ cls: "dnd55-portrait-corner br" });
 
+    const portraitUrl = this.resolveImageUrl(data.portrait || data.image);
     if (portraitUrl) {
       const img = portraitFrame.createEl("img", { cls: "dnd55-portrait-img" });
       img.src = portraitUrl;
@@ -792,14 +798,12 @@ module.exports = class DnD55eSheetPlugin extends Plugin {
     } else {
       const placeholder = portraitFrame.createDiv({ cls: "dnd55-portrait-placeholder" });
       placeholder.innerHTML = `
-        <svg class="dnd55-avatar-svg" viewBox="0 0 100 120" preserveAspectRatio="xMidYMid meet">
-          <circle cx="50" cy="38" r="22" class="dnd55-avatar-head" />
-          <path d="M 14,105 C 14,75 32,68 50,68 C 68,68 86,75 86,105 Z" class="dnd55-avatar-body" />
+        <svg viewBox="0 0 24 24">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 4c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm0 14c-2.03 0-4.43-.82-6.14-2.88C7.55 15.8 9.68 15 12 15s4.45.8 6.14 2.12C16.43 19.18 14.03 20 12 20z"/>
         </svg>
-        <span class="dnd55-portrait-text">+ Портрет</span>
+        <span>+ Портрет</span>
       `;
     }
-    portraitFrame.title = "Кликните для редактирования персонажа или портрета";
     portraitFrame.onclick = () => {
       new CharacterEditorModal(this.app, this, data, ctx, source, (updated) => {
         data = updated;
@@ -816,155 +820,67 @@ module.exports = class DnD55eSheetPlugin extends Plugin {
       }).open();
     };
 
-    const headerRight = header.createDiv({ cls: "dnd55-header-right" });
+    // 2. Character Name Banner & Quick Badges
+    const headerCenter = header.createDiv({ cls: "dnd55-header-center" });
+    
+    const nameBanner = headerCenter.createDiv({ cls: "dnd55-char-name-banner" });
+    nameBanner.createDiv({ cls: "dnd55-char-name", text: data.name || "Безымянный герой" });
+    nameBanner.createDiv({ cls: "dnd55-char-sub", text: `${data.species || "Народ"} • ${data.class || "Класс"}` });
 
-    const nameBox = headerRight.createDiv({ cls: "dnd55-name-box" });
-    nameBox.createDiv({ cls: "dnd55-name-title", text: data.name || "Безымянный герой" });
-    nameBox.createDiv({ cls: "dnd55-name-sub", text: `${data.species || "Гоблин"} • ${data.class || "Воин 2"}` });
-
-    const metaGrid = headerRight.createDiv({ cls: "dnd55-meta-grid" });
-    const metaFields = [
-      { label: "Класс и уровень", val: data.class || "—" },
-      { label: "Предыстория", val: data.background || "—" },
-      { label: "Вид / Народ", val: data.species || "Гоблин" },
-      { label: "Мировоззрение", val: data.alignment || "Нейтральный" },
-      { label: "Опыт (XP)", val: data.xp || "300 XP" },
-      { label: "Игрок", val: data.player || "—" }
-    ];
-    metaFields.forEach(f => {
-      const item = metaGrid.createDiv({ cls: "dnd55-meta-item" });
-      item.createDiv({ cls: "dnd55-meta-label", text: f.label });
-      item.createDiv({ cls: "dnd55-meta-val", text: String(f.val) });
-    });
-
-    // ========================================================================
-    // READINESS / COMBAT VITALS BAR (Authentic D&D Shields & Plaques)
-    // ========================================================================
-    const readinessBar = container.createDiv({ cls: "dnd55-readiness-bar" });
-
-    // 1. Heroic Inspiration (Ribbon Banner)
-    const inspBox = readinessBar.createDiv({ cls: `dnd55-vital-box dnd55-insp-box dnd55-ribbon-box ${data.inspiration ? "active" : ""}` });
-    inspBox.innerHTML = `
-      <svg class="dnd55-ribbon-svg" viewBox="0 0 120 70" preserveAspectRatio="none">
-        <path class="dnd55-ribbon-outer" d="M 12,6 L 108,6 L 118,35 L 108,64 L 12,64 L 2,35 Z" />
-        <path class="dnd55-ribbon-inner" d="M 17,11 L 103,11 L 111,35 L 103,59 L 17,59 L 9,35 Z" />
-      </svg>
-      <div class="dnd55-ribbon-body">
-        <div class="dnd55-vital-label">Вдохновение</div>
-        <div class="dnd55-vital-val">${data.inspiration ? "★ ДА" : "☆ НЕТ"}</div>
-      </div>
-    `;
-    inspBox.title = "Кликните для переключения героического вдохновения (2024 PHB)";
-    inspBox.onclick = async () => {
+    const quickBadges = headerCenter.createDiv({ cls: "dnd55-quick-badges" });
+    
+    const inspBadge = quickBadges.createDiv({ cls: `dnd55-badge-pill ${data.inspiration ? "active" : ""}` });
+    inspBadge.title = "Кликните для переключения героического вдохновения (2024 PHB)";
+    inspBadge.createSpan({ text: data.inspiration ? "★ Вдохновение: ДА" : "☆ Вдохновение: НЕТ", cls: "dnd55-insp-txt" });
+    inspBadge.onclick = async () => {
       data.inspiration = !data.inspiration;
-      const valEl = inspBox.querySelector(".dnd55-vital-val");
-      if (valEl) valEl.textContent = data.inspiration ? "★ ДА" : "☆ НЕТ";
-      inspBox.toggleClass("active", data.inspiration);
+      inspBadge.toggleClass("active", data.inspiration);
+      const txt = inspBadge.querySelector(".dnd55-insp-txt");
+      if (txt) txt.textContent = data.inspiration ? "★ Вдохновение: ДА" : "☆ Вдохновение: НЕТ";
       await this.saveCharacterData(data, ctx, source);
     };
 
-    // 2. Proficiency Bonus (Medallion)
-    const pbBox = readinessBar.createDiv({ cls: "dnd55-vital-box dnd55-pb-box dnd55-circle-box" });
-    pbBox.innerHTML = `
-      <svg class="dnd55-circle-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
-        <circle class="dnd55-circle-outer" cx="50" cy="50" r="46" />
-        <circle class="dnd55-circle-inner" cx="50" cy="50" r="40" />
-      </svg>
-      <div class="dnd55-circle-body">
-        <div class="dnd55-vital-label">Мастерство</div>
-        <div class="dnd55-vital-val">+${pb}</div>
-      </div>
-    `;
+    const pbBadge = quickBadges.createDiv({ cls: "dnd55-badge-pill" });
+    pbBadge.title = "Бонус мастерства";
+    pbBadge.setText(`🎯 Мастерство: +${pb}`);
 
-    // 3. Armor Class (Official Heraldic Shield Shape)
-    const acBox = readinessBar.createDiv({ cls: "dnd55-vital-box dnd55-ac-box dnd55-ac-shield" });
-    acBox.innerHTML = `
-      <svg class="dnd55-shield-svg" viewBox="0 0 100 120" preserveAspectRatio="none">
-        <path class="dnd55-shield-outer" d="M 6,6 L 94,6 Q 94,62 50,114 Q 6,62 6,6 Z" />
-        <path class="dnd55-shield-inner" d="M 12,12 L 88,12 Q 88,60 50,106 Q 12,60 12,12 Z" />
-      </svg>
-      <div class="dnd55-shield-body">
-        <div class="dnd55-shield-title">КЛАСС ДОСПЕХА</div>
-        <div class="dnd55-shield-val">${data.ac !== undefined ? data.ac : 10 + dexMod}</div>
-        <div class="dnd55-shield-sub">КД (AC)</div>
-      </div>
-    `;
-    acBox.title = "Класс доспеха (Armor Class)";
+    const sizeBadge = quickBadges.createDiv({ cls: "dnd55-badge-pill" });
+    sizeBadge.title = "Размер персонажа";
+    sizeBadge.setText(`📏 Размер: ${data.size || "Средний"}`);
 
-    // 4. Initiative (Beveled Plaque)
-    const initBonus = data.initiative !== undefined ? data.initiative : dexMod;
-    const initBox = readinessBar.createDiv({ cls: "dnd55-vital-box dnd55-plaque-box dnd55-init-box" });
-    initBox.innerHTML = `
-      <svg class="dnd55-plaque-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
-        <polygon class="dnd55-plaque-outer" points="14,4 86,4 96,14 96,86 86,96 14,96 4,86 4,14" />
-        <polygon class="dnd55-plaque-inner" points="18,10 82,10 90,18 90,82 82,90 18,90 10,82 10,18" />
-      </svg>
-      <div class="dnd55-plaque-body">
-        <div class="dnd55-vital-label">Инициатива</div>
-        <div class="dnd55-vital-val">${this.fmtMod(initBonus)}</div>
-      </div>
-    `;
-
-    // 5. Speed (Beveled Plaque)
-    const speedBox = readinessBar.createDiv({ cls: "dnd55-vital-box dnd55-plaque-box dnd55-speed-box" });
-    speedBox.innerHTML = `
-      <svg class="dnd55-plaque-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
-        <polygon class="dnd55-plaque-outer" points="14,4 86,4 96,14 96,86 86,96 14,96 4,86 4,14" />
-        <polygon class="dnd55-plaque-inner" points="18,10 82,10 90,18 90,82 82,90 18,90 10,82 10,18" />
-      </svg>
-      <div class="dnd55-plaque-body">
-        <div class="dnd55-vital-label">Скорость</div>
-        <div class="dnd55-vital-val">${data.speed || 30}<span class="dnd55-unit"> фт</span></div>
-      </div>
-    `;
-
-    // 6. Size (Beveled Plaque)
-    const sizeStr = String(data.size || "Малый");
-    const sizeBox = readinessBar.createDiv({ cls: "dnd55-vital-box dnd55-plaque-box dnd55-size-box" });
-    sizeBox.innerHTML = `
-      <svg class="dnd55-plaque-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
-        <polygon class="dnd55-plaque-outer" points="14,4 86,4 96,14 96,86 86,96 14,96 4,86 4,14" />
-        <polygon class="dnd55-plaque-inner" points="18,10 82,10 90,18 90,82 82,90 18,90 10,82 10,18" />
-      </svg>
-      <div class="dnd55-plaque-body">
-        <div class="dnd55-vital-label">Размер</div>
-        <div class="dnd55-vital-val ${sizeStr.length > 5 ? "dnd55-vital-text" : ""}">${sizeStr}</div>
-      </div>
-    `;
-
-    // 7. Passive Perception (Plaque)
-    const percProf = profSkills["внимательность"] || (Array.isArray(data.prof_skills) && data.prof_skills.includes("Внимательность") ? "prof" : "none");
-    const percBonus = (percProf === "expert" || percProf === 2 ? pb * 2 : (percProf === "prof" || percProf === 1 ? pb : 0)) + wisMod;
-    const percBox = readinessBar.createDiv({ cls: "dnd55-vital-box dnd55-perc-box dnd55-plaque-box" });
-    percBox.innerHTML = `
-      <svg class="dnd55-plaque-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
-        <polygon class="dnd55-plaque-outer" points="14,4 86,4 96,14 96,86 86,96 14,96 4,86 4,14" />
-        <polygon class="dnd55-plaque-inner" points="18,10 82,10 90,18 90,82 82,90 18,90 10,82 10,18" />
-      </svg>
-      <div class="dnd55-plaque-body">
-        <div class="dnd55-vital-label">Пасс. воспр.</div>
-        <div class="dnd55-vital-val">${10 + percBonus}</div>
-      </div>
-    `;
+    // 3. Identity Matrix
+    const idBox = header.createDiv({ cls: "dnd55-identity-box" });
+    const metaFields = [
+      { label: "Класс и уровень", val: data.class || "—" },
+      { label: "Предыстория", val: data.background || "—" },
+      { label: "Вид / Народ", val: data.species || "—" },
+      { label: "Мировоззрение", val: data.alignment || "—" },
+      { label: "Опыт (XP)", val: data.xp || "—" },
+      { label: "Игрок", val: data.player || "—" }
+    ];
+    metaFields.forEach(f => {
+      const cell = idBox.createDiv({ cls: "dnd55-identity-cell" });
+      cell.createDiv({ cls: "dnd55-identity-lbl", text: f.label });
+      cell.createDiv({ cls: "dnd55-identity-val", text: String(f.val) });
+    });
 
     // NAVIGATION PILLS (For quick jump on narrow displays)
     const navTabs = container.createDiv({ cls: "dnd55-nav-tabs" });
     const tab1 = navTabs.createEl("button", { cls: "dnd55-nav-tab", text: "📊 1. Характеристики и навыки 2024" });
     const tab2 = navTabs.createEl("button", { cls: "dnd55-nav-tab", text: "⚔️ 2. Бой и здоровье" });
-    const tab3 = navTabs.createEl("button", { cls: "dnd55-nav-tab", text: "🔮 3. Магия и умения" });
+    const tab3 = navTabs.createEl("button", { cls: "dnd55-nav-tab", text: "🔮 3. Умения и снаряжение" });
 
-    // GRID LAYOUT
-    const grid = container.createDiv({ cls: "dnd55-grid" });
+    // CANONICAL 3-COLUMN LAYOUT
+    const grid = container.createDiv({ cls: "dnd55-columns" });
 
     // ========================================================================
     // COLUMN 1: OFFICIAL D&D 2024 ABILITY & SKILL BLOCKS
-    // Skills and Saving Throws are grouped directly under their base ability!
     // ========================================================================
     const col1 = grid.createDiv({ cls: "dnd55-col" });
     tab1.onclick = () => col1.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
 
-    const abPanel = col1.createDiv({ cls: "dnd55-panel" });
-    abPanel.createDiv({ cls: "dnd55-panel-title", text: "Характеристики и Навыки (D&D 2024 PHB)" });
+    const abPanel = col1.createDiv({ cls: "dnd55-box" });
+    abPanel.createDiv({ cls: "dnd55-box-header", text: "Характеристики и Навыки (2024)" });
 
     const ability2024Defs = [
       {
@@ -1028,28 +944,26 @@ module.exports = class DnD55eSheetPlugin extends Plugin {
       }
     ];
 
-    const abGrid = abPanel.createDiv({ cls: "dnd55-2024-grid" });
-
     ability2024Defs.forEach(ab => {
-      const card = abGrid.createDiv({ cls: "dnd55-2024-card" });
+      const card = abPanel.createDiv({ cls: "dnd55-ability-card" });
       
       // Header: Name, Mod, Score
-      const head = card.createDiv({ cls: "dnd55-2024-card-head" });
-      head.createDiv({ cls: "dnd55-2024-card-name", text: ab.name });
+      const head = card.createDiv({ cls: "dnd55-ab-head" });
+      head.createSpan({ cls: "dnd55-ab-title", text: ab.name });
       const mod = mods[ab.key];
-      head.createDiv({ cls: "dnd55-2024-card-mod", text: this.fmtMod(mod) });
-      head.createDiv({ cls: "dnd55-2024-card-score", text: String(ab.score) });
+      head.createSpan({ cls: "dnd55-ab-mod", text: this.fmtMod(mod) });
+      head.createSpan({ cls: "dnd55-ab-score-oval", text: String(ab.score) });
 
       // Body with Saves and Skills
-      const body = card.createDiv({ cls: "dnd55-2024-card-body" });
+      const body = card.createDiv({ cls: "dnd55-ab-body" });
 
       // Saving Throw row
       const isSaveProf = savesList.includes(ab.key);
       const saveBonus = isSaveProf ? mod + pb : mod;
-      const saveRow = body.createDiv({ cls: `dnd55-2024-row dnd55-2024-save-row ${isSaveProf ? "is-prof" : ""}` });
-      saveRow.createDiv({ cls: `dnd55-dot ${isSaveProf ? "prof" : ""}`, text: isSaveProf ? "●" : "○" });
-      saveRow.createSpan({ text: "Спасбросок", cls: "dnd55-2024-row-label save" });
-      saveRow.createDiv({ cls: "dnd55-2024-row-bonus", text: this.fmtMod(saveBonus) });
+      const saveRow = body.createDiv({ cls: `dnd55-skill-row is-save ${isSaveProf ? "is-prof" : ""}` });
+      saveRow.createSpan({ cls: `dnd55-skill-dot ${isSaveProf ? "prof" : ""}`, text: isSaveProf ? "●" : "○" });
+      saveRow.createSpan({ text: "Спасбросок", cls: "dnd55-skill-name" });
+      saveRow.createSpan({ cls: "dnd55-skill-bonus", text: this.fmtMod(saveBonus) });
 
       // Skills rows
       if (ab.skills.length > 0) {
@@ -1068,47 +982,108 @@ module.exports = class DnD55eSheetPlugin extends Plugin {
             dot = "●";
           }
 
-          const sRow = body.createDiv({ cls: `dnd55-2024-row dnd55-2024-skill-row ${isProf ? "is-prof" : ""}` });
-          sRow.createDiv({ cls: `dnd55-dot ${isProf ? "prof" : ""}`, text: dot });
-          sRow.createSpan({ text: s.name, cls: "dnd55-2024-row-label" });
-          sRow.createDiv({ cls: "dnd55-2024-row-bonus", text: this.fmtMod(bonus) });
+          const sRow = body.createDiv({ cls: `dnd55-skill-row ${isProf ? "is-prof" : ""}` });
+          sRow.createSpan({ cls: `dnd55-skill-dot ${isProf ? "prof" : ""}`, text: dot });
+          sRow.createSpan({ text: s.name, cls: "dnd55-skill-name" });
+          sRow.createSpan({ cls: "dnd55-skill-bonus", text: this.fmtMod(bonus) });
         });
-      } else {
-        body.createDiv({ cls: "dnd55-2024-empty-note", text: "Спасброски от концентрации и стойкости" });
       }
     });
 
+    // Passive Perception Ribbon Banner
+    const percProf = profSkills["внимательность"] || (Array.isArray(data.prof_skills) && data.prof_skills.includes("Внимательность") ? "prof" : "none");
+    const percBonus = (percProf === "expert" || percProf === 2 ? pb * 2 : (percProf === "prof" || percProf === 1 ? pb : 0)) + wisMod;
+    const passiveRibbon = abPanel.createDiv({ cls: "dnd55-passive-ribbon" });
+    passiveRibbon.createSpan({ text: "👁️ Пассивное восприятие" });
+    passiveRibbon.createSpan({ cls: "dnd55-passive-val", text: String(10 + percBonus) });
+
     // Training & Proficiencies (Armor, Weapons, Tools, Languages)
-    const trainPanel = col1.createDiv({ cls: "dnd55-panel" });
-    trainPanel.createDiv({ cls: "dnd55-panel-title", text: "Владения и Обучение (Training)" });
-    if (data.proficiencies) trainPanel.createDiv({ cls: "dnd55-sense-item", text: `🛡️ Владение: ${data.proficiencies}` });
-    if (data.languages) trainPanel.createDiv({ cls: "dnd55-sense-item", text: `🗣️ Языки: ${data.languages}` });
+    const trainBox = col1.createDiv({ cls: "dnd55-box" });
+    trainBox.createDiv({ cls: "dnd55-box-header", text: "Владения и языки" });
+    if (data.proficiencies) {
+      const pDiv = trainBox.createDiv({ cls: "dnd55-feat-desc", style: "margin-bottom: 6px;" });
+      pDiv.createEl("strong", { text: "🛡️ Владение: ", style: "color: var(--dnd55-accent);" });
+      pDiv.createSpan({ text: String(data.proficiencies) });
+    }
+    if (data.languages) {
+      const lDiv = trainBox.createDiv({ cls: "dnd55-feat-desc" });
+      lDiv.createEl("strong", { text: "🗣️ Языки: ", style: "color: var(--dnd55-accent);" });
+      lDiv.createSpan({ text: String(data.languages) });
+    }
 
     // ========================================================================
-    // COLUMN 2: HIT POINTS, WEAPONS & WEAPON MASTERY 5.5e, ATTUNEMENT
+    // COLUMN 2: COMBAT VITALS (TRIO SHIELDS & HP & ATTACKS)
     // ========================================================================
     const col2 = grid.createDiv({ cls: "dnd55-col" });
     tab2.onclick = () => col2.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
 
+    // Vitals Trio: [Armor Class Heater Shield] [Initiative Plaque] [Speed Plaque]
+    const vitalsTrio = col2.createDiv({ cls: "dnd55-vitals-trio" });
+
+    // 1. AC Shield
+    const acVal = data.ac !== undefined ? data.ac : (10 + dexMod);
+    const acBox = vitalsTrio.createDiv({ cls: "dnd55-shield-box" });
+    acBox.title = "Класс доспеха (Armor Class)";
+    acBox.innerHTML = `
+      <svg class="dnd55-shield-svg-bg" viewBox="0 0 100 120" preserveAspectRatio="none">
+        <path class="dnd55-shield-outer-path" d="M 6,6 L 94,6 Q 94,62 50,114 Q 6,62 6,6 Z" />
+        <path class="dnd55-shield-inner-path" d="M 12,12 L 88,12 Q 88,60 50,106 Q 12,60 12,12 Z" />
+      </svg>
+      <div class="dnd55-shield-content">
+        <span class="dnd55-shield-lbl">ДОСПЕХ</span>
+        <span class="dnd55-shield-val">${acVal}</span>
+        <span class="dnd55-shield-sub">КД (AC)</span>
+      </div>
+    `;
+
+    // 2. Initiative Plaque
+    const initBonus = data.initiative !== undefined ? data.initiative : dexMod;
+    const initBox = vitalsTrio.createDiv({ cls: "dnd55-plaque-item" });
+    initBox.title = "Инициатива";
+    initBox.innerHTML = `
+      <svg class="dnd55-plaque-svg-bg" viewBox="0 0 100 100" preserveAspectRatio="none">
+        <polygon class="dnd55-plaque-outer-poly" points="16,4 84,4 96,16 96,84 84,96 16,96 4,84 4,16" />
+        <polygon class="dnd55-plaque-inner-poly" points="20,10 80,10 90,20 90,80 80,90 20,90 10,80 10,20" />
+      </svg>
+      <div class="dnd55-plaque-content">
+        <span class="dnd55-plaque-lbl">ИНИЦИАТИВА</span>
+        <span class="dnd55-plaque-val">${this.fmtMod(initBonus)}</span>
+      </div>
+    `;
+
+    // 3. Speed Plaque
+    const speedBox = vitalsTrio.createDiv({ cls: "dnd55-plaque-item" });
+    speedBox.title = "Скорость";
+    speedBox.innerHTML = `
+      <svg class="dnd55-plaque-svg-bg" viewBox="0 0 100 100" preserveAspectRatio="none">
+        <polygon class="dnd55-plaque-outer-poly" points="16,4 84,4 96,16 96,84 84,96 16,96 4,84 4,16" />
+        <polygon class="dnd55-plaque-inner-poly" points="20,10 80,10 90,20 90,80 80,90 20,90 10,80 10,20" />
+      </svg>
+      <div class="dnd55-plaque-content">
+        <span class="dnd55-plaque-lbl">СКОРОСТЬ</span>
+        <span class="dnd55-plaque-val">${data.speed || 30}<small> фт</small></span>
+      </div>
+    `;
+
     // Hit Points Card
-    const hpCard = col2.createDiv({ cls: "dnd55-panel dnd55-hp-card" });
-    const hpHeader = hpCard.createDiv({ cls: "dnd55-hp-header" });
-    hpHeader.createDiv({ cls: "dnd55-hp-label", text: "❤️ Очки Здоровья (HP)" });
+    const hpCard = col2.createDiv({ cls: "dnd55-box dnd55-hp-box" });
+    const hpHeader = hpCard.createDiv({ cls: "dnd55-hp-top" });
+    hpHeader.createDiv({ cls: "dnd55-hp-title", text: "❤️ Очки здоровья (Hit Points)" });
     
     const curHpVal = Number(data.hp) !== undefined && !isNaN(Number(data.hp)) ? Number(data.hp) : 20;
     const maxHpVal = Number(data.max_hp) || curHpVal;
     hpHeader.createDiv({ cls: "dnd55-hp-max", text: `МАКСИМУМ: ${maxHpVal}` });
 
-    const hpMain = hpCard.createDiv({ cls: "dnd55-hp-main" });
+    const hpMain = hpCard.createDiv({ cls: "dnd55-hp-center" });
     const minusBtn = hpMain.createEl("button", { cls: "dnd55-hp-btn minus", text: "−" });
     minusBtn.title = "Получить урон (-1 / с зажатым Shift: -5)";
 
-    const hpCurEl = hpMain.createDiv({ cls: "dnd55-hp-cur", text: String(curHpVal) });
-    hpCurEl.title = "Кликните для быстрого ввода урона (-X), лечения (+X) или значения HP";
+    const hpCurEl = hpMain.createDiv({ cls: "dnd55-hp-cur-val", text: String(curHpVal) });
+    hpCurEl.title = "Кликните для ввода урона/лечения";
     this.updateHpColor(hpCurEl, curHpVal, maxHpVal);
 
     const plusBtn = hpMain.createEl("button", { cls: "dnd55-hp-btn plus", text: "+" });
-    plusBtn.title = "Восстановить здоровье (+1 / с зажатым Shift: +5)";
+    plusBtn.title = "Восстановить хиты (+1 / с зажатым Shift: +5)";
 
     minusBtn.onclick = async (e) => {
       e.stopPropagation();
@@ -1143,220 +1118,219 @@ module.exports = class DnD55eSheetPlugin extends Plugin {
       tempBox.createSpan({ text: `🛡️ Временные хиты: +${data.temp_hp}` });
     }
 
-    // Hit Dice & Interactive Death Saves
-    const hdDeath = hpCard.createDiv({ cls: "dnd55-hitdice-death" });
-    
-    const hdBox = hdDeath.createDiv({ cls: "dnd55-hd-col" });
-    hdBox.createDiv({ cls: "dnd55-badge-label", text: `Кости хитов (${data.hit_dice || "2d10"})` });
+    // Hit Dice & Death Saves Side-by-Side
+    const hdDeath = hpCard.createDiv({ cls: "dnd55-hd-death-grid" });
+
+    // Hit Dice
+    const hdBox = hdDeath.createDiv();
+    hdBox.createDiv({ cls: "dnd55-sub-hdr", text: `Кости хитов (${data.hit_dice || "2d10"})` });
     const hdCount = data.hit_dice_count || 2;
-    const hdPips = hdBox.createDiv({ cls: "dnd55-pip-group" });
+    const hdPips = hdBox.createDiv({ cls: "dnd55-pips-row" });
     for (let i = 0; i < hdCount; i++) {
-      const pip = hdPips.createSpan({ cls: "dnd55-pip checked-slot" });
+      const pip = hdPips.createSpan({ cls: "dnd55-pip-slot active" });
       pip.title = "Клик: потратить/восстановить кость хитов";
-      pip.onclick = () => pip.toggleClass("checked-slot");
+      pip.onclick = () => pip.toggleClass("active");
     }
 
-    const dsBox = hdDeath.createDiv({ cls: "dnd55-death-col" });
-    dsBox.createDiv({ cls: "dnd55-badge-label", text: "Спасброски от смерти" });
-    
-    const dsRows = dsBox.createDiv({ cls: "dnd55-death-rows" });
-    
-    // Successes with connected line
-    const succTrack = dsRows.createDiv({ cls: "dnd55-death-track" });
-    succTrack.createSpan({ text: "УСПЕХИ", cls: "dnd55-death-label" });
-    const succLineWrap = succTrack.createDiv({ cls: "dnd55-death-pips-line" });
-    succLineWrap.createSpan({ cls: "dnd55-death-line-connector" });
+    // Death Saves Connected Track
+    const dsBox = hdDeath.createDiv();
+    dsBox.createDiv({ cls: "dnd55-sub-hdr", text: "Спасброски от смерти" });
+
+    const succTrack = dsBox.createDiv({ cls: "dnd55-death-track-row" });
+    succTrack.createSpan({ cls: "dnd55-death-track-lbl", text: "УСПЕХИ" });
+    const succLine = succTrack.createDiv({ cls: "dnd55-death-circles-line" });
+    succLine.createSpan({ cls: "dnd55-death-connector" });
     for (let i = 0; i < 3; i++) {
-      const p = succLineWrap.createSpan({ cls: "dnd55-pip dnd55-death-pip" });
-      p.onclick = () => p.toggleClass("checked-success");
+      const circle = succLine.createSpan({ cls: "dnd55-death-circle" });
+      circle.title = `Успех ${i+1}`;
+      circle.onclick = () => circle.toggleClass("checked-succ");
     }
 
-    // Failures with connected line
-    const failTrack = dsRows.createDiv({ cls: "dnd55-death-track" });
-    failTrack.createSpan({ text: "ПРОВАЛЫ", cls: "dnd55-death-label" });
-    const failLineWrap = failTrack.createDiv({ cls: "dnd55-death-pips-line" });
-    failLineWrap.createSpan({ cls: "dnd55-death-line-connector" });
+    const failTrack = dsBox.createDiv({ cls: "dnd55-death-track-row" });
+    failTrack.createSpan({ cls: "dnd55-death-track-lbl", text: "ПРОВАЛЫ" });
+    const failLine = failTrack.createDiv({ cls: "dnd55-death-circles-line" });
+    failLine.createSpan({ cls: "dnd55-death-connector" });
     for (let i = 0; i < 3; i++) {
-      const p = failLineWrap.createSpan({ cls: "dnd55-pip dnd55-death-pip" });
-      p.onclick = () => p.toggleClass("checked-fail");
+      const circle = failLine.createSpan({ cls: "dnd55-death-circle" });
+      circle.title = `Провал ${i+1}`;
+      circle.onclick = () => circle.toggleClass("checked-fail");
     }
 
-    // 5.5e Attacks & Weapon Mastery Table
-    const atkPanel = col2.createDiv({ cls: "dnd55-panel" });
-    atkPanel.createDiv({ cls: "dnd55-panel-title", text: "Атаки и Оружие (Weapon Mastery 2024)" });
+    // Attacks & Weapon Mastery Table
+    const atkPanel = col2.createDiv({ cls: "dnd55-box" });
+    atkPanel.createDiv({ cls: "dnd55-box-header", text: "Атаки и оружие (Weapon Mastery 2024)" });
 
     const attacks = data.attacks || [];
     if (attacks.length > 0) {
       const tableWrap = atkPanel.createDiv({ cls: "dnd55-table-wrap" });
-      const table = tableWrap.createEl("table", { cls: "dnd55-attacks-table" });
+      const table = tableWrap.createEl("table", { cls: "dnd55-atk-table" });
       const thead = table.createEl("thead");
       const trh = thead.createEl("tr");
       trh.createEl("th", { text: "Оружие" });
-      trh.createEl("th", { text: "Атака", cls: "dnd55-th-center" });
-      trh.createEl("th", { text: "Урон", cls: "dnd55-th-center" });
-      trh.createEl("th", { text: "Мастерство 5.5e", cls: "dnd55-th-center" });
+      trh.createEl("th", { text: "Атака", style: "text-align: center;" });
+      trh.createEl("th", { text: "Урон", style: "text-align: center;" });
+      trh.createEl("th", { text: "Мастерство 5.5e", style: "text-align: center;" });
 
       const tbody = table.createEl("tbody");
       attacks.forEach(atk => {
         const tr = tbody.createEl("tr");
-        const tdName = tr.createEl("td", { cls: "dnd55-td-name" });
-        tdName.createSpan({ text: atk.name, cls: "dnd55-attack-name" });
-        if (atk.range) tdName.createEl("span", { text: ` (${atk.range})`, cls: "dnd55-attack-range" });
+        const tdName = tr.createEl("td");
+        tdName.createEl("strong", { text: atk.name, style: "color: var(--dnd55-text-main);" });
+        if (atk.range) tdName.createSpan({ text: ` (${atk.range})`, style: "font-size: 0.85em; color: var(--dnd55-text-muted);" });
 
-        const tdAtk = tr.createEl("td", { cls: "dnd55-td-center" });
+        const tdAtk = tr.createEl("td", { style: "text-align: center;" });
         const bStr = this.fmtBonus(atk.bonus);
-        tdAtk.createSpan({ cls: "dnd55-stat-badge dnd55-atk-badge", text: bStr });
+        tdAtk.createSpan({ cls: "dnd55-badge-stat dnd55-badge-atk", text: bStr });
 
-        const tdDmg = tr.createEl("td", { cls: "dnd55-td-center" });
+        const tdDmg = tr.createEl("td", { style: "text-align: center;" });
         const dmgStr = String(atk.damage || "1d6+4");
-        tdDmg.createSpan({ cls: "dnd55-stat-badge dnd55-dmg-badge", text: dmgStr });
+        tdDmg.createSpan({ cls: "dnd55-badge-stat", text: dmgStr });
 
-        const tdMast = tr.createEl("td", { cls: "dnd55-td-center" });
+        const tdMast = tr.createEl("td", { style: "text-align: center;" });
         if (atk.mastery) {
           tdMast.createSpan({ cls: "dnd55-mastery-tag", text: String(atk.mastery) });
         } else {
-          tdMast.createSpan({ text: "—", cls: "dnd55-skill-attr" });
+          tdMast.createSpan({ text: "—", style: "color: var(--dnd55-text-muted);" });
         }
       });
     }
 
     // Bonus Actions & Reactions
     if (data.bonus_actions || data.reactions) {
-      const actPanel = col2.createDiv({ cls: "dnd55-panel" });
-      actPanel.createDiv({ cls: "dnd55-panel-title", text: "Бонусные действия и Реакции" });
+      const actPanel = col2.createDiv({ cls: "dnd55-box" });
+      actPanel.createDiv({ cls: "dnd55-box-header", text: "Бонусные действия и Реакции" });
       if (data.bonus_actions) {
         const ba = actPanel.createDiv({ cls: "dnd55-action-item" });
-        ba.createSpan({ cls: "dnd55-action-label", text: "⚡ Бонусное действие: " });
+        ba.createEl("strong", { cls: "dnd55-action-label", text: "⚡ Бонусное действие: " });
         ba.createSpan({ text: String(data.bonus_actions) });
       }
       if (data.reactions) {
         const rx = actPanel.createDiv({ cls: "dnd55-action-item" });
-        rx.createSpan({ cls: "dnd55-action-label", text: "🛡 Реакция: " });
+        rx.createEl("strong", { cls: "dnd55-action-label", text: "🛡 Реакция: " });
         rx.createSpan({ text: String(data.reactions) });
       }
     }
 
-    // Attunement Slots (D&D 2024 Magic Items)
-    const attPanel = col2.createDiv({ cls: "dnd55-panel" });
-    attPanel.createDiv({ cls: "dnd55-panel-title", text: "Настройка на предметы (Attunement 2024)" });
+    // Attunement Slots
+    const attPanel = col2.createDiv({ cls: "dnd55-box" });
+    attPanel.createDiv({ cls: "dnd55-box-header", text: "Настройка на предметы (Attunement 2024)" });
     const attRow = attPanel.createDiv({ cls: "dnd55-attunement-row" });
-    attRow.createSpan({ text: "Слоты настройки (макс. 3): ", cls: "dnd55-badge-label" });
-    const attPips = attRow.createSpan({ cls: "dnd55-pip-group" });
+    attRow.createSpan({ text: "Слоты настройки (макс. 3): ", style: "font-size: 0.8em; font-weight: 700; color: var(--dnd55-text-muted);" });
+    const attPips = attRow.createSpan({ cls: "dnd55-pips-row", style: "display: inline-flex; margin-left: 8px;" });
     let curAtt = Number(data.attunement) || 0;
     for (let i = 1; i <= 3; i++) {
       const isAtt = i <= curAtt;
-      const p = attPips.createSpan({ cls: `dnd55-pip ${isAtt ? "checked-slot" : ""}` });
+      const p = attPips.createSpan({ cls: `dnd55-pip-slot ${isAtt ? "active" : ""}` });
       p.title = `Слот настройки #${i}: кликните для переключения`;
       p.onclick = async () => {
         curAtt = (isAtt && curAtt === i) ? i - 1 : i;
         data.attunement = curAtt;
         await this.saveCharacterData(data, ctx, source);
-        const pips = attPips.querySelectorAll(".dnd55-pip");
+        const pips = attPips.querySelectorAll(".dnd55-pip-slot");
         pips.forEach((pipEl, idx) => {
-          pipEl.toggleClass("checked-slot", idx < curAtt);
+          pipEl.toggleClass("active", idx < curAtt);
         });
       };
     }
 
     // ========================================================================
-    // COLUMN 3: FEATURES, SPELLS, EQUIPMENT, ROLEPLAY
+    // COLUMN 3: FEATURES, SPELLS, COINS & EQUIPMENT, ROLEPLAY
     // ========================================================================
     const col3 = grid.createDiv({ cls: "dnd55-col" });
     tab3.onclick = () => col3.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
 
-    // Spells Section
+    // Spells Section (if spellcaster)
     if (data.spells || data.spell_save_dc) {
-      const spellPanel = col3.createDiv({ cls: "dnd55-panel" });
-      spellPanel.createDiv({ cls: "dnd55-panel-title", text: "Заклинания и Магия (Spellcasting)" });
+      const spellPanel = col3.createDiv({ cls: "dnd55-box" });
+      spellPanel.createDiv({ cls: "dnd55-box-header", text: "Заклинания и Магия (Spellcasting)" });
       
-      const spVitals = spellPanel.createDiv({ cls: "dnd55-vitals-row dnd55-vitals-2" });
-      const dcBox = spVitals.createDiv({ cls: "dnd55-vital-box" });
-      dcBox.createDiv({ cls: "dnd55-vital-label", text: "Сл спаса" });
-      dcBox.createDiv({ cls: "dnd55-vital-val", text: String(data.spell_save_dc || 13) });
+      const spVitals = spellPanel.createDiv({ cls: "dnd55-sp-vitals", style: "display: flex; gap: 10px; margin-bottom: 10px;" });
+      const dcBox = spVitals.createDiv({ cls: "dnd55-coin-cell", style: "flex: 1;" });
+      dcBox.createDiv({ cls: "dnd55-coin-lbl", text: "Сл спаса" });
+      dcBox.createDiv({ cls: "dnd55-coin-val", text: String(data.spell_save_dc || 13) });
 
-      const spAtkBox = spVitals.createDiv({ cls: "dnd55-vital-box" });
-      spAtkBox.createDiv({ cls: "dnd55-vital-label", text: "Атака" });
-      spAtkBox.createDiv({ cls: "dnd55-vital-val", text: this.fmtBonus(data.spell_attack || "+5") });
+      const spAtkBox = spVitals.createDiv({ cls: "dnd55-coin-cell", style: "flex: 1;" });
+      spAtkBox.createDiv({ cls: "dnd55-coin-lbl", text: "Атака" });
+      spAtkBox.createDiv({ cls: "dnd55-coin-val", text: this.fmtBonus(data.spell_attack || "+5") });
 
       if (data.spell_slots_1) {
-        const slotsRow = spellPanel.createDiv({ cls: "dnd55-spell-slots-row" });
-        slotsRow.createSpan({ text: "Ячейки 1 круга: ", cls: "dnd55-badge-label" });
-        const pipsRow = slotsRow.createSpan({ cls: "dnd55-pip-group" });
+        const slotsRow = spellPanel.createDiv({ style: "margin-bottom: 10px; display: flex; align-items: center; gap: 8px;" });
+        slotsRow.createSpan({ text: "Ячейки 1 круга: ", style: "font-size: 0.8em; font-weight: 700; color: var(--dnd55-text-muted);" });
+        const pipsRow = slotsRow.createSpan({ cls: "dnd55-pips-row" });
         for (let i = 0; i < (data.spell_slots_1 || 3); i++) {
-          const p = pipsRow.createSpan({ cls: "dnd55-pip checked-slot" });
+          const p = pipsRow.createSpan({ cls: "dnd55-pip-slot active" });
           p.title = "Клик: потратить/восстановить ячейку заклинания";
-          p.onclick = () => p.toggleClass("checked-slot");
+          p.onclick = () => p.toggleClass("active");
         }
       }
 
       if (Array.isArray(data.spells)) {
         data.spells.forEach(sp => {
-          const item = spellPanel.createDiv({ cls: "dnd55-feature-item" });
-          item.createDiv({ cls: "dnd55-feature-title", text: `✨ ${sp.name || sp}` });
-          if (sp.desc) item.createDiv({ cls: "dnd55-feature-desc", text: String(sp.desc) });
+          const item = spellPanel.createDiv({ cls: "dnd55-feat-item" });
+          item.createDiv({ cls: "dnd55-feat-head", text: `✨ ${sp.name || sp}` });
+          if (sp.desc) item.createDiv({ cls: "dnd55-feat-desc", text: String(sp.desc) });
         });
       }
     }
 
     // Features
-    const featPanel = col3.createDiv({ cls: "dnd55-panel" });
-    featPanel.createDiv({ cls: "dnd55-panel-title", text: "Умения и Особенности (Features)" });
+    const featPanel = col3.createDiv({ cls: "dnd55-box" });
+    featPanel.createDiv({ cls: "dnd55-box-header", text: "Умения и Особенности (Features)" });
 
     const features = data.features || [];
     features.forEach(f => {
-      const item = featPanel.createDiv({ cls: "dnd55-feature-item" });
-      const fHead = item.createDiv({ cls: "dnd55-feature-header" });
-      fHead.createDiv({ cls: "dnd55-feature-title", text: String(f.name) });
+      const item = featPanel.createDiv({ cls: "dnd55-feat-item" });
+      const fHead = item.createDiv({ cls: "dnd55-feat-head" });
+      fHead.createSpan({ text: String(f.name) });
       if (f.uses) {
-        const uGroup = fHead.createDiv({ cls: "dnd55-pip-group" });
-        uGroup.createSpan({ text: `${f.uses}: `, cls: "dnd55-feature-uses" });
+        const uGroup = fHead.createSpan({ cls: "dnd55-pips-row", style: "margin-left: auto; flex-shrink: 0; white-space: nowrap;" });
+        uGroup.createSpan({ text: `${f.uses}: `, style: "font-size: 0.72em; color: var(--dnd55-text-muted); font-weight: normal; margin-right: 4px; white-space: nowrap;" });
         const count = f.count || 1;
         for (let i = 0; i < count; i++) {
-          const p = uGroup.createSpan({ cls: "dnd55-pip checked-slot" });
+          const p = uGroup.createSpan({ cls: "dnd55-pip-slot active" });
           p.title = "Клик: отметить использование способности";
-          p.onclick = () => p.toggleClass("checked-slot");
+          p.onclick = () => p.toggleClass("active");
         }
       }
-      if (f.desc) item.createDiv({ cls: "dnd55-feature-desc", text: String(f.desc) });
+      if (f.desc) item.createDiv({ cls: "dnd55-feat-desc", text: String(f.desc) });
     });
 
-    // Equipment & Currency
-    const eqPanel = col3.createDiv({ cls: "dnd55-panel" });
-    eqPanel.createDiv({ cls: "dnd55-panel-title", text: "Монеты и Снаряжение" });
+    // Coins & Equipment
+    const eqPanel = col3.createDiv({ cls: "dnd55-box" });
+    eqPanel.createDiv({ cls: "dnd55-box-header", text: "Монеты и Снаряжение" });
     
     const coinsGrid = eqPanel.createDiv({ cls: "dnd55-coins-grid" });
     const coins = data.coins || { cp: 0, sp: 0, ep: 0, gp: 0, pp: 0 };
     [
-      { label: "ММ", val: coins.cp || 0, name: "Медь" },
-      { label: "СМ", val: coins.sp || 0, name: "Серебро" },
-      { label: "ЭМ", val: coins.ep || 0, name: "Электрум" },
-      { label: "ЗМ", val: coins.gp || 0, name: "Золото" },
-      { label: "ПМ", val: coins.pp || 0, name: "Платина" }
+      { label: "ММ", val: coins.cp || 0, name: "Медные монеты (CP)" },
+      { label: "СМ", val: coins.sp || 0, name: "Серебряные монеты (SP)" },
+      { label: "ЭМ", val: coins.ep || 0, name: "Электрумовые монеты (EP)" },
+      { label: "ЗМ", val: coins.gp || 0, name: "Золотые монеты (GP)" },
+      { label: "ПМ", val: coins.pp || 0, name: "Платиновые монеты (PP)" }
     ].forEach(c => {
       const cell = coinsGrid.createDiv({ cls: "dnd55-coin-cell" });
       cell.setAttribute("title", c.name);
-      cell.createDiv({ cls: "dnd55-coin-label", text: c.label });
+      cell.createDiv({ cls: "dnd55-coin-lbl", text: c.label });
       cell.createDiv({ cls: "dnd55-coin-val", text: String(c.val) });
     });
 
     if (data.equipment) {
-      eqPanel.createDiv({ text: String(data.equipment), cls: "dnd55-feature-desc dnd55-eq-text" });
+      eqPanel.createDiv({ text: String(data.equipment), cls: "dnd55-feat-desc", style: "margin-top: 8px;" });
     }
 
     // Roleplay
     if (data.personality || data.secret_goal) {
-      const rpPanel = col3.createDiv({ cls: "dnd55-panel" });
-      rpPanel.createDiv({ cls: "dnd55-panel-title", text: "Отыгрыш и Личность" });
+      const rpPanel = col3.createDiv({ cls: "dnd55-box" });
+      rpPanel.createDiv({ cls: "dnd55-box-header", text: "Отыгрыш и Личность" });
       
       const addRpItem = (label, val, icon = "•") => {
         if (!val) return;
-        const div = rpPanel.createDiv({ cls: "dnd55-rp-item" });
-        div.createSpan({ cls: "dnd55-rp-label", text: `${icon} ${label}: ` });
-        div.createSpan({ cls: "dnd55-rp-val", text: String(val) });
+        const div = rpPanel.createDiv({ cls: "dnd55-feat-item" });
+        div.innerHTML = `<span style="color: var(--dnd55-accent); font-weight: 700;">${icon} ${label}:</span> <span style="color: var(--dnd55-text-muted); font-size: 0.9em;">${val}</span>`;
       };
 
       if (data.personality) {
-        addRpItem("Черта", data.personality.trait);
+        addRpItem("Черта характера", data.personality.trait);
         addRpItem("Идеал", data.personality.ideal);
         addRpItem("Привязанность", data.personality.bond);
         addRpItem("Слабость", data.personality.flaw);
