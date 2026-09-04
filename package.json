@@ -1,0 +1,26 @@
+{
+  "name": "dnd-sheet-obsidian",
+  "version": "1.0.0",
+  "description": "Authentic D&D 5.5e (2024 Player's Handbook) character sheet renderer for Obsidian",
+  "main": "main.js",
+  "scripts": {},
+  "keywords": [
+    "obsidian",
+    "obsidian-plugin",
+    "dnd",
+    "dnd5e",
+    "dnd-5-5e",
+    "ttrpg",
+    "character-sheet"
+  ],
+  "author": "Specki",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Specki-Sh/dnd-sheet-obsidian.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Specki-Sh/dnd-sheet-obsidian/issues"
+  },
+  "homepage": "https://github.com/Specki-Sh/dnd-sheet-obsidian#readme"
+}

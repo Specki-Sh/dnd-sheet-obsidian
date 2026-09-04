@@ -1,0 +1,578 @@
+/* ==========================================================================
+   D&D 5.5e (2024 Player's Handbook) Character Sheet Plugin Styles
+   ========================================================================== */
+
+.dnd55-sheet {
+  font-family: var(--font-text, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+  color: var(--text-normal);
+  background: var(--background-secondary-alt, #1e1e1e);
+  border: 2px solid var(--text-accent, #9c2b1b);
+  border-radius: 8px;
+  padding: 16px;
+  margin: 1.5em 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* --------------------------------------------------------------------------
+   HEADER BANNER (5.5e 2024)
+   -------------------------------------------------------------------------- */
+.dnd55-header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  border-bottom: 2px solid var(--text-accent, #9c2b1b);
+  padding-bottom: 12px;
+  margin-bottom: 16px;
+}
+
+.dnd55-name-box {
+  flex: 1 1 240px;
+  background: var(--background-primary);
+  border: 1.5px solid var(--background-modifier-border);
+  border-radius: 6px;
+  padding: 8px 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.dnd55-name-title {
+  font-size: 1.6em;
+  font-weight: 800;
+  color: var(--text-accent, #9c2b1b);
+  line-height: 1.1;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.dnd55-name-sub {
+  font-size: 0.85em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.dnd55-meta-grid {
+  flex: 2 1 400px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 8px;
+}
+
+.dnd55-meta-item {
+  background: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 4px;
+  padding: 4px 8px;
+  display: flex;
+  flex-direction: column;
+}
+
+.dnd55-meta-label {
+  font-size: 0.65em;
+  text-transform: uppercase;
+  font-weight: bold;
+  color: var(--text-muted);
+}
+
+.dnd55-meta-val {
+  font-size: 0.9em;
+  font-weight: 600;
+  color: var(--text-normal);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* --------------------------------------------------------------------------
+   3-COLUMN LAYOUT
+   -------------------------------------------------------------------------- */
+.dnd55-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.25fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 900px) {
+  .dnd55-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.dnd55-col {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* --------------------------------------------------------------------------
+   CORE 5.5e ABILITY CARDS (Saves embedded inside ability box!)
+   -------------------------------------------------------------------------- */
+.dnd55-inspiration-prof {
+  display: flex;
+  gap: 8px;
+}
+
+.dnd55-badge-box {
+  flex: 1;
+  background: var(--background-primary);
+  border: 1.5px solid var(--background-modifier-border);
+  border-radius: 6px;
+  padding: 6px;
+  text-align: center;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.15s ease;
+}
+
+.dnd55-badge-box:hover {
+  border-color: var(--text-accent, #9c2b1b);
+}
+
+.dnd55-badge-box.active {
+  background: rgba(156, 43, 27, 0.15);
+  border-color: var(--text-accent, #9c2b1b);
+}
+
+.dnd55-badge-label {
+  font-size: 0.68em;
+  text-transform: uppercase;
+  font-weight: bold;
+  color: var(--text-muted);
+}
+
+.dnd55-badge-val {
+  font-size: 1.2em;
+  font-weight: 800;
+  color: var(--text-normal);
+}
+
+.dnd55-abilities-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.dnd55-ability-card {
+  background: var(--background-primary);
+  border: 1.5px solid var(--background-modifier-border);
+  border-radius: 6px;
+  padding: 6px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.dnd55-ability-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dnd55-ability-name {
+  font-size: 0.85em;
+  font-weight: 800;
+  text-transform: uppercase;
+  width: 42px;
+}
+
+.dnd55-ability-mod {
+  font-size: 1.3em;
+  font-weight: 800;
+  color: var(--text-accent, #9c2b1b);
+  background: rgba(156, 43, 27, 0.1);
+  padding: 2px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.dnd55-ability-mod:hover {
+  background: var(--text-accent, #9c2b1b);
+  color: #fff;
+}
+
+.dnd55-ability-score {
+  font-size: 0.8em;
+  color: var(--text-muted);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 10px;
+  padding: 1px 6px;
+}
+
+/* 5.5e Embedded Saving Throw inside Ability Card */
+.dnd55-ability-save {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.8em;
+  font-weight: 600;
+  background: var(--background-secondary);
+  padding: 3px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.dnd55-ability-save:hover {
+  border-color: var(--text-accent, #9c2b1b);
+}
+
+.dnd55-ability-save.proficient {
+  background: rgba(156, 43, 27, 0.12);
+  color: var(--text-accent, #9c2b1b);
+  font-weight: 700;
+}
+
+/* --------------------------------------------------------------------------
+   SKILLS & SENSES
+   -------------------------------------------------------------------------- */
+.dnd55-panel {
+  background: var(--background-primary);
+  border: 1.5px solid var(--background-modifier-border);
+  border-radius: 6px;
+  padding: 10px;
+}
+
+.dnd55-panel-title {
+  font-size: 0.75em;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--background-modifier-border);
+  padding-bottom: 4px;
+  margin-bottom: 8px;
+}
+
+.dnd55-skill-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2px 4px;
+  font-size: 0.82em;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.dnd55-skill-row:hover {
+  background: var(--background-secondary);
+}
+
+.dnd55-skill-left {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dnd55-dot {
+  font-size: 0.9em;
+  line-height: 1;
+  color: var(--text-muted);
+}
+
+.dnd55-dot.prof {
+  color: var(--text-accent, #9c2b1b);
+}
+
+.dnd55-skill-attr {
+  font-size: 0.75em;
+  color: var(--text-muted);
+}
+
+.dnd55-skill-bonus {
+  font-weight: 700;
+  color: var(--text-normal);
+}
+
+/* --------------------------------------------------------------------------
+   COLUMN 2: COMBAT, HP, WEAPON MASTERY
+   -------------------------------------------------------------------------- */
+.dnd55-vitals-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.dnd55-vital-badge {
+  background: var(--background-primary);
+  border: 1.5px solid var(--background-modifier-border);
+  border-radius: 6px;
+  padding: 8px 4px;
+  text-align: center;
+}
+
+.dnd55-vital-badge.ac {
+  border-color: var(--text-accent, #9c2b1b);
+}
+
+.dnd55-vital-title {
+  font-size: 0.65em;
+  text-transform: uppercase;
+  font-weight: bold;
+  color: var(--text-muted);
+}
+
+.dnd55-vital-val {
+  font-size: 1.35em;
+  font-weight: 800;
+  color: var(--text-normal);
+}
+
+.dnd55-hp-card {
+  background: var(--background-primary);
+  border: 2px solid var(--background-modifier-border);
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.dnd55-hp-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 6px;
+}
+
+.dnd55-hp-cur {
+  font-size: 2em;
+  font-weight: 900;
+  color: #27ae60;
+  line-height: 1;
+}
+
+.dnd55-hp-max {
+  font-size: 0.9em;
+  color: var(--text-muted);
+}
+
+.dnd55-hp-temp {
+  font-size: 0.85em;
+  font-weight: 600;
+  color: #3498db;
+}
+
+.dnd55-hitdice-death {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--background-modifier-border);
+}
+
+.dnd55-pip-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.dnd55-pip {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 1.5px solid var(--text-muted);
+  transition: all 0.1s ease;
+}
+
+.dnd55-pip.checked-success {
+  background: #27ae60;
+  border-color: #27ae60;
+}
+
+.dnd55-pip.checked-fail {
+  background: #c0392b;
+  border-color: #c0392b;
+}
+
+.dnd55-pip.checked-slot {
+  background: var(--text-accent, #9c2b1b);
+  border-color: var(--text-accent, #9c2b1b);
+}
+
+/* 5.5e Weapon Mastery Table */
+.dnd55-attacks-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85em;
+}
+
+.dnd55-attacks-table th {
+  text-align: left;
+  font-size: 0.7em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--background-modifier-border);
+  padding: 4px 6px;
+}
+
+.dnd55-attacks-table td {
+  padding: 6px 6px;
+  border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.dnd55-attack-name {
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.dnd55-attack-name:hover {
+  color: var(--text-accent, #9c2b1b);
+}
+
+.dnd55-mastery-tag {
+  display: inline-block;
+  font-size: 0.7em;
+  font-weight: 700;
+  text-transform: uppercase;
+  background: rgba(156, 43, 27, 0.15);
+  color: var(--text-accent, #9c2b1b);
+  border: 1px solid var(--text-accent, #9c2b1b);
+  border-radius: 3px;
+  padding: 1px 4px;
+  margin-left: 4px;
+}
+
+.dnd55-clickable-roll {
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.dnd55-clickable-roll:hover {
+  background: var(--text-accent, #9c2b1b);
+  color: #fff;
+  border-color: var(--text-accent, #9c2b1b);
+}
+
+/* --------------------------------------------------------------------------
+   COLUMN 3: FEATURES, MAGIC, ROLEPLAY
+   -------------------------------------------------------------------------- */
+.dnd55-feature-item {
+  margin-bottom: 8px;
+  font-size: 0.85em;
+  line-height: 1.35;
+}
+
+.dnd55-feature-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dnd55-feature-title {
+  font-weight: 700;
+  color: var(--text-normal);
+}
+
+.dnd55-feature-uses {
+  font-size: 0.75em;
+  color: var(--text-muted);
+}
+
+.dnd55-feature-desc {
+  color: var(--text-muted);
+  font-size: 0.9em;
+  margin-top: 2px;
+}
+
+.dnd55-coins-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 4px;
+  text-align: center;
+  font-size: 0.8em;
+  margin-bottom: 8px;
+}
+
+.dnd55-coin-cell {
+  background: var(--background-secondary);
+  border-radius: 4px;
+  padding: 4px 2px;
+}
+
+.dnd55-coin-label {
+  font-size: 0.7em;
+  font-weight: bold;
+  color: var(--text-muted);
+}
+
+.dnd55-coin-val {
+  font-weight: 800;
+}
+
+/* --------------------------------------------------------------------------
+   PRINT OPTIMIZATION (A4 Black & White)
+   -------------------------------------------------------------------------- */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 8mm 8mm 8mm 8mm;
+  }
+
+  .dnd55-sheet {
+    background: #fff !important;
+    color: #000 !important;
+    border: 1.5px solid #000 !important;
+    box-shadow: none !important;
+    padding: 6mm !important;
+    margin: 0 !important;
+    width: 100% !important;
+    font-size: 8.5pt !important;
+  }
+
+  .dnd55-name-box, .dnd55-meta-item, .dnd55-panel, .dnd55-ability-card,
+  .dnd55-badge-box, .dnd55-vital-badge, .dnd55-hp-card, .dnd55-coin-cell {
+    background: #fff !important;
+    border-color: #000 !important;
+    color: #000 !important;
+  }
+
+  .dnd55-name-title {
+    color: #000 !important;
+  }
+
+  .dnd55-ability-mod {
+    background: none !important;
+    color: #000 !important;
+    border: 1px solid #000 !important;
+  }
+
+  .dnd55-ability-save {
+    background: none !important;
+    border: 1px solid #000 !important;
+    color: #000 !important;
+  }
+
+  .dnd55-clickable-roll {
+    background: none !important;
+    border: 1px solid #000 !important;
+    color: #000 !important;
+  }
+
+  .dnd55-mastery-tag {
+    background: none !important;
+    border: 1px solid #000 !important;
+    color: #000 !important;
+  }
+
+  .dnd55-pip {
+    border-color: #000 !important;
+  }
+
+  .dnd55-pip.checked-success, .dnd55-pip.checked-fail, .dnd55-pip.checked-slot {
+    background: #000 !important;
+    border-color: #000 !important;
+  }
+
+  .dnd55-grid {
+    grid-template-columns: 1fr 1.25fr 1fr !important;
+    gap: 10px !important;
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "id": "dnd-55e-sheet",
+  "name": "D&D 5.5e Character Sheet",
+  "version": "1.0.0",
+  "minAppVersion": "1.0.0",
+  "description": "Authentic D&D 5.5e (2024 Player's Handbook) character sheet renderer with interactive counters, dice rolling, and print-ready A4 export.",
+  "author": "Specki",
+  "authorUrl": "https://github.com/Specki-Sh",
+  "fundingUrl": "",
+  "isDesktopOnly": false
+}
