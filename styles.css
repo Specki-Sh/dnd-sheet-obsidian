@@ -2093,3 +2093,1387 @@ textarea.dnd55-m-input {
   color: #ef4444;
   margin: 0 0 6px 0;
 }
+
+
+
+/* ==========================================================================
+   D&D 5.5e (2024 PHB) PRINT EDITION & PDF EXPORT
+   ========================================================================== */
+
+/* 1. In-App Print Preview Mode (.dnd55-print-version) */
+
+.dnd55-sheet.dnd55-print-version {
+  background: #ffffff !important;
+  color: #111111 !important;
+  border: 1.2px solid #111111 !important;
+  border-radius: 3px !important;
+  box-shadow: none !important;
+  padding: 4px 6px !important;
+  margin: 0 auto !important;
+  max-width: 100% !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  overflow: visible !important;
+  font-family: "Cormorant Garamond", "PT Serif", "EB Garamond", Georgia, serif !important;
+  -webkit-font-smoothing: antialiased;
+}
+
+.dnd55-sheet.dnd55-print-version .dnd55-topbar,
+.dnd55-sheet.dnd55-print-version .dnd55-nav-tabs,
+.dnd55-sheet.dnd55-print-version .dnd55-hp-btn,
+.dnd55-sheet.dnd55-print-version .dnd55-tool-btn {
+  display: none !important;
+}
+
+/* Header */
+.dnd55-sheet.dnd55-print-version .dnd55-header {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: flex-start !important;
+  border-bottom: 1.2px solid #111111 !important;
+  padding-bottom: 4px !important;
+  margin-bottom: 4px !important;
+  background: transparent !important;
+  gap: 10px !important;
+  overflow: visible !important;
+  height: auto !important;
+  min-height: 0 !important;
+}
+
+.dnd55-sheet.dnd55-print-version .dnd55-portrait-frame {
+  border: 1.2px solid #111111 !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+  width: 74px !important;
+  min-width: 74px !important;
+  height: 90px !important;
+  overflow: hidden !important;
+}
+.dnd55-sheet.dnd55-print-version .dnd55-portrait-corner {
+  border-color: #111111 !important;
+  border-width: 1.5px !important;
+  width: 8px !important;
+  height: 8px !important;
+}
+.dnd55-sheet.dnd55-print-version .dnd55-cameo-icon {
+  fill: #333333 !important;
+  width: 36px !important;
+  height: 36px !important;
+}
+.dnd55-sheet.dnd55-print-version .dnd55-portrait-placeholder span {
+  color: #444444 !important;
+  font-weight: 700 !important;
+  font-size: 0.65em !important;
+}
+
+.dnd55-sheet.dnd55-print-version .dnd55-header-center {
+  flex: 1.1 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-start !important;
+  gap: 2px !important;
+  min-width: 0 !important;
+}
+.dnd55-sheet.dnd55-print-version .dnd55-char-name-banner {
+  margin-bottom: 2px !important;
+}
+.dnd55-sheet.dnd55-print-version .dnd55-char-name {
+  color: #111111 !important;
+  text-shadow: none !important;
+  border-bottom: 1.2px solid #111111 !important;
+  width: fit-content !important;
+  padding-bottom: 1px !important;
+  font-size: 1.42em !important;
+  line-height: 1.05 !important;
+}
+.dnd55-sheet.dnd55-print-version .dnd55-char-sub {
+  color: #333333 !important;
+  font-style: italic !important;
+  font-size: 0.78em !important;
+}
+
+.dnd55-sheet.dnd55-print-version .dnd55-quick-badges {
+  display: flex !important;
+  gap: 5px !important;
+  margin-top: 3px !important;
+}
+.dnd55-sheet.dnd55-print-version .dnd55-badge-pill {
+  border: 1px solid #111111 !important;
+  background: #ffffff !important;
+  color: #111111 !important;
+  box-shadow: none !important;
+  font-weight: 700 !important;
+  padding: 1px 6px !important;
+  font-size: 0.69em !important;
+}
+/* Print economy: inspiration is an empty diamond checkbox */
+.dnd55-sheet.dnd55-print-version .dnd55-badge-pill.active,
+.dnd55-sheet.dnd55-print-version .dnd55-badge-pill {
+  background: #ffffff !important;
+  color: #111111 !important;
+  border: 1px solid #111111 !important;
+}
+.dnd55-sheet.dnd55-print-version .dnd55-insp-txt {
+  color: #111111 !important;
+}
+
+.dnd55-sheet.dnd55-print-version .dnd55-identity-box {
+  border: 1px solid #111111 !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+  display: grid !important;
+  grid-template-columns: 1.2fr 1.1fr 0.9fr !important;
+  flex: 1.4 !important;
+  height: auto !important;
+}
+.dnd55-sheet.dnd55-print-version .dnd55-identity-cell {
+  border-bottom: 1px solid #e0e0e0 !important;
+  border-right: 1px solid #e0e0e0 !important;
+  padding: 2px 4px !important;
+}
+.dnd55-sheet.dnd55-print-version .dnd55-identity-lbl {
+  color: #555555 !important;
+  font-weight: 700 !important;
+  font-size: 0.60em !important;
+  margin-bottom: 1px !important;
+}
+.dnd55-sheet.dnd55-print-version .dnd55-identity-val {
+  color: #111111 !important;
+  font-weight: 700 !important;
+  font-size: 0.75em !important;
+  line-height: 1.15 !important;
+}
+
+/* 3-Column Canonical Layout - STRICTLY PRESERVED & SIZED FOR A4 */
+.dnd55-sheet.dnd55-print-version .dnd55-columns {
+  display: grid !important;
+  grid-template-columns: 28% 41% 31% !important;
+  gap: 6px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  overflow: visible !important;
+}
+.dnd55-sheet.dnd55-print-version .dnd55-col:nth-child(3) {
+  grid-column: auto !important;
+}
+.dnd55-sheet.dnd55-print-version .dnd55-col {
+  display: flex !important;
+  flex-direction: column !important;
+  min-width: 0 !important;
+  gap: 0 !important;
+  overflow: visible !important;
+}
+
+/* All Content Boxes */
+.dnd55-sheet.dnd55-print-version .dnd55-box {
+  border: 1px solid #111111 !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+  border-radius: 2px !important;
+  margin-bottom: 3.5px !important;
+  break-inside: avoid !important;
+  page-break-inside: avoid !important;
+  overflow: visible !important;
+}
+.dnd55-sheet.dnd55-print-version .dnd55-box-header {
+  background: #f4f4f4 !important;
+  color: #111111 !important;
+  border-bottom: 1px solid #111111 !important;
+  font-family: "Cormorant SC", "Playfair Display SC", "PT Serif Caption", Georgia, serif !important;
+  font-variant: small-caps !important;
+  letter-spacing: 0.08em !important;
+  font-weight: 700 !important;
+  font-size: 0.70em !important;
+  padding: 2px 5px !important;
+  text-shadow: none !important;
+  box-shadow: none !important;
+}
+
+/* Column 1: Abilities */
+.dnd55-sheet.dnd55-print-version .dnd55-ability-card {
+  border: 1px solid #111111 !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+  margin-bottom: 3px !important;
+  break-inside: avoid !important;
+}
+.dnd55-sheet.dnd55-print-version .dnd55-ab-head {
+  background: #f6f6f6 !important;
+  border-bottom: 1px solid #111111 !important;
+  color: #111111 !important;
+  padding: 1.5px 3px !important;
+  display: grid !important;
+  grid-template-columns: 1fr 22px 20px !important;
+  gap: 2px !important;
+  align-items: center !important;
+  overflow: visible !important;
+}
+.dnd55-sheet.dnd55-print-version .dnd55-ab-title {
+  color: #111111 !important;
+  font-weight: 700 !important;
+  font-size: 0.53em !important;
+  letter-spacing: -0.01em !important;
+  white-space: nowrap !important;
+}
+.dnd55-sheet.dnd55-print-version .dnd55-ab-mod {
+  color: #111111 !important;
+  font-weight: 800 !important;
+  font-size: 0.82em !important;
+  font-variant-numeric: tabular-nums !important;
+  text-align: center !important;
+}
+.dnd55-sheet.dnd55-print-version .dnd55-ab-score-oval {
+  border: 1px solid #111111 !important;
+  background: #ffffff !important;
+  color: #111111 !important;
+  font-weight: 700 !important;
+  padding: 0 1px !important;
+  font-size: 0.65em !important;
+  border-radius: 6px !important;
+  text-align: center !important;
+}
+
+.dnd55-sheet.dnd55-print-version .dnd55-skill-row {
+  border-bottom: 0.5px solid #eeeeee !important;
+  color: #111111 !important;
+  padding: 1.5px 4px !important;
+  display: flex !important;
+  align-items: center !important;
+}
+.dnd55-sheet.dnd55-print-version .dnd55-skill-row.is-save {
+  background: #f9f9f9 !important;
+  font-weight: 700 !important;
+  border-bottom: 1px solid #cccccc !important;
+}
+.dnd55-sheet.dnd55-print-version .dnd55-skill-dot {
+  color: #555555 !important;
+  font-size: 0.78em !important;
+  width: 12px !important;
+}
+.dnd55-sheet.dnd55-print-version .dnd55-skill-dot.prof {
+  color: #111111 !important;
+  font-weight: 900 !important;
+}
+.dnd55-sheet.dnd55-print-version .dnd55-skill-name {
+  color: #111111 !important;
+  font-size: 0.68em !important;
+  flex: 1 !important;
+}
+.dnd55-sheet.dnd55-print-version .dnd55-skill-bonus {
+  color: #111111 !important;
+  font-weight: 700 !important;
+  font-size: 0.70em !important;
+  font-variant-numeric: tabular-nums !important;
+}
+
+.dnd55-sheet.dnd55-print-version .dnd55-passive-ribbon {
+  border: 1px solid #111111 !important;
+  background: #f6f6f6 !important;
+  color: #111111 !important;
+  box-shadow: none !important;
+  padding: 2px 6px !important;
+  margin-top: 3px !important;
+}
+.dnd55-sheet.dnd55-print-version .dnd55-passive-lbl {
+  color: #111111 !important;
+  font-weight: 700 !important;
+  font-size: 0.68em !important;
+}
+.dnd55-sheet.dnd55-print-version .dnd55-passive-val {
+  border: 1px solid #111111 !important;
+  background: #ffffff !important;
+  color: #111111 !important;
+  box-shadow: none !important;
+  font-weight: 800 !important;
+  font-size: 0.75em !important;
+  padding: 1px 4px !important;
+}
+
+.dnd55-sheet.dnd55-print-version .dnd55-strong-lbl {
+  color: #111111 !important;
+  font-weight: 700 !important;
+  font-size: 0.70em !important;
+}
+
+/* Column 2: Combat Hub */
+.dnd55-sheet.dnd55-print-version .dnd55-vitals-trio {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr 1fr !important;
+  gap: 5px !important;
+  margin-bottom: 3.5px !important;
+  break-inside: avoid !important;
+}
+
+.dnd55-sheet.dnd55-print-version .dnd55-shield-outer-path {
+  stroke: #111111 !important;
+  stroke-width: 2.5px !important;
+  fill: #ffffff !important;
+  filter: none !important;
+}
+.dnd55-sheet.dnd55-print-version .dnd55-shield-inner-path {
+  stroke: #111111 !important;
+  stroke-width: 1px !important;
+  stroke-dasharray: none !important;
+  fill: #ffffff !important;
+}
+.dnd55-sheet.dnd55-print-version .dnd55-shield-val {
+  color: #111111 !important;
+  text-shadow: none !important;
+  font-weight: 900 !important;
+  font-size: 1.8em !important;
+}
+.dnd55-sheet.dnd55-print-version .dnd55-shield-lbl, 
+.dnd55-sheet.dnd55-print-version .dnd55-shield-sub {
+  color: #222222 !important;
+  text-shadow: none !important;
+  font-weight: 700 !important;
+  font-size: 0.65em !important;
+}
+
+.dnd55-sheet.dnd55-print-version .dnd55-plaque-outer-poly {
+  stroke: #111111 !important;
+  stroke-width: 2px !important;
+  fill: #ffffff !important;
+  filter: none !important;
+}
+.dnd55-sheet.dnd55-print-version .dnd55-plaque-inner-poly {
+  stroke: #777777 !important;
+  stroke-width: 0.8px !important;
+  stroke-dasharray: none !important;
+  fill: #ffffff !important;
+}
+.dnd55-sheet.dnd55-print-version .dnd55-plaque-val {
+  color: #111111 !important;
+  text-shadow: none !important;
+  font-weight: 800 !important;
+  font-size: 1.45em !important;
+}
+.dnd55-sheet.dnd55-print-version .dnd55-plaque-val small {
+  color: #111111 !important;
+  font-weight: 700 !important;
+  font-size: 0.58em !important;
+}
+.dnd55-sheet.dnd55-print-version .dnd55-plaque-lbl {
+  color: #222222 !important;
+  text-shadow: none !important;
+  font-weight: 700 !important;
+  font-size: 0.62em !important;
+}
+
+/* HP Box */
+.dnd55-sheet.dnd55-print-version .dnd55-hp-box {
+  border: 1px solid #111111 !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+  break-inside: avoid !important;
+}
+.dnd55-sheet.dnd55-print-version .dnd55-hp-top {
+  background: #f6f6f6 !important;
+  border-bottom: 1px solid #111111 !important;
+  padding: 2px 6px !important;
+}
+.dnd55-sheet.dnd55-print-version .dnd55-hp-title {
+  color: #111111 !important;
+  text-shadow: none !important;
+  font-weight: 700 !important;
+  font-size: 0.70em !important;
+}
+.dnd55-sheet.dnd55-print-version .dnd55-hp-max {
+  color: #333333 !important;
+  font-weight: 700 !important;
+  font-size: 0.68em !important;
+}
+.dnd55-sheet.dnd55-print-version .dnd55-hp-cur-val {
+  color: #111111 !important;
+  text-shadow: none !important;
+  font-size: 1.8em !important;
+  font-weight: 900 !important;
+  padding: 2px 0 !important;
+}
+.dnd55-sheet.dnd55-print-version .dnd55-hd-death-grid {
+  border-top: 1px solid #111111 !important;
+  padding: 3px 6px !important;
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+}
+.dnd55-sheet.dnd55-print-version .dnd55-death-track-lbl, 
+.dnd55-sheet.dnd55-print-version .dnd55-sub-hdr {
+  color: #444444 !important;
+  font-weight: 700 !important;
+  font-size: 0.62em !important;
+}
+.dnd55-sheet.dnd55-print-version .dnd55-death-circle {
+  border: 1.2px solid #111111 !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+  width: 10px !important;
+  height: 10px !important;
+}
+.dnd55-sheet.dnd55-print-version .dnd55-death-circles-line::before {
+  background: #666666 !important;
+}
+/* Pips in print: EMPTY circles for pencil marking */
+.dnd55-sheet.dnd55-print-version .dnd55-pip-slot {
+  border: 1.2px solid #111111 !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+  width: 9px !important;
+  height: 9px !important;
+  border-radius: 50% !important;
+}
+.dnd55-sheet.dnd55-print-version .dnd55-pip-slot.active {
+  border: 1.2px solid #111111 !important;
+  background: #ffffff !important;
+}
+
+/* Attacks Table */
+.dnd55-sheet.dnd55-print-version .dnd55-table-wrap {
+  overflow: visible !important;
+}
+.dnd55-sheet.dnd55-print-version .dnd55-atk-table {
+  width: 100% !important;
+  table-layout: auto !important;
+}
+.dnd55-sheet.dnd55-print-version .dnd55-atk-table th {
+  background: #f4f4f4 !important;
+  color: #111111 !important;
+  border-bottom: 1px solid #111111 !important;
+  font-weight: 700 !important;
+  padding: 2px 2px !important;
+  font-size: 0.64em !important;
+}
+.dnd55-sheet.dnd55-print-version .dnd55-atk-table td {
+  border-bottom: 0.5px solid #e0e0e0 !important;
+  color: #111111 !important;
+  padding: 2px 2px !important;
+}
+.dnd55-sheet.dnd55-print-version .dnd55-weapon-name {
+  color: #111111 !important;
+  font-size: 0.68em !important;
+  white-space: normal !important;
+  word-break: normal !important;
+}
+.dnd55-sheet.dnd55-print-version .dnd55-weapon-range {
+  font-size: 0.64em !important;
+  white-space: nowrap !important;
+}
+.dnd55-sheet.dnd55-print-version .dnd55-badge-stat {
+  border: 0.75px solid #777777 !important;
+  background: #ffffff !important;
+  color: #111111 !important;
+  box-shadow: none !important;
+  font-weight: 700 !important;
+  font-size: 0.68em !important;
+  padding: 1px 3px !important;
+}
+.dnd55-sheet.dnd55-print-version .dnd55-badge-atk {
+  border: 1px solid #111111 !important;
+  border-radius: 50% !important;
+  width: 18px !important;
+  height: 18px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: #ffffff !important;
+  color: #111111 !important;
+  box-shadow: none !important;
+  font-weight: 800 !important;
+  font-size: 0.70em !important;
+}
+.dnd55-sheet.dnd55-print-version .dnd55-mastery-tag {
+  border: 0.75px solid #666666 !important;
+  background: #ffffff !important;
+  color: #111111 !important;
+  font-size: 0.62em !important;
+  padding: 1px 3px !important;
+}
+
+/* Actions in Combat Box */
+.dnd55-sheet.dnd55-print-version .dnd55-action-item {
+  background: #ffffff !important;
+  border: 0.75px solid #e0e0e0 !important;
+  border-radius: 2px !important;
+  padding: 2px 4px !important;
+  margin-bottom: 2px !important;
+}
+.dnd55-sheet.dnd55-print-version .dnd55-action-label {
+  color: #111111 !important;
+  font-size: 0.68em !important;
+}
+.dnd55-sheet.dnd55-print-version .dnd55-action-item span {
+  color: #222222 !important;
+  font-size: 0.66em !important;
+}
+
+/* Attunement */
+.dnd55-sheet.dnd55-print-version .dnd55-attunement-row {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: 2px 5px !important;
+}
+.dnd55-sheet.dnd55-print-version .dnd55-att-lbl {
+  color: #333333 !important;
+  font-size: 0.68em !important;
+}
+
+/* Column 3: Features, Coins, RP */
+.dnd55-sheet.dnd55-print-version .dnd55-feat-item {
+  padding: 2px 4px !important;
+  border-bottom: 0.5px solid #f0f0f0 !important;
+}
+.dnd55-sheet.dnd55-print-version .dnd55-feat-head {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  margin-bottom: 1px !important;
+}
+.dnd55-sheet.dnd55-print-version .dnd55-feat-title {
+  color: #111111 !important;
+  font-weight: 700 !important;
+  font-size: 0.70em !important;
+}
+.dnd55-sheet.dnd55-print-version .dnd55-feat-en {
+  color: #444444 !important;
+  font-style: italic !important;
+  font-size: 0.82em !important;
+}
+.dnd55-sheet.dnd55-print-version .dnd55-feat-desc {
+  color: #222222 !important;
+  font-size: 0.65em !important;
+  line-height: 1.2 !important;
+}
+.dnd55-sheet.dnd55-print-version .dnd55-uses-lbl {
+  color: #555555 !important;
+  font-size: 0.64em !important;
+}
+
+/* Coins - GUARANTEED 5 COINS WITHIN BOX */
+.dnd55-sheet.dnd55-print-version .dnd55-coins-grid {
+  display: grid !important;
+  grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+  gap: 2px !important;
+  padding: 2px 3px !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
+  margin: 0 0 3px 0 !important;
+}
+.dnd55-sheet.dnd55-print-version .dnd55-coin-cell {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  height: auto !important;
+  border: 1px solid #111111 !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+  border-radius: 2px !important;
+  padding: 1px 0 !important;
+  margin: 0 !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+.dnd55-sheet.dnd55-print-version .dnd55-coin-lbl {
+  background: #f4f4f4 !important;
+  border-bottom: 0.75px solid #111111 !important;
+  color: #222222 !important;
+  font-weight: 700 !important;
+  font-size: 0.58em !important;
+  width: 100% !important;
+  text-align: center !important;
+  padding: 1px 0 !important;
+  margin: 0 !important;
+}
+.dnd55-sheet.dnd55-print-version .dnd55-coin-val {
+  color: #111111 !important;
+  font-weight: 800 !important;
+  font-size: 0.76em !important;
+  text-align: center !important;
+  padding: 2px 0 1px 0 !important;
+  margin: 0 !important;
+}
+.dnd55-sheet.dnd55-print-version .dnd55-eq-box {
+  background: #ffffff !important;
+  border: 0.75px solid #cccccc !important;
+  color: #111111 !important;
+  padding: 3px 5px !important;
+  margin: 2px 4px 4px 4px !important;
+  border-radius: 2px !important;
+  font-size: 0.64em !important;
+  line-height: 1.2 !important;
+}
+
+/* Roleplay */
+.dnd55-sheet.dnd55-print-version .dnd55-rp-item {
+  font-size: 0.65em !important;
+  line-height: 1.2 !important;
+}
+.dnd55-sheet.dnd55-print-version .dnd55-rp-lbl {
+  color: #111111 !important;
+  font-weight: 700 !important;
+}
+.dnd55-sheet.dnd55-print-version .dnd55-rp-val {
+  color: #222222 !important;
+}
+
+
+/* 2. Media Print for Export to PDF and window.print() */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 6mm 8mm;
+  }
+
+  html, body {
+    background: #ffffff !important;
+    color: #111111 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Hide Obsidian app UI */
+  .workspace-ribbon,
+  .workspace-split,
+  .view-header,
+  .status-bar,
+  .dnd55-topbar,
+  .dnd55-nav-tabs,
+  .dnd55-hp-btn,
+  .dnd55-print-modal-bar {
+    display: none !important;
+  }
+
+  .dnd55-print-modal-overlay {
+    position: static !important;
+    background: #ffffff !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+    display: block !important;
+  }
+
+  .dnd55-print-stage {
+    box-shadow: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    border: none !important;
+  }
+
+
+.dnd55-sheet {
+  background: #ffffff !important;
+  color: #111111 !important;
+  border: 1.2px solid #111111 !important;
+  border-radius: 3px !important;
+  box-shadow: none !important;
+  padding: 4px 6px !important;
+  margin: 0 auto !important;
+  max-width: 100% !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  overflow: visible !important;
+  font-family: "Cormorant Garamond", "PT Serif", "EB Garamond", Georgia, serif !important;
+  -webkit-font-smoothing: antialiased;
+}
+
+.dnd55-sheet .dnd55-topbar,
+.dnd55-sheet .dnd55-nav-tabs,
+.dnd55-sheet .dnd55-hp-btn,
+.dnd55-sheet .dnd55-tool-btn {
+  display: none !important;
+}
+
+/* Header */
+.dnd55-sheet .dnd55-header {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: flex-start !important;
+  border-bottom: 1.2px solid #111111 !important;
+  padding-bottom: 4px !important;
+  margin-bottom: 4px !important;
+  background: transparent !important;
+  gap: 10px !important;
+  overflow: visible !important;
+  height: auto !important;
+  min-height: 0 !important;
+}
+
+.dnd55-sheet .dnd55-portrait-frame {
+  border: 1.2px solid #111111 !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+  width: 74px !important;
+  min-width: 74px !important;
+  height: 90px !important;
+  overflow: hidden !important;
+}
+.dnd55-sheet .dnd55-portrait-corner {
+  border-color: #111111 !important;
+  border-width: 1.5px !important;
+  width: 8px !important;
+  height: 8px !important;
+}
+.dnd55-sheet .dnd55-cameo-icon {
+  fill: #333333 !important;
+  width: 36px !important;
+  height: 36px !important;
+}
+.dnd55-sheet .dnd55-portrait-placeholder span {
+  color: #444444 !important;
+  font-weight: 700 !important;
+  font-size: 0.65em !important;
+}
+
+.dnd55-sheet .dnd55-header-center {
+  flex: 1.1 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-start !important;
+  gap: 2px !important;
+  min-width: 0 !important;
+}
+.dnd55-sheet .dnd55-char-name-banner {
+  margin-bottom: 2px !important;
+}
+.dnd55-sheet .dnd55-char-name {
+  color: #111111 !important;
+  text-shadow: none !important;
+  border-bottom: 1.2px solid #111111 !important;
+  width: fit-content !important;
+  padding-bottom: 1px !important;
+  font-size: 1.42em !important;
+  line-height: 1.05 !important;
+}
+.dnd55-sheet .dnd55-char-sub {
+  color: #333333 !important;
+  font-style: italic !important;
+  font-size: 0.78em !important;
+}
+
+.dnd55-sheet .dnd55-quick-badges {
+  display: flex !important;
+  gap: 5px !important;
+  margin-top: 3px !important;
+}
+.dnd55-sheet .dnd55-badge-pill {
+  border: 1px solid #111111 !important;
+  background: #ffffff !important;
+  color: #111111 !important;
+  box-shadow: none !important;
+  font-weight: 700 !important;
+  padding: 1px 6px !important;
+  font-size: 0.69em !important;
+}
+/* Print economy: inspiration is an empty diamond checkbox */
+.dnd55-sheet .dnd55-badge-pill.active,
+.dnd55-sheet .dnd55-badge-pill {
+  background: #ffffff !important;
+  color: #111111 !important;
+  border: 1px solid #111111 !important;
+}
+.dnd55-sheet .dnd55-insp-txt {
+  color: #111111 !important;
+}
+
+.dnd55-sheet .dnd55-identity-box {
+  border: 1px solid #111111 !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+  display: grid !important;
+  grid-template-columns: 1.2fr 1.1fr 0.9fr !important;
+  flex: 1.4 !important;
+  height: auto !important;
+}
+.dnd55-sheet .dnd55-identity-cell {
+  border-bottom: 1px solid #e0e0e0 !important;
+  border-right: 1px solid #e0e0e0 !important;
+  padding: 2px 4px !important;
+}
+.dnd55-sheet .dnd55-identity-lbl {
+  color: #555555 !important;
+  font-weight: 700 !important;
+  font-size: 0.60em !important;
+  margin-bottom: 1px !important;
+}
+.dnd55-sheet .dnd55-identity-val {
+  color: #111111 !important;
+  font-weight: 700 !important;
+  font-size: 0.75em !important;
+  line-height: 1.15 !important;
+}
+
+/* 3-Column Canonical Layout - STRICTLY PRESERVED & SIZED FOR A4 */
+.dnd55-sheet .dnd55-columns {
+  display: grid !important;
+  grid-template-columns: 28% 41% 31% !important;
+  gap: 6px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  overflow: visible !important;
+}
+.dnd55-sheet .dnd55-col:nth-child(3) {
+  grid-column: auto !important;
+}
+.dnd55-sheet .dnd55-col {
+  display: flex !important;
+  flex-direction: column !important;
+  min-width: 0 !important;
+  gap: 0 !important;
+  overflow: visible !important;
+}
+
+/* All Content Boxes */
+.dnd55-sheet .dnd55-box {
+  border: 1px solid #111111 !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+  border-radius: 2px !important;
+  margin-bottom: 3.5px !important;
+  break-inside: avoid !important;
+  page-break-inside: avoid !important;
+  overflow: visible !important;
+}
+.dnd55-sheet .dnd55-box-header {
+  background: #f4f4f4 !important;
+  color: #111111 !important;
+  border-bottom: 1px solid #111111 !important;
+  font-family: "Cormorant SC", "Playfair Display SC", "PT Serif Caption", Georgia, serif !important;
+  font-variant: small-caps !important;
+  letter-spacing: 0.08em !important;
+  font-weight: 700 !important;
+  font-size: 0.70em !important;
+  padding: 2px 5px !important;
+  text-shadow: none !important;
+  box-shadow: none !important;
+}
+
+/* Column 1: Abilities */
+.dnd55-sheet .dnd55-ability-card {
+  border: 1px solid #111111 !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+  margin-bottom: 3px !important;
+  break-inside: avoid !important;
+}
+.dnd55-sheet .dnd55-ab-head {
+  background: #f6f6f6 !important;
+  border-bottom: 1px solid #111111 !important;
+  color: #111111 !important;
+  padding: 1.5px 3px !important;
+  display: grid !important;
+  grid-template-columns: 1fr 22px 20px !important;
+  gap: 2px !important;
+  align-items: center !important;
+  overflow: visible !important;
+}
+.dnd55-sheet .dnd55-ab-title {
+  color: #111111 !important;
+  font-weight: 700 !important;
+  font-size: 0.53em !important;
+  letter-spacing: -0.01em !important;
+  white-space: nowrap !important;
+}
+.dnd55-sheet .dnd55-ab-mod {
+  color: #111111 !important;
+  font-weight: 800 !important;
+  font-size: 0.82em !important;
+  font-variant-numeric: tabular-nums !important;
+  text-align: center !important;
+}
+.dnd55-sheet .dnd55-ab-score-oval {
+  border: 1px solid #111111 !important;
+  background: #ffffff !important;
+  color: #111111 !important;
+  font-weight: 700 !important;
+  padding: 0 1px !important;
+  font-size: 0.65em !important;
+  border-radius: 6px !important;
+  text-align: center !important;
+}
+
+.dnd55-sheet .dnd55-skill-row {
+  border-bottom: 0.5px solid #eeeeee !important;
+  color: #111111 !important;
+  padding: 1.5px 4px !important;
+  display: flex !important;
+  align-items: center !important;
+}
+.dnd55-sheet .dnd55-skill-row.is-save {
+  background: #f9f9f9 !important;
+  font-weight: 700 !important;
+  border-bottom: 1px solid #cccccc !important;
+}
+.dnd55-sheet .dnd55-skill-dot {
+  color: #555555 !important;
+  font-size: 0.78em !important;
+  width: 12px !important;
+}
+.dnd55-sheet .dnd55-skill-dot.prof {
+  color: #111111 !important;
+  font-weight: 900 !important;
+}
+.dnd55-sheet .dnd55-skill-name {
+  color: #111111 !important;
+  font-size: 0.68em !important;
+  flex: 1 !important;
+}
+.dnd55-sheet .dnd55-skill-bonus {
+  color: #111111 !important;
+  font-weight: 700 !important;
+  font-size: 0.70em !important;
+  font-variant-numeric: tabular-nums !important;
+}
+
+.dnd55-sheet .dnd55-passive-ribbon {
+  border: 1px solid #111111 !important;
+  background: #f6f6f6 !important;
+  color: #111111 !important;
+  box-shadow: none !important;
+  padding: 2px 6px !important;
+  margin-top: 3px !important;
+}
+.dnd55-sheet .dnd55-passive-lbl {
+  color: #111111 !important;
+  font-weight: 700 !important;
+  font-size: 0.68em !important;
+}
+.dnd55-sheet .dnd55-passive-val {
+  border: 1px solid #111111 !important;
+  background: #ffffff !important;
+  color: #111111 !important;
+  box-shadow: none !important;
+  font-weight: 800 !important;
+  font-size: 0.75em !important;
+  padding: 1px 4px !important;
+}
+
+.dnd55-sheet .dnd55-strong-lbl {
+  color: #111111 !important;
+  font-weight: 700 !important;
+  font-size: 0.70em !important;
+}
+
+/* Column 2: Combat Hub */
+.dnd55-sheet .dnd55-vitals-trio {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr 1fr !important;
+  gap: 5px !important;
+  margin-bottom: 3.5px !important;
+  break-inside: avoid !important;
+}
+
+.dnd55-sheet .dnd55-shield-outer-path {
+  stroke: #111111 !important;
+  stroke-width: 2.5px !important;
+  fill: #ffffff !important;
+  filter: none !important;
+}
+.dnd55-sheet .dnd55-shield-inner-path {
+  stroke: #111111 !important;
+  stroke-width: 1px !important;
+  stroke-dasharray: none !important;
+  fill: #ffffff !important;
+}
+.dnd55-sheet .dnd55-shield-val {
+  color: #111111 !important;
+  text-shadow: none !important;
+  font-weight: 900 !important;
+  font-size: 1.8em !important;
+}
+.dnd55-sheet .dnd55-shield-lbl, 
+.dnd55-sheet .dnd55-shield-sub {
+  color: #222222 !important;
+  text-shadow: none !important;
+  font-weight: 700 !important;
+  font-size: 0.65em !important;
+}
+
+.dnd55-sheet .dnd55-plaque-outer-poly {
+  stroke: #111111 !important;
+  stroke-width: 2px !important;
+  fill: #ffffff !important;
+  filter: none !important;
+}
+.dnd55-sheet .dnd55-plaque-inner-poly {
+  stroke: #777777 !important;
+  stroke-width: 0.8px !important;
+  stroke-dasharray: none !important;
+  fill: #ffffff !important;
+}
+.dnd55-sheet .dnd55-plaque-val {
+  color: #111111 !important;
+  text-shadow: none !important;
+  font-weight: 800 !important;
+  font-size: 1.45em !important;
+}
+.dnd55-sheet .dnd55-plaque-val small {
+  color: #111111 !important;
+  font-weight: 700 !important;
+  font-size: 0.58em !important;
+}
+.dnd55-sheet .dnd55-plaque-lbl {
+  color: #222222 !important;
+  text-shadow: none !important;
+  font-weight: 700 !important;
+  font-size: 0.62em !important;
+}
+
+/* HP Box */
+.dnd55-sheet .dnd55-hp-box {
+  border: 1px solid #111111 !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+  break-inside: avoid !important;
+}
+.dnd55-sheet .dnd55-hp-top {
+  background: #f6f6f6 !important;
+  border-bottom: 1px solid #111111 !important;
+  padding: 2px 6px !important;
+}
+.dnd55-sheet .dnd55-hp-title {
+  color: #111111 !important;
+  text-shadow: none !important;
+  font-weight: 700 !important;
+  font-size: 0.70em !important;
+}
+.dnd55-sheet .dnd55-hp-max {
+  color: #333333 !important;
+  font-weight: 700 !important;
+  font-size: 0.68em !important;
+}
+.dnd55-sheet .dnd55-hp-cur-val {
+  color: #111111 !important;
+  text-shadow: none !important;
+  font-size: 1.8em !important;
+  font-weight: 900 !important;
+  padding: 2px 0 !important;
+}
+.dnd55-sheet .dnd55-hd-death-grid {
+  border-top: 1px solid #111111 !important;
+  padding: 3px 6px !important;
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+}
+.dnd55-sheet .dnd55-death-track-lbl, 
+.dnd55-sheet .dnd55-sub-hdr {
+  color: #444444 !important;
+  font-weight: 700 !important;
+  font-size: 0.62em !important;
+}
+.dnd55-sheet .dnd55-death-circle {
+  border: 1.2px solid #111111 !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+  width: 10px !important;
+  height: 10px !important;
+}
+.dnd55-sheet .dnd55-death-circles-line::before {
+  background: #666666 !important;
+}
+/* Pips in print: EMPTY circles for pencil marking */
+.dnd55-sheet .dnd55-pip-slot {
+  border: 1.2px solid #111111 !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+  width: 9px !important;
+  height: 9px !important;
+  border-radius: 50% !important;
+}
+.dnd55-sheet .dnd55-pip-slot.active {
+  border: 1.2px solid #111111 !important;
+  background: #ffffff !important;
+}
+
+/* Attacks Table */
+.dnd55-sheet .dnd55-table-wrap {
+  overflow: visible !important;
+}
+.dnd55-sheet .dnd55-atk-table {
+  width: 100% !important;
+  table-layout: auto !important;
+}
+.dnd55-sheet .dnd55-atk-table th {
+  background: #f4f4f4 !important;
+  color: #111111 !important;
+  border-bottom: 1px solid #111111 !important;
+  font-weight: 700 !important;
+  padding: 2px 2px !important;
+  font-size: 0.64em !important;
+}
+.dnd55-sheet .dnd55-atk-table td {
+  border-bottom: 0.5px solid #e0e0e0 !important;
+  color: #111111 !important;
+  padding: 2px 2px !important;
+}
+.dnd55-sheet .dnd55-weapon-name {
+  color: #111111 !important;
+  font-size: 0.68em !important;
+  white-space: normal !important;
+  word-break: normal !important;
+}
+.dnd55-sheet .dnd55-weapon-range {
+  font-size: 0.64em !important;
+  white-space: nowrap !important;
+}
+.dnd55-sheet .dnd55-badge-stat {
+  border: 0.75px solid #777777 !important;
+  background: #ffffff !important;
+  color: #111111 !important;
+  box-shadow: none !important;
+  font-weight: 700 !important;
+  font-size: 0.68em !important;
+  padding: 1px 3px !important;
+}
+.dnd55-sheet .dnd55-badge-atk {
+  border: 1px solid #111111 !important;
+  border-radius: 50% !important;
+  width: 18px !important;
+  height: 18px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: #ffffff !important;
+  color: #111111 !important;
+  box-shadow: none !important;
+  font-weight: 800 !important;
+  font-size: 0.70em !important;
+}
+.dnd55-sheet .dnd55-mastery-tag {
+  border: 0.75px solid #666666 !important;
+  background: #ffffff !important;
+  color: #111111 !important;
+  font-size: 0.62em !important;
+  padding: 1px 3px !important;
+}
+
+/* Actions in Combat Box */
+.dnd55-sheet .dnd55-action-item {
+  background: #ffffff !important;
+  border: 0.75px solid #e0e0e0 !important;
+  border-radius: 2px !important;
+  padding: 2px 4px !important;
+  margin-bottom: 2px !important;
+}
+.dnd55-sheet .dnd55-action-label {
+  color: #111111 !important;
+  font-size: 0.68em !important;
+}
+.dnd55-sheet .dnd55-action-item span {
+  color: #222222 !important;
+  font-size: 0.66em !important;
+}
+
+/* Attunement */
+.dnd55-sheet .dnd55-attunement-row {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: 2px 5px !important;
+}
+.dnd55-sheet .dnd55-att-lbl {
+  color: #333333 !important;
+  font-size: 0.68em !important;
+}
+
+/* Column 3: Features, Coins, RP */
+.dnd55-sheet .dnd55-feat-item {
+  padding: 2px 4px !important;
+  border-bottom: 0.5px solid #f0f0f0 !important;
+}
+.dnd55-sheet .dnd55-feat-head {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  margin-bottom: 1px !important;
+}
+.dnd55-sheet .dnd55-feat-title {
+  color: #111111 !important;
+  font-weight: 700 !important;
+  font-size: 0.70em !important;
+}
+.dnd55-sheet .dnd55-feat-en {
+  color: #444444 !important;
+  font-style: italic !important;
+  font-size: 0.82em !important;
+}
+.dnd55-sheet .dnd55-feat-desc {
+  color: #222222 !important;
+  font-size: 0.65em !important;
+  line-height: 1.2 !important;
+}
+.dnd55-sheet .dnd55-uses-lbl {
+  color: #555555 !important;
+  font-size: 0.64em !important;
+}
+
+/* Coins - GUARANTEED 5 COINS WITHIN BOX */
+.dnd55-sheet .dnd55-coins-grid {
+  display: grid !important;
+  grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+  gap: 2px !important;
+  padding: 2px 3px !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
+  margin: 0 0 3px 0 !important;
+}
+.dnd55-sheet .dnd55-coin-cell {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  height: auto !important;
+  border: 1px solid #111111 !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+  border-radius: 2px !important;
+  padding: 1px 0 !important;
+  margin: 0 !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+.dnd55-sheet .dnd55-coin-lbl {
+  background: #f4f4f4 !important;
+  border-bottom: 0.75px solid #111111 !important;
+  color: #222222 !important;
+  font-weight: 700 !important;
+  font-size: 0.58em !important;
+  width: 100% !important;
+  text-align: center !important;
+  padding: 1px 0 !important;
+  margin: 0 !important;
+}
+.dnd55-sheet .dnd55-coin-val {
+  color: #111111 !important;
+  font-weight: 800 !important;
+  font-size: 0.76em !important;
+  text-align: center !important;
+  padding: 2px 0 1px 0 !important;
+  margin: 0 !important;
+}
+.dnd55-sheet .dnd55-eq-box {
+  background: #ffffff !important;
+  border: 0.75px solid #cccccc !important;
+  color: #111111 !important;
+  padding: 3px 5px !important;
+  margin: 2px 4px 4px 4px !important;
+  border-radius: 2px !important;
+  font-size: 0.64em !important;
+  line-height: 1.2 !important;
+}
+
+/* Roleplay */
+.dnd55-sheet .dnd55-rp-item {
+  font-size: 0.65em !important;
+  line-height: 1.2 !important;
+}
+.dnd55-sheet .dnd55-rp-lbl {
+  color: #111111 !important;
+  font-weight: 700 !important;
+}
+.dnd55-sheet .dnd55-rp-val {
+  color: #222222 !important;
+}
+
+}
+
+/* Modal UI styles */
+.dnd55-print-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(18, 16, 15, 0.85);
+  backdrop-filter: blur(8px);
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  align-items: center;
+  padding: 16px;
+}
+
+.dnd55-print-modal-bar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 900px;
+  background: #24201c;
+  border: 1.5px solid #b08d3e;
+  border-radius: 4px;
+  padding: 8px 16px;
+  margin-bottom: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+  box-sizing: border-box;
+}
+
+.dnd55-print-bar-title {
+  font-family: "Cormorant SC", "Playfair Display SC", "PT Serif Caption", Georgia, serif;
+  font-variant: small-caps;
+  font-size: 1.1em;
+  font-weight: 700;
+  color: #e8cf8f;
+  letter-spacing: 0.06em;
+}
+
+.dnd55-print-bar-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.dnd55-print-btn-primary {
+  background: linear-gradient(180deg, #7b1e1e 0%, #541414 100%);
+  border: 1.2px solid #e8cf8f;
+  color: #f6f0dd;
+  font-family: "Cormorant SC", Georgia, serif;
+  font-variant: small-caps;
+  font-weight: 700;
+  font-size: 0.85em;
+  letter-spacing: 0.08em;
+  padding: 5px 14px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.dnd55-print-btn-primary:hover {
+  background: linear-gradient(180deg, #9e1b1b 0%, #7b1e1e 100%);
+  transform: translateY(-1px);
+}
+
+.dnd55-print-btn-secondary {
+  background: #363029;
+  border: 1px solid rgba(232, 207, 143, 0.5);
+  color: #dcddde;
+  font-family: "Cormorant SC", Georgia, serif;
+  font-variant: small-caps;
+  font-size: 0.82em;
+  padding: 5px 12px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+.dnd55-print-btn-secondary:hover {
+  background: #4a4238;
+}
+
+.dnd55-print-stage {
+  width: 100%;
+  max-width: 900px;
+  background: #ffffff;
+  border: 1px solid #999999;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+  padding: 8px;
+  box-sizing: border-box;
+}

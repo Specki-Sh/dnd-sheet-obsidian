@@ -670,6 +670,57 @@ module.exports = class DnD55eSheetPlugin extends Plugin {
     el.style.color = "";
   }
 
+  openPrintModal(data, ctx, source) {
+    const existing = document.querySelector(".dnd55-print-modal-overlay");
+    if (existing) existing.remove();
+
+    document.body.classList.add("dnd55-printing-active");
+
+    const overlay = document.createElement("div");
+    overlay.className = "dnd55-print-modal-overlay";
+
+    const topbar = overlay.createDiv({ cls: "dnd55-print-modal-bar" });
+    const titleBox = topbar.createDiv({ cls: "dnd55-print-bar-title" });
+    titleBox.createSpan({ text: `⎙ Версия для печати A4: ${data.name || "Персонаж"}` });
+
+    const actions = topbar.createDiv({ cls: "dnd55-print-bar-actions" });
+
+    const printBtn = actions.createEl("button", {
+      cls: "dnd55-print-btn-primary",
+      text: "🖨️ Распечатать / Сохранить в PDF"
+    });
+    printBtn.onclick = () => {
+      window.print();
+    };
+
+    const closeBtn = actions.createEl("button", {
+      cls: "dnd55-print-btn-secondary",
+      text: "✕ Закрыть (Esc)"
+    });
+
+    const closeOverlay = () => {
+      document.removeEventListener("keydown", escHandler);
+      document.body.classList.remove("dnd55-printing-active");
+      overlay.remove();
+    };
+
+    const escHandler = (e) => {
+      if (e.key === "Escape") {
+        e.stopPropagation();
+        closeOverlay();
+      }
+    };
+    document.addEventListener("keydown", escHandler);
+    closeBtn.onclick = closeOverlay;
+
+    const stage = overlay.createDiv({ cls: "dnd55-print-stage" });
+    const sheet = stage.createDiv({ cls: "dnd55-sheet dnd55-print-version" });
+
+    this.renderSheetContent(data, sheet, ctx, source, false);
+
+    document.body.appendChild(overlay);
+  }
+
   openFullscreen(data, ctx, source) {
     const existing = document.querySelector(".dnd55-fs-overlay");
     if (existing) existing.remove();
@@ -684,6 +735,11 @@ module.exports = class DnD55eSheetPlugin extends Plugin {
     titleBox.createSpan({ text: ` • ${data.species || "Гоблин"} • ${data.class || ""}`, cls: "dnd55-fs-title-sub" });
 
     const actions = topbar.createDiv({ cls: "dnd55-fs-actions" });
+
+    const printBtn = actions.createEl("button", { cls: "dnd55-tool-btn dnd55-btn-print", text: "⎙ Печать / PDF" });
+    printBtn.onclick = () => {
+      this.openPrintModal(data, ctx, source);
+    };
 
     const editBtn = actions.createEl("button", { cls: "dnd55-tool-btn dnd55-btn-edit", text: "Редактировать" });
     editBtn.onclick = () => {
@@ -756,6 +812,11 @@ module.exports = class DnD55eSheetPlugin extends Plugin {
       const isScroll = sheet.hasClass("dnd55-force-scroll");
       scrollBtn.setText(isScroll ? "⊞ Адаптивно" : "↔ 3 колонки");
       scrollBtn.toggleClass("active", isScroll);
+    };
+
+    const printBtn = toolbar.createEl("button", { cls: "dnd55-tool-btn dnd55-btn-print", text: "⎙ Печать / PDF" });
+    printBtn.onclick = () => {
+      this.openPrintModal(data, ctx, source);
     };
 
     const fsBtn = toolbar.createEl("button", { cls: "dnd55-tool-btn", text: "⛶ Полный экран" });
