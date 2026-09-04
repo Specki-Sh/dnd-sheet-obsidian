@@ -572,12 +572,12 @@
 .dnd55-columns,
 .dnd55-grid {
   display: grid;
-  grid-template-columns: minmax(260px, 0.95fr) minmax(320px, 1.15fr) minmax(280px, 0.95fr);
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.15fr) minmax(0, 0.95fr);
   gap: 16px;
   align-items: start;
 }
 
-@container dndsheet (max-width: 920px) {
+@container dndsheet (max-width: 780px) {
   .dnd55-columns,
   .dnd55-grid {
     grid-template-columns: 1fr 1fr;
@@ -586,7 +586,7 @@
     grid-column: span 2;
   }
 }
-@container dndsheet (max-width: 620px) {
+@container dndsheet (max-width: 540px) {
   .dnd55-columns,
   .dnd55-grid {
     grid-template-columns: 1fr;
@@ -596,7 +596,7 @@
   }
 }
 
-@media (max-width: 920px) {
+@media (max-width: 780px) {
   .dnd55-columns,
   .dnd55-grid {
     grid-template-columns: 1fr 1fr;
@@ -605,7 +605,7 @@
     grid-column: span 2;
   }
 }
-@media (max-width: 620px) {
+@media (max-width: 540px) {
   .dnd55-columns,
   .dnd55-grid {
     grid-template-columns: 1fr;
@@ -2275,7 +2275,7 @@ textarea.dnd55-m-input {
 /* 3-Column Canonical Layout - STRICTLY PRESERVED & SIZED FOR A4 */
 .dnd55-sheet.dnd55-print-version .dnd55-columns {
   display: grid !important;
-  grid-template-columns: 28% 41% 31% !important;
+  grid-template-columns: 27fr 40fr 33fr !important;
   gap: 6px !important;
   width: 100% !important;
   box-sizing: border-box !important;
@@ -2940,7 +2940,7 @@ textarea.dnd55-m-input {
 /* 3-Column Canonical Layout - STRICTLY PRESERVED & SIZED FOR A4 */
 .dnd55-sheet .dnd55-columns {
   display: grid !important;
-  grid-template-columns: 28% 41% 31% !important;
+  grid-template-columns: 27fr 40fr 33fr !important;
   gap: 6px !important;
   width: 100% !important;
   box-sizing: border-box !important;
