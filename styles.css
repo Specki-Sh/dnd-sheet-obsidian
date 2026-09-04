@@ -1,25 +1,36 @@
 /* ==========================================================================
    AUTHENTIC D&D 5.5e (2024 Player's Handbook) CHARACTER SHEET
-   Aesthetic Dark Fantasy Theme: Crimson & Antique Gold Accents,
-   Classic Heraldic Crests, Fluid Responsive Layout & Full Offline Support
+   Pure Obsidian Theme Integration — Adapts natively to light/dark themes,
+   custom fonts, and colors while delivering the canonical D&D sheet layout.
    ========================================================================== */
 
-/* @import or fallback font variables */
 :root {
-  --dnd55-font-serif: "Cinzel", "Modesto", "Palatino", "Georgia", "Times New Roman", serif;
-  --dnd55-font-sans: var(--font-text, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
-  --dnd55-crimson: #9c2317;
-  --dnd55-crimson-dark: #66120a;
-  --dnd55-crimson-glow: rgba(156, 35, 23, 0.35);
-  --dnd55-gold: #c59b4c;
-  --dnd55-gold-bright: #e5be6e;
-  --dnd55-gold-dark: #8c6b2d;
-  --dnd55-bg-sheet: #151518;
-  --dnd55-bg-card: #1d1d23;
-  --dnd55-bg-card-alt: #24242c;
-  --dnd55-border-subtle: #363230;
-  --dnd55-text-main: #f5f1e8;
-  --dnd55-text-muted: #aba496;
+  /* Inherit Obsidian's Native Theme Palette */
+  --dnd55-bg-sheet: var(--background-secondary);
+  --dnd55-bg-card: var(--background-primary);
+  --dnd55-bg-card-alt: var(--background-secondary-alt);
+  --dnd55-border-subtle: var(--background-modifier-border);
+  --dnd55-border-hover: var(--background-modifier-border-hover, var(--text-accent));
+  --dnd55-border-focus: var(--interactive-accent);
+  
+  --dnd55-text-main: var(--text-normal);
+  --dnd55-text-muted: var(--text-muted);
+  --dnd55-text-faint: var(--text-faint);
+  --dnd55-text-accent: var(--text-accent);
+  --dnd55-text-on-accent: var(--text-on-accent, #ffffff);
+
+  --dnd55-accent: var(--interactive-accent);
+  --dnd55-accent-hover: var(--interactive-accent-hover);
+
+  --dnd55-font-serif: var(--font-interface);
+  --dnd55-font-sans: var(--font-text);
+
+  --dnd55-radius-s: var(--radius-s, 4px);
+  --dnd55-radius-m: var(--radius-m, 6px);
+  --dnd55-radius-l: var(--radius-l, 8px);
+
+  --dnd55-shadow-s: var(--shadow-s, 0 1px 3px rgba(0, 0, 0, 0.12));
+  --dnd55-shadow-m: var(--shadow-m, 0 3px 8px rgba(0, 0, 0, 0.16));
 }
 
 /* --------------------------------------------------------------------------
@@ -34,11 +45,11 @@
   font-family: var(--dnd55-font-sans);
   color: var(--dnd55-text-main);
   background: var(--dnd55-bg-sheet);
-  border: 2px solid var(--dnd55-crimson);
-  border-radius: 8px;
+  border: 1.5px solid var(--dnd55-border-subtle);
+  border-radius: var(--dnd55-radius-l);
   padding: 16px;
   margin: 1.5em 0;
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.5), inset 0 0 16px rgba(0, 0, 0, 0.3);
+  box-shadow: var(--dnd55-shadow-m);
   position: relative;
   overflow: hidden;
   word-break: break-word;
@@ -69,13 +80,12 @@
   font-size: 0.72em;
   font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 1.2px;
-  color: var(--dnd55-gold);
-  background: linear-gradient(135deg, rgba(156, 35, 23, 0.25), rgba(30, 20, 20, 0.6));
-  border: 1px solid var(--dnd55-gold-dark);
-  border-radius: 4px;
+  letter-spacing: 1px;
+  color: var(--dnd55-text-accent);
+  background: var(--dnd55-bg-card-alt);
+  border: 1px solid var(--dnd55-border-subtle);
+  border-radius: var(--dnd55-radius-s);
   padding: 3px 8px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
   user-select: none;
 }
 
@@ -89,8 +99,8 @@
 
 .dnd55-tool-btn {
   background: var(--dnd55-bg-card);
-  border: 1.5px solid var(--dnd55-border-subtle);
-  border-radius: 5px;
+  border: 1px solid var(--dnd55-border-subtle);
+  border-radius: var(--dnd55-radius-s);
   padding: 4px 10px;
   font-size: 0.78em;
   font-weight: 700;
@@ -105,26 +115,25 @@
 }
 
 .dnd55-tool-btn:hover {
-  border-color: var(--dnd55-gold);
-  color: var(--dnd55-gold-bright);
-  background: var(--dnd55-bg-card-alt);
+  border-color: var(--dnd55-border-hover);
+  background: var(--background-modifier-hover);
 }
 
 .dnd55-tool-btn.active {
-  background: var(--dnd55-crimson) !important;
-  color: #fff !important;
-  border-color: var(--dnd55-gold) !important;
+  background: var(--dnd55-accent) !important;
+  color: var(--dnd55-text-on-accent) !important;
+  border-color: var(--dnd55-accent) !important;
 }
 
 .dnd55-btn-edit {
-  border-color: var(--dnd55-crimson);
-  color: var(--dnd55-gold-bright);
-  background: rgba(156, 35, 23, 0.15);
+  border-color: var(--dnd55-accent);
+  color: var(--dnd55-text-accent);
+  background: var(--dnd55-bg-card);
 }
+
 .dnd55-btn-edit:hover {
-  background: var(--dnd55-crimson);
-  color: #fff;
-  border-color: var(--dnd55-gold);
+  background: var(--dnd55-accent);
+  color: var(--dnd55-text-on-accent);
 }
 
 /* --------------------------------------------------------------------------
@@ -142,7 +151,7 @@
 .dnd55-nav-tab {
   background: var(--dnd55-bg-card);
   border: 1px solid var(--dnd55-border-subtle);
-  border-radius: 12px;
+  border-radius: 14px;
   padding: 3px 10px;
   font-size: 0.74em;
   font-weight: 600;
@@ -153,9 +162,9 @@
 }
 
 .dnd55-nav-tab:hover {
-  background: var(--dnd55-bg-card-alt);
+  background: var(--background-modifier-hover);
   color: var(--dnd55-text-main);
-  border-color: var(--dnd55-gold);
+  border-color: var(--dnd55-border-hover);
 }
 
 /* --------------------------------------------------------------------------
@@ -165,7 +174,7 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
-  border-bottom: 2px solid var(--dnd55-crimson);
+  border-bottom: 2px solid var(--dnd55-border-subtle);
   padding-bottom: 14px;
   margin-bottom: 16px;
   position: relative;
@@ -180,27 +189,27 @@
 
 .dnd55-name-box {
   flex: 1 1 240px;
-  background: linear-gradient(135deg, #241414 0%, #171415 100%);
-  border: 2px solid var(--dnd55-crimson);
-  border-radius: 6px;
+  background: var(--dnd55-bg-card);
+  border: 1.5px solid var(--dnd55-border-subtle);
+  border-left: 5px solid var(--dnd55-accent);
+  border-radius: var(--dnd55-radius-m);
   padding: 12px 16px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   min-width: 0;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  box-shadow: var(--dnd55-shadow-s);
 }
 
 .dnd55-name-title {
   font-family: var(--dnd55-font-serif);
-  font-size: 1.7em;
+  font-size: 1.55em;
   font-weight: 800;
-  color: var(--dnd55-gold-bright);
-  line-height: 1.15;
+  color: var(--dnd55-text-main);
+  line-height: 1.2;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 0.8px;
   word-break: break-word;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.6);
 }
 
 .dnd55-name-sub {
@@ -208,7 +217,7 @@
   color: var(--dnd55-text-muted);
   text-transform: uppercase;
   font-weight: 700;
-  margin-top: 3px;
+  margin-top: 4px;
   letter-spacing: 0.5px;
 }
 
@@ -221,15 +230,15 @@
 }
 
 .dnd55-meta-item {
-  background: linear-gradient(145deg, #202027 0%, #18181e 100%);
+  background: var(--dnd55-bg-card);
   border: 1px solid var(--dnd55-border-subtle);
-  border-radius: 5px;
+  border-radius: var(--dnd55-radius-s);
   padding: 6px 8px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   min-width: 0;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.25);
+  box-shadow: var(--dnd55-shadow-s);
 }
 
 .dnd55-meta-label {
@@ -278,7 +287,7 @@
   .dnd55-grid {
     display: grid;
     grid-template-columns: 1fr 1.15fr 1fr;
-    gap: 18px;
+    gap: 16px;
   }
 }
 
@@ -290,7 +299,7 @@
 }
 
 /* --------------------------------------------------------------------------
-   FORCE SCROLL / SLIDER MODE (3 Колонки рядом с горизонтальным скроллом)
+   FORCE SCROLL / SLIDER MODE (3 Колонки рядом со скроллом)
    -------------------------------------------------------------------------- */
 .dnd55-sheet.dnd55-force-scroll .dnd55-grid {
   display: flex !important;
@@ -315,25 +324,25 @@
 }
 .dnd55-sheet.dnd55-force-scroll .dnd55-grid::-webkit-scrollbar-track {
   background: var(--dnd55-bg-card);
-  border-radius: 4px;
+  border-radius: var(--dnd55-radius-s);
 }
 .dnd55-sheet.dnd55-force-scroll .dnd55-grid::-webkit-scrollbar-thumb {
-  background: var(--dnd55-crimson);
-  border-radius: 4px;
+  background: var(--dnd55-accent);
+  border-radius: var(--dnd55-radius-s);
 }
 
 /* --------------------------------------------------------------------------
-   PANELS & CARDS (Fantasy Parchment / Slate Styling)
+   PANELS & CARDS (Clean D&D Boxes)
    -------------------------------------------------------------------------- */
 .dnd55-panel {
   background: var(--dnd55-bg-card);
   border: 1.5px solid var(--dnd55-border-subtle);
-  border-radius: 6px;
+  border-radius: var(--dnd55-radius-m);
   padding: 12px;
   min-width: 0;
   max-width: 100%;
   overflow: hidden;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.35);
+  box-shadow: var(--dnd55-shadow-s);
 }
 
 .dnd55-panel-title {
@@ -342,26 +351,26 @@
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.8px;
-  color: var(--dnd55-gold);
-  border-bottom: 1.5px solid var(--dnd55-crimson);
+  color: var(--dnd55-text-accent);
+  border-bottom: 1.5px solid var(--dnd55-border-subtle);
   padding-bottom: 4px;
   margin-bottom: 10px;
   word-break: break-word;
 }
 
 /* --------------------------------------------------------------------------
-   COLUMN 1: INSPIRATION, PROFICIENCY, ABILITIES & SAVES
+   COLUMN 1: INSPIRATION, PROFICIENCY, 6 ABILITY BOXES, SAVES & SKILLS
    -------------------------------------------------------------------------- */
-.dnd55-inspiration-prof {
+.dnd55-insp-prof-row {
   display: flex;
   gap: 8px;
 }
 
 .dnd55-badge-box {
   flex: 1;
-  background: linear-gradient(145deg, #24242c 0%, #1a1a20 100%);
+  background: var(--dnd55-bg-card);
   border: 1.5px solid var(--dnd55-border-subtle);
-  border-radius: 6px;
+  border-radius: var(--dnd55-radius-m);
   padding: 8px 4px;
   text-align: center;
   cursor: pointer;
@@ -369,20 +378,19 @@
   transition: all 0.15s ease;
   min-width: 0;
   overflow: hidden;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+  box-shadow: var(--dnd55-shadow-s);
 }
 
 .dnd55-badge-box:hover {
-  border-color: var(--dnd55-gold);
+  border-color: var(--dnd55-border-hover);
 }
 
 .dnd55-badge-box.insp.active {
-  background: linear-gradient(145deg, #3d2310, #221208);
-  border-color: var(--dnd55-gold);
-  box-shadow: 0 0 10px rgba(197, 155, 76, 0.4);
+  background: var(--dnd55-bg-card-alt);
+  border-color: var(--dnd55-accent);
 }
 .dnd55-badge-box.insp.active .dnd55-badge-val {
-  color: var(--dnd55-gold-bright);
+  color: var(--dnd55-text-accent);
 }
 
 .dnd55-badge-label {
@@ -395,134 +403,156 @@
 
 .dnd55-badge-val {
   font-family: var(--dnd55-font-serif);
-  font-size: 1.25em;
+  font-size: 1.2em;
   font-weight: 800;
   color: var(--dnd55-text-main);
   margin-top: 2px;
 }
 
-.dnd55-abilities-list {
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
+/* 6 Iconic D&D Ability Score Boxes (Grid) */
+.dnd55-abilities-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
 }
 
-/* Iconic D&D Ability Score Card */
-.dnd55-ability-card {
-  background: linear-gradient(180deg, #25252e 0%, #1c1c23 100%);
+@container dndsheet (max-width: 480px) {
+  .dnd55-abilities-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.dnd55-ability-box {
+  background: var(--dnd55-bg-card);
   border: 1.5px solid var(--dnd55-border-subtle);
-  border-radius: 6px;
-  padding: 6px 10px;
+  border-radius: var(--dnd55-radius-m);
+  padding: 8px 4px 6px 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 84px;
+  box-shadow: var(--dnd55-shadow-s);
+  transition: border-color 0.15s ease;
+  user-select: none;
+}
+
+.dnd55-ability-box:hover {
+  border-color: var(--dnd55-border-hover);
+}
+
+.dnd55-ab-name {
+  font-size: 0.68em;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--dnd55-text-muted);
+  text-align: center;
+}
+
+.dnd55-ab-mod {
+  font-family: var(--dnd55-font-serif);
+  font-size: 1.6em;
+  font-weight: 900;
+  line-height: 1.1;
+  color: var(--dnd55-text-main);
+  margin: 2px 0;
+}
+
+.dnd55-ab-score {
+  font-size: 0.72em;
+  font-weight: 700;
+  color: var(--dnd55-text-muted);
+  background: var(--dnd55-bg-card-alt);
+  border: 1px solid var(--dnd55-border-subtle);
+  border-radius: 10px;
+  padding: 1px 8px;
+  line-height: 1.2;
+}
+
+/* Dedicated Saving Throws Block (Canonical 2-column layout) */
+.dnd55-saves-panel {
+  padding: 10px 12px;
+}
+
+.dnd55-saves-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 10px;
+}
+
+.dnd55-save-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
-  min-width: 0;
-  overflow: hidden;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-  transition: border-color 0.15s ease;
+  padding: 3px 6px;
+  border-radius: var(--dnd55-radius-s);
+  font-size: 0.82em;
+  transition: background 0.1s ease;
 }
 
-.dnd55-ability-card:hover {
-  border-color: var(--dnd55-crimson);
+.dnd55-save-row.proficient {
+  background: var(--dnd55-bg-card-alt);
+  font-weight: 700;
 }
 
-.dnd55-ability-col-main {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  min-width: 0;
-}
-
-.dnd55-ability-name {
-  font-family: var(--dnd55-font-serif);
-  font-size: 0.85em;
-  font-weight: 800;
-  color: var(--dnd55-gold);
-  letter-spacing: 0.5px;
-  width: 95px;
-  white-space: nowrap;
-}
-
-.dnd55-ability-mod-box {
-  background: linear-gradient(180deg, var(--dnd55-crimson) 0%, var(--dnd55-crimson-dark) 100%);
-  color: #fff;
-  font-family: var(--dnd55-font-serif);
-  font-size: 1.15em;
-  font-weight: 900;
-  padding: 2px 8px;
-  border-radius: 4px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
-  min-width: 38px;
+.dnd55-dot {
+  font-size: 0.9em;
+  line-height: 1;
+  color: var(--dnd55-text-faint);
+  flex-shrink: 0;
+  width: 14px;
   text-align: center;
-  user-select: none;
 }
 
-.dnd55-ability-score-pill {
-  font-size: 0.76em;
-  font-weight: 700;
-  color: var(--dnd55-text-muted);
-  background: #131317;
-  border: 1px solid var(--dnd55-border-subtle);
-  border-radius: 10px;
-  padding: 1px 6px;
+.dnd55-dot.prof {
+  color: var(--dnd55-accent);
+  font-weight: 900;
 }
 
-.dnd55-ability-save {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  background: rgba(0, 0, 0, 0.25);
-  border: 1px solid var(--dnd55-border-subtle);
-  border-radius: 4px;
-  padding: 2px 8px;
-  user-select: none;
+.dnd55-save-name {
+  flex: 1 1 auto;
+  margin-left: 6px;
+  font-size: 0.84em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.dnd55-ability-save.proficient {
-  background: rgba(156, 35, 23, 0.2);
-  border-color: var(--dnd55-crimson);
-}
-
-.dnd55-save-label {
-  font-size: 0.56em;
-  font-weight: 700;
-  text-transform: uppercase;
-  color: var(--dnd55-text-muted);
-  letter-spacing: 0.5px;
-}
-
-.dnd55-save-val {
-  font-size: 0.85em;
-  font-weight: 800;
-  color: var(--dnd55-text-main);
+.dnd55-save-bonus {
   font-family: var(--dnd55-font-serif);
-}
-.dnd55-ability-save.proficient .dnd55-save-val {
-  color: var(--dnd55-gold-bright);
+  font-weight: 800;
+  font-size: 0.88em;
+  color: var(--dnd55-text-main);
+  flex-shrink: 0;
 }
 
-/* --------------------------------------------------------------------------
-   SKILLS LIST (Striped D&D Style)
-   -------------------------------------------------------------------------- */
+.dnd55-save-row.proficient .dnd55-save-bonus {
+  color: var(--dnd55-text-accent);
+}
+
+/* Dedicated Skills List (Canonical Striped D&D Style) */
+.dnd55-skills-panel {
+  padding: 10px 12px;
+}
+
 .dnd55-skill-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 3px 6px;
   font-size: 0.8em;
-  border-radius: 3px;
+  border-radius: var(--dnd55-radius-s);
   gap: 6px;
   transition: background 0.1s ease;
 }
 
 .dnd55-skill-row:nth-child(even) {
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--background-modifier-hover);
 }
 
 .dnd55-skill-row:hover {
-  background: var(--dnd55-bg-card-alt);
+  background: var(--background-modifier-hover);
 }
 
 .dnd55-skill-left {
@@ -534,26 +564,13 @@
   flex: 1 1 auto;
 }
 
-.dnd55-dot {
-  font-size: 0.9em;
-  line-height: 1;
-  color: var(--dnd55-text-muted);
-  flex-shrink: 0;
-  width: 14px;
-  text-align: center;
-}
-
-.dnd55-dot.prof {
-  color: var(--dnd55-crimson);
-  font-weight: 900;
-}
-
 .dnd55-skill-name {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   font-weight: 500;
 }
+
 .dnd55-skill-row.is-prof .dnd55-skill-name {
   font-weight: 700;
   color: var(--dnd55-text-main);
@@ -573,6 +590,10 @@
   margin-left: auto;
 }
 
+.dnd55-skill-row.is-prof .dnd55-skill-bonus {
+  color: var(--dnd55-text-accent);
+}
+
 .dnd55-sense-item {
   font-size: 0.82em;
   line-height: 1.4;
@@ -581,7 +602,7 @@
 }
 
 /* --------------------------------------------------------------------------
-   COLUMN 2: COMBAT VITALS, HP, WEAPONS & MASTERY
+   COLUMN 2: COMBAT VITALS, HIT POINTS, WEAPONS & MASTERY
    -------------------------------------------------------------------------- */
 .dnd55-vitals-row {
   display: grid;
@@ -593,13 +614,10 @@
   grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
 }
 
-.dnd55-vital-badge,
-.dnd55-init-box,
-.dnd55-speed-box,
-.dnd55-size-box {
-  background: linear-gradient(180deg, #24242c 0%, #19191f 100%);
+.dnd55-vital-box {
+  background: var(--dnd55-bg-card);
   border: 1.5px solid var(--dnd55-border-subtle);
-  border-radius: 6px;
+  border-radius: var(--dnd55-radius-m);
   padding: 8px 4px;
   text-align: center;
   min-width: 0;
@@ -609,28 +627,25 @@
   justify-content: center;
   align-items: center;
   min-height: 72px;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+  box-shadow: var(--dnd55-shadow-s);
 }
 
-/* Shield Silhouette for Armor Class */
-.dnd55-ac-shield {
-  background: linear-gradient(180deg, #38120e 0%, #1f0705 100%);
-  border: 2px solid var(--dnd55-gold);
-  border-radius: 4px 4px 50% 50% / 4px 4px 80% 80%;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.15);
-  padding: 8px 4px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  min-height: 72px;
+/* Shield Motif for Armor Class */
+.dnd55-ac-box {
+  border: 2px solid var(--dnd55-accent, var(--dnd55-border-subtle));
+  border-radius: 6px 6px 50% 50% / 6px 6px 20% 20%;
+  background: var(--dnd55-bg-card-alt);
 }
 
-.dnd55-vital-title {
+.dnd55-ac-box .dnd55-vital-val {
+  color: var(--dnd55-text-accent);
+}
+
+.dnd55-vital-label {
   font-size: 0.62em;
   text-transform: uppercase;
   font-weight: 800;
-  letter-spacing: 0.6px;
+  letter-spacing: 0.5px;
   color: var(--dnd55-text-muted);
   line-height: 1.1;
   word-break: break-word;
@@ -645,10 +660,6 @@
   margin-top: 2px;
 }
 
-.dnd55-ac-val {
-  color: var(--dnd55-gold-bright);
-}
-
 .dnd55-vital-val.dnd55-vital-text {
   font-size: 0.82em;
   font-weight: 800;
@@ -656,20 +667,17 @@
   letter-spacing: 0.4px;
 }
 
-/* Authentic Hit Points Box */
-.dnd55-hp-box {
-  background: linear-gradient(180deg, #241d20 0%, #191416 100%);
-  border: 2px solid var(--dnd55-crimson);
-  border-radius: 8px;
+/* Authentic Hit Points Card */
+.dnd55-hp-card {
+  border: 2px solid var(--dnd55-border-subtle);
   padding: 12px;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.45);
 }
 
 .dnd55-hp-header {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  border-bottom: 1px solid rgba(255,255,255,0.08);
+  border-bottom: 1px solid var(--dnd55-border-subtle);
   padding-bottom: 6px;
   margin-bottom: 10px;
 }
@@ -678,7 +686,7 @@
   font-family: var(--dnd55-font-serif);
   font-size: 0.78em;
   font-weight: 800;
-  color: var(--dnd55-gold);
+  color: var(--dnd55-text-accent);
   letter-spacing: 0.5px;
 }
 
@@ -697,80 +705,69 @@
 }
 
 .dnd55-hp-btn {
-  background: linear-gradient(180deg, #2a2a34 0%, #1a1a20 100%);
-  border: 1.5px solid var(--dnd55-border-subtle);
-  border-radius: 6px;
-  width: 32px;
-  height: 32px;
-  font-size: 1.3em;
-  font-weight: 900;
-  display: inline-flex;
+  background: var(--dnd55-bg-card-alt);
+  border: 1px solid var(--dnd55-border-subtle);
+  border-radius: var(--dnd55-radius-s);
+  width: 36px;
+  height: 36px;
+  display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 1.3em;
+  font-weight: 900;
   cursor: pointer;
   color: var(--dnd55-text-main);
   transition: all 0.12s ease;
   user-select: none;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
 }
 
 .dnd55-hp-btn:hover {
-  border-color: var(--dnd55-gold);
+  background: var(--background-modifier-hover);
+  border-color: var(--dnd55-border-hover);
 }
-.dnd55-hp-btn.minus:hover {
-  background: var(--dnd55-crimson);
-  color: #fff;
-  border-color: var(--dnd55-gold);
-}
-.dnd55-hp-btn.plus:hover {
-  background: #27ae60;
-  color: #fff;
-  border-color: #2ecc71;
+
+.dnd55-hp-btn:active {
+  transform: scale(0.94);
 }
 
 .dnd55-hp-cur {
   font-family: var(--dnd55-font-serif);
-  font-size: 2.5em;
+  font-size: 2.3em;
   font-weight: 900;
   line-height: 1;
   cursor: pointer;
-  padding: 2px 8px;
-  border-radius: 6px;
-  transition: background 0.12s ease;
-  text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+  user-select: none;
+  padding: 2px 10px;
+  border-radius: var(--dnd55-radius-s);
+  transition: all 0.15s ease;
 }
+
 .dnd55-hp-cur:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--background-modifier-hover);
 }
 
 .dnd55-hp-temp-row {
   text-align: center;
-  font-size: 0.8em;
+  font-size: 0.82em;
   font-weight: 700;
-  color: #5dade2;
+  color: var(--dnd55-text-accent);
   margin-bottom: 8px;
+  background: var(--dnd55-bg-card-alt);
+  border-radius: var(--dnd55-radius-s);
+  padding: 3px 8px;
 }
 
+/* Hit Dice & Death Saves */
 .dnd55-hitdice-death {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-top: 10px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  border-top: 1px solid var(--dnd55-border-subtle);
   padding-top: 10px;
-  border-top: 1px solid rgba(255,255,255,0.08);
-}
-
-@container dndsheet (min-width: 480px) {
-  .dnd55-hitdice-death {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: flex-start;
-  }
 }
 
 .dnd55-hd-col,
 .dnd55-death-col {
-  min-width: 0;
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -783,99 +780,87 @@
 }
 
 .dnd55-pip-group {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 5px;
-  cursor: pointer;
-  user-select: none;
+  gap: 4px;
   flex-wrap: wrap;
 }
 
 .dnd55-pip-sublabel {
-  font-size: 0.72em;
-  color: var(--dnd55-text-muted);
+  font-size: 0.68em;
   font-weight: 700;
+  color: var(--dnd55-text-muted);
+  width: 36px;
 }
 
 .dnd55-pip {
   display: inline-block;
-  width: 12px;
-  height: 12px;
+  width: 13px;
+  height: 13px;
   border-radius: 50%;
-  border: 1.5px solid var(--dnd55-text-muted);
-  transition: all 0.1s ease;
-  flex-shrink: 0;
-  background: #111;
+  border: 1.5px solid var(--dnd55-border-subtle);
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.12s ease;
 }
 
-.dnd55-pip.checked-success {
-  background: #2ecc71;
-  border-color: #27ae60;
-  box-shadow: 0 0 6px rgba(46, 204, 113, 0.5);
-}
-
-.dnd55-pip.checked-fail {
-  background: var(--dnd55-crimson);
-  border-color: #e74c3c;
-  box-shadow: 0 0 6px rgba(231, 76, 60, 0.5);
+.dnd55-pip:hover {
+  border-color: var(--dnd55-border-hover);
 }
 
 .dnd55-pip.checked-slot {
-  background: var(--dnd55-gold-bright);
-  border-color: var(--dnd55-gold-dark);
-  box-shadow: 0 0 6px rgba(229, 190, 110, 0.4);
+  background: var(--dnd55-accent);
+  border-color: var(--dnd55-accent);
 }
 
-/* --------------------------------------------------------------------------
-   WEAPONS & WEAPON MASTERY 5.5e TABLE
-   -------------------------------------------------------------------------- */
+.dnd55-pip.checked-success {
+  background: var(--text-success, #2ecc71);
+  border-color: var(--text-success, #2ecc71);
+}
+
+.dnd55-pip.checked-fail {
+  background: var(--text-error, #e74c3c);
+  border-color: var(--text-error, #e74c3c);
+}
+
+/* Attacks & Weapon Mastery Table */
 .dnd55-table-wrap {
   width: 100%;
   overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
 }
 
 .dnd55-attacks-table {
   width: 100%;
   border-collapse: collapse;
   font-size: 0.82em;
-  table-layout: auto;
 }
 
 .dnd55-attacks-table th {
-  text-align: left;
   font-family: var(--dnd55-font-serif);
-  font-size: 0.68em;
+  font-size: 0.72em;
+  font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  color: var(--dnd55-gold);
-  border-bottom: 1.5px solid var(--dnd55-crimson);
-  padding: 4px 6px;
-  white-space: nowrap;
-}
-
-.dnd55-th-center {
-  text-align: center !important;
+  color: var(--dnd55-text-muted);
+  border-bottom: 1.5px solid var(--dnd55-border-subtle);
+  padding: 5px 6px;
+  text-align: left;
 }
 
 .dnd55-attacks-table td {
   padding: 6px 6px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid var(--dnd55-border-subtle);
   vertical-align: middle;
 }
 
 .dnd55-attacks-table tr:hover td {
-  background: var(--dnd55-bg-card-alt);
+  background: var(--background-modifier-hover);
 }
 
-.dnd55-td-name {
-  word-break: break-word;
-  line-height: 1.25;
-}
-
+.dnd55-th-center,
 .dnd55-td-center {
   text-align: center !important;
-  white-space: nowrap;
 }
 
 .dnd55-attack-name {
@@ -884,97 +869,97 @@
 }
 
 .dnd55-attack-range {
-  font-size: 0.85em;
+  font-size: 0.78em;
   color: var(--dnd55-text-muted);
-  white-space: nowrap;
 }
 
 .dnd55-stat-badge {
-  background: #151518;
-  border: 1px solid var(--dnd55-border-subtle);
-  border-radius: 4px;
-  padding: 2px 7px;
   font-family: var(--dnd55-font-serif);
   font-weight: 800;
-  font-size: 0.95em;
+  font-size: 0.86em;
+  padding: 2px 6px;
+  border-radius: var(--dnd55-radius-s);
   display: inline-block;
   white-space: nowrap;
 }
 
 .dnd55-atk-badge {
-  color: var(--dnd55-gold-bright);
+  background: var(--dnd55-bg-card-alt);
+  border: 1px solid var(--dnd55-border-subtle);
+  color: var(--dnd55-text-accent);
 }
 
 .dnd55-dmg-badge {
-  color: #e74c3c;
+  background: var(--dnd55-bg-card-alt);
+  border: 1px solid var(--dnd55-border-subtle);
+  color: var(--dnd55-text-main);
 }
 
 .dnd55-mastery-tag {
+  background: var(--dnd55-bg-card-alt);
+  border: 1px solid var(--dnd55-border-subtle);
+  border-radius: 10px;
+  padding: 1px 7px;
+  font-size: 0.74em;
+  font-weight: 700;
+  color: var(--dnd55-text-accent);
   display: inline-block;
-  font-size: 0.72em;
-  font-weight: 800;
-  text-transform: uppercase;
-  background: rgba(197, 155, 76, 0.12);
-  color: var(--dnd55-gold-bright);
-  border: 1px solid var(--dnd55-gold-dark);
-  border-radius: 3px;
-  padding: 2px 6px;
-  white-space: normal;
-  line-height: 1.15;
-  max-width: 120px;
-  word-break: break-word;
-  text-align: center;
 }
 
+/* Bonus Actions & Reactions */
 .dnd55-action-item {
   font-size: 0.82em;
   line-height: 1.4;
   margin-bottom: 6px;
-  word-break: break-word;
+  padding: 4px 6px;
+  background: var(--dnd55-bg-card-alt);
+  border-radius: var(--dnd55-radius-s);
+  border-left: 3px solid var(--dnd55-accent);
 }
 
 .dnd55-action-label {
   font-weight: 800;
-  color: var(--dnd55-gold);
+  color: var(--dnd55-text-accent);
 }
 
 /* --------------------------------------------------------------------------
-   COLUMN 3: FEATURES, SPELLS, CURRENCY COINS, ROLEPLAY
+   COLUMN 3: FEATURES, SPELLS, EQUIPMENT & ROLEPLAY
    -------------------------------------------------------------------------- */
 .dnd55-spell-slots-row {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 6px;
-  padding: 6px 0;
-  margin-bottom: 10px;
-  border-bottom: 1px solid var(--dnd55-border-subtle);
-  font-size: 0.82em;
+  gap: 8px;
+  margin: 8px 0;
+  padding: 4px 6px;
+  background: var(--dnd55-bg-card-alt);
+  border-radius: var(--dnd55-radius-s);
 }
 
 .dnd55-feature-item {
   margin-bottom: 10px;
-  font-size: 0.82em;
-  line-height: 1.4;
-  min-width: 0;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--dnd55-border-subtle);
+}
+
+.dnd55-feature-item:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
 }
 
 .dnd55-feature-header {
   display: flex;
-  align-items: baseline;
   justify-content: space-between;
+  align-items: center;
   flex-wrap: wrap;
-  gap: 4px 8px;
+  gap: 6px;
+  margin-bottom: 4px;
 }
 
 .dnd55-feature-title {
-  font-family: var(--dnd55-font-serif);
-  font-weight: 700;
-  color: var(--dnd55-gold);
-  word-break: break-word;
-  min-width: 0;
-  flex: 1 1 auto;
+  font-weight: 800;
+  font-size: 0.85em;
+  color: var(--dnd55-text-main);
 }
 
 .dnd55-feature-uses {
@@ -983,117 +968,92 @@
 }
 
 .dnd55-feature-desc {
-  color: var(--dnd55-text-muted);
-  font-size: 0.86em;
+  font-size: 0.8em;
   line-height: 1.4;
-  margin-top: 2px;
+  color: var(--dnd55-text-muted);
   word-break: break-word;
 }
 
-/* Coin Pouches with Metallic Hue */
+/* Currency Grid */
 .dnd55-coins-grid {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 5px;
-  text-align: center;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
   margin-bottom: 10px;
 }
 
 .dnd55-coin-cell {
-  background: #16161b;
-  border: 1.5px solid var(--dnd55-border-subtle);
-  border-radius: 5px;
-  padding: 5px 2px;
-  min-width: 0;
-  overflow: hidden;
-  box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+  background: var(--dnd55-bg-card-alt);
+  border: 1px solid var(--dnd55-border-subtle);
+  border-radius: var(--dnd55-radius-s);
+  padding: 4px 2px;
+  text-align: center;
 }
 
-.dnd55-coin-cell.cp { border-color: #b87333; }
-.dnd55-coin-cell.cp .dnd55-coin-label { color: #cd7f32; }
-
-.dnd55-coin-cell.sp { border-color: #bdc3c7; }
-.dnd55-coin-cell.sp .dnd55-coin-label { color: #ecf0f1; }
-
-.dnd55-coin-cell.ep { border-color: #48c9b0; }
-.dnd55-coin-cell.ep .dnd55-coin-label { color: #76d7c4; }
-
-.dnd55-coin-cell.gp { border-color: #d4af37; }
-.dnd55-coin-cell.gp .dnd55-coin-label { color: #f1c40f; }
-
-.dnd55-coin-cell.pp { border-color: #aeb6bf; }
-.dnd55-coin-cell.pp .dnd55-coin-label { color: #ffffff; }
-
 .dnd55-coin-label {
-  font-family: var(--dnd55-font-serif);
-  font-size: 0.65em;
+  font-size: 0.6em;
   font-weight: 800;
+  text-transform: uppercase;
+  color: var(--dnd55-text-muted);
 }
 
 .dnd55-coin-val {
   font-family: var(--dnd55-font-serif);
-  font-weight: 900;
-  font-size: 0.95em;
+  font-size: 0.9em;
+  font-weight: 800;
   color: var(--dnd55-text-main);
   margin-top: 1px;
 }
 
 .dnd55-eq-text {
-  margin-top: 6px;
-  line-height: 1.4;
+  background: var(--dnd55-bg-card-alt);
+  border-radius: var(--dnd55-radius-s);
+  padding: 8px;
+  white-space: pre-wrap;
 }
 
+/* Roleplay Items */
 .dnd55-rp-item {
-  font-size: 0.84em;
+  font-size: 0.82em;
   line-height: 1.4;
   margin-bottom: 6px;
-  word-break: break-word;
 }
 
 .dnd55-rp-label {
-  font-family: var(--dnd55-font-serif);
   font-weight: 700;
-  color: var(--dnd55-gold);
+  color: var(--dnd55-text-accent);
 }
 
 .dnd55-rp-val {
-  color: var(--dnd55-text-muted);
+  color: var(--dnd55-text-main);
 }
 
 /* --------------------------------------------------------------------------
-   FULLSCREEN ROOT OVERLAY (document.body Mount with Real Viewport Height)
+   FULLSCREEN OVERLAY (Mounted directly to body for true full viewport)
    -------------------------------------------------------------------------- */
 .dnd55-fs-overlay {
   position: fixed !important;
   top: 0 !important;
   left: 0 !important;
-  right: 0 !important;
-  bottom: 0 !important;
   width: 100vw !important;
   height: 100vh !important;
-  background: #111114 !important;
-  z-index: 99999 !important;
+  z-index: var(--layer-modal, 1000) !important;
+  background: var(--background-primary) !important;
   display: flex !important;
   flex-direction: column !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  box-sizing: border-box !important;
   overflow: hidden !important;
 }
 
 .dnd55-fs-topbar {
-  position: sticky !important;
-  top: 0 !important;
-  z-index: 100000 !important;
-  background: #18181f !important;
-  border-bottom: 2px solid var(--dnd55-crimson) !important;
-  padding: 10px 24px !important;
-  display: flex !important;
-  justify-content: space-between !important;
-  align-items: center !important;
-  flex-wrap: wrap !important;
-  gap: 12px !important;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6) !important;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 24px;
+  background: var(--background-secondary);
+  border-bottom: 1.5px solid var(--dnd55-border-subtle);
+  flex-shrink: 0;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
 .dnd55-fs-title-box {
@@ -1107,7 +1067,7 @@
   font-family: var(--dnd55-font-serif);
   font-size: 1.35em;
   font-weight: 800;
-  color: var(--dnd55-gold-bright);
+  color: var(--dnd55-text-main);
   text-transform: uppercase;
   letter-spacing: 0.8px;
 }
@@ -1137,21 +1097,21 @@
   max-width: 1440px !important;
   width: 100% !important;
   margin: 0 auto !important;
-  padding: 24px 28px 180px 28px !important; /* Plenty of room to scroll to the very bottom! */
+  padding: 24px 28px 180px 28px !important; /* Plenty of room to scroll to the very bottom */
 }
 
 .dnd55-btn-close {
-  background: rgba(156, 35, 23, 0.2);
-  border-color: var(--dnd55-crimson);
-  color: #ff7675;
+  background: var(--background-modifier-error, rgba(231, 76, 60, 0.15));
+  border-color: var(--text-error, #e74c3c);
+  color: var(--text-error, #e74c3c);
 }
 .dnd55-btn-close:hover {
-  background: var(--dnd55-crimson);
+  background: var(--text-error, #e74c3c);
   color: #fff;
 }
 
 /* --------------------------------------------------------------------------
-   IN-INTERFACE EDITOR MODAL (100% Fluid & Adaptive)
+   IN-INTERFACE EDITOR MODAL (100% Fluid, Adaptive & Native Themed)
    -------------------------------------------------------------------------- */
 .dnd55-modal-container {
   max-width: 860px !important;
@@ -1161,10 +1121,11 @@
   flex-direction: column !important;
   padding: 18px 24px !important;
   overflow: hidden !important;
-  background: #18181f !important;
-  border: 1.5px solid var(--dnd55-crimson) !important;
-  border-radius: 8px !important;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.8) !important;
+  background: var(--background-primary) !important;
+  border: 1.5px solid var(--dnd55-border-subtle) !important;
+  border-radius: var(--dnd55-radius-l) !important;
+  box-shadow: var(--shadow-l, 0 10px 30px rgba(0, 0, 0, 0.35)) !important;
+  color: var(--dnd55-text-main) !important;
 }
 
 .dnd55-m-header {
@@ -1176,7 +1137,7 @@
 .dnd55-m-header h3 {
   font-family: var(--dnd55-font-serif);
   margin: 0 0 4px 0;
-  color: var(--dnd55-gold);
+  color: var(--dnd55-text-accent);
 }
 
 .dnd55-m-header small {
@@ -1194,9 +1155,9 @@
 }
 
 .dnd55-m-tab-btn {
-  background: var(--dnd55-bg-card);
+  background: var(--dnd55-bg-card-alt);
   border: 1px solid var(--dnd55-border-subtle);
-  border-radius: 6px;
+  border-radius: var(--dnd55-radius-s);
   padding: 6px 12px;
   font-size: 0.8em;
   font-weight: 700;
@@ -1208,13 +1169,14 @@
 
 .dnd55-m-tab-btn:hover {
   color: var(--dnd55-text-main);
-  border-color: var(--dnd55-gold);
+  background: var(--background-modifier-hover);
+  border-color: var(--dnd55-border-hover);
 }
 
 .dnd55-m-tab-btn.active {
-  background: var(--dnd55-crimson) !important;
-  color: #fff !important;
-  border-color: var(--dnd55-gold) !important;
+  background: var(--dnd55-accent) !important;
+  color: var(--dnd55-text-on-accent) !important;
+  border-color: var(--dnd55-accent) !important;
 }
 
 .dnd55-m-panels {
@@ -1235,7 +1197,7 @@
 .dnd55-m-section-title {
   font-family: var(--dnd55-font-serif);
   font-size: 0.88em;
-  color: var(--dnd55-gold);
+  color: var(--dnd55-text-accent);
   border-bottom: 1px solid var(--dnd55-border-subtle);
   padding-bottom: 4px;
   margin: 0 0 10px 0;
@@ -1256,7 +1218,7 @@
 
 .dnd55-m-grid-4 {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
   gap: 10px;
 }
 
@@ -1283,9 +1245,9 @@
 
 .dnd55-m-input,
 .dnd55-m-select {
-  background: #111114;
-  border: 1.5px solid var(--dnd55-border-subtle);
-  border-radius: 5px;
+  background: var(--background-modifier-form-field, var(--background-secondary));
+  border: 1px solid var(--dnd55-border-subtle);
+  border-radius: var(--dnd55-radius-s);
   padding: 7px 10px;
   color: var(--dnd55-text-main);
   font-size: 0.9em;
@@ -1295,9 +1257,9 @@
 
 .dnd55-m-input:focus,
 .dnd55-m-select:focus {
-  border-color: var(--dnd55-gold);
+  border-color: var(--dnd55-accent);
   outline: none;
-  box-shadow: 0 0 8px rgba(197, 155, 76, 0.25);
+  box-shadow: 0 0 0 2px var(--background-modifier-border-focus);
 }
 
 textarea.dnd55-m-input {
@@ -1314,9 +1276,9 @@ textarea.dnd55-m-input {
 }
 
 .dnd55-m-stat-card {
-  background: #1c1c23;
-  border: 1.5px solid var(--dnd55-border-subtle);
-  border-radius: 6px;
+  background: var(--dnd55-bg-card-alt);
+  border: 1px solid var(--dnd55-border-subtle);
+  border-radius: var(--dnd55-radius-s);
   padding: 8px;
   display: flex;
   flex-direction: column;
@@ -1329,7 +1291,7 @@ textarea.dnd55-m-input {
   font-family: var(--dnd55-font-serif);
   font-size: 0.78em;
   font-weight: 800;
-  color: var(--dnd55-gold);
+  color: var(--dnd55-text-accent);
 }
 
 .dnd55-m-stat-input {
@@ -1342,9 +1304,9 @@ textarea.dnd55-m-input {
 
 .dnd55-m-stat-mod {
   font-family: var(--dnd55-font-serif);
-  font-size: 0.8em;
+  font-size: 0.85em;
   font-weight: 800;
-  color: var(--dnd55-crimson);
+  color: var(--dnd55-accent);
 }
 
 .dnd55-m-check-row {
@@ -1362,9 +1324,9 @@ textarea.dnd55-m-input {
 }
 
 .dnd55-m-skill-row {
-  background: #1c1c23;
+  background: var(--dnd55-bg-card-alt);
   border: 1px solid var(--dnd55-border-subtle);
-  border-radius: 5px;
+  border-radius: var(--dnd55-radius-s);
   padding: 6px 10px;
   display: flex;
   align-items: center;
@@ -1379,9 +1341,9 @@ textarea.dnd55-m-input {
 
 .dnd55-m-atk-card,
 .dnd55-m-feat-card {
-  background: #1c1c23;
-  border: 1.5px solid var(--dnd55-border-subtle);
-  border-radius: 6px;
+  background: var(--dnd55-bg-card-alt);
+  border: 1px solid var(--dnd55-border-subtle);
+  border-radius: var(--dnd55-radius-s);
   padding: 10px;
   margin-bottom: 10px;
 }
@@ -1396,17 +1358,18 @@ textarea.dnd55-m-input {
 }
 
 .dnd55-m-btn-del {
-  background: rgba(231, 76, 60, 0.15);
-  border: 1px solid #e74c3c;
-  color: #e74c3c;
-  border-radius: 4px;
+  background: var(--background-modifier-error, rgba(231, 76, 60, 0.15));
+  border: 1px solid var(--text-error, #e74c3c);
+  color: var(--text-error, #e74c3c);
+  border-radius: var(--dnd55-radius-s);
   padding: 2px 8px;
   font-size: 0.75em;
   cursor: pointer;
-  font-weight: 700;
+  transition: all 0.12s ease;
 }
+
 .dnd55-m-btn-del:hover {
-  background: #e74c3c;
+  background: var(--text-error, #e74c3c);
   color: #fff;
 }
 
@@ -1414,107 +1377,33 @@ textarea.dnd55-m-input {
   display: flex;
   justify-content: flex-end;
   gap: 10px;
-  border-top: 1.5px solid var(--dnd55-border-subtle);
+  margin-top: 14px;
   padding-top: 12px;
-  margin-top: 12px;
+  border-top: 1.5px solid var(--dnd55-border-subtle);
+  flex-shrink: 0;
 }
 
 .dnd55-btn-save {
-  background: #27ae60 !important;
-  color: #fff !important;
-  border-color: #2ecc71 !important;
-  font-weight: 800;
-}
-.dnd55-btn-save:hover {
-  background: #219a52 !important;
+  background: var(--dnd55-accent) !important;
+  color: var(--dnd55-text-on-accent) !important;
+  border-color: var(--dnd55-accent) !important;
 }
 
-/* --------------------------------------------------------------------------
-   ERROR BOX
-   -------------------------------------------------------------------------- */
+.dnd55-btn-save:hover {
+  background: var(--dnd55-accent-hover) !important;
+}
+
+/* Error Notice */
 .dnd55-error {
-  background: rgba(231, 76, 60, 0.1);
-  border: 1.5px solid #e74c3c;
-  border-radius: 6px;
+  background: var(--background-modifier-error, rgba(231, 76, 60, 0.15));
+  border: 1px solid var(--text-error, #e74c3c);
+  border-radius: var(--dnd55-radius-m);
   padding: 12px;
-  color: #e74c3c;
-  font-size: 0.9em;
+  color: var(--dnd55-text-main);
+  margin: 1em 0;
 }
 
 .dnd55-error h4 {
+  color: var(--text-error, #e74c3c);
   margin: 0 0 6px 0;
-  color: #e74c3c;
-}
-
-/* --------------------------------------------------------------------------
-   PRINT OPTIMIZATION (A4 Black & White)
-   -------------------------------------------------------------------------- */
-@media print {
-  @page {
-    size: A4 portrait;
-    margin: 8mm;
-  }
-
-  .dnd55-topbar, .dnd55-nav-tabs, .dnd55-hp-btn {
-    display: none !important;
-  }
-
-  .dnd55-sheet {
-    background: #fff !important;
-    color: #000 !important;
-    border: 1.5px solid #000 !important;
-    box-shadow: none !important;
-    padding: 4mm !important;
-    margin: 0 !important;
-    width: 100% !important;
-    font-size: 8pt !important;
-  }
-
-  .dnd55-name-box, .dnd55-meta-item, .dnd55-panel, .dnd55-ability-card,
-  .dnd55-badge-box, .dnd55-vital-badge, .dnd55-hp-box, .dnd55-coin-cell,
-  .dnd55-ac-shield, .dnd55-init-box, .dnd55-speed-box, .dnd55-size-box {
-    background: #fff !important;
-    border-color: #000 !important;
-    color: #000 !important;
-    box-shadow: none !important;
-  }
-
-  .dnd55-name-title, .dnd55-panel-title, .dnd55-ability-name {
-    color: #000 !important;
-  }
-
-  .dnd55-ability-mod-box {
-    background: none !important;
-    color: #000 !important;
-    border: 1px solid #000 !important;
-    box-shadow: none !important;
-  }
-
-  .dnd55-ability-save {
-    background: none !important;
-    border: 1px solid #000 !important;
-    color: #000 !important;
-  }
-
-  .dnd55-stat-badge, .dnd55-mastery-tag {
-    background: none !important;
-    border: 1px solid #000 !important;
-    color: #000 !important;
-  }
-
-  .dnd55-pip {
-    border-color: #000 !important;
-    background: #fff !important;
-  }
-
-  .dnd55-pip.checked-success, .dnd55-pip.checked-fail, .dnd55-pip.checked-slot {
-    background: #000 !important;
-    border-color: #000 !important;
-  }
-
-  .dnd55-grid {
-    display: grid !important;
-    grid-template-columns: 1fr 1.25fr 1fr !important;
-    gap: 8px !important;
-  }
 }

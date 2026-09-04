@@ -20,7 +20,7 @@ class CharacterEditorModal extends Modal {
     contentEl.addClass("dnd55-modal-container");
 
     const mHead = contentEl.createDiv({ cls: "dnd55-m-header" });
-    mHead.createEl("h3", { text: `📜 Лист персонажа: ${this.data.name || "Новый герой"}` });
+    mHead.createEl("h3", { text: `✏️ Редактирование: ${this.data.name || "Персонаж"}` });
     mHead.createEl("small", { text: "D&D 5.5e (2024 Player's Handbook) • Автосохранение в заметку без ошибок YAML" });
 
     const tabsBar = contentEl.createDiv({ cls: "dnd55-m-tabs" });
@@ -71,8 +71,8 @@ class CharacterEditorModal extends Modal {
     createField(gridMain, "Имя персонажа", this.data.name, v => this.data.name = v, "text", "Гриз");
     createField(gridMain, "Класс и уровень", this.data.class, v => this.data.class = v, "text", "Воин 2 уровня");
     createField(gridMain, "Вид / Народ (Species)", this.data.species, v => this.data.species = v, "text", "Гоблин");
-    createField(gridMain, "Предыстория (Background)", this.data.background, v => this.data.background = v, "text", "Солдат");
-    createField(gridMain, "Мировоззрение (Alignment)", this.data.alignment, v => this.data.alignment = v, "text", "Хаотично-нейтральный");
+    createField(gridMain, "Предыстория", this.data.background, v => this.data.background = v, "text", "Солдат");
+    createField(gridMain, "Мировоззрение", this.data.alignment, v => this.data.alignment = v, "text", "Хаотично-нейтральный");
     createField(gridMain, "Опыт (XP)", this.data.xp, v => this.data.xp = v, "text", "300 XP");
     createField(gridMain, "Игрок", this.data.player, v => this.data.player = v, "text", "Имя игрока");
 
@@ -414,7 +414,7 @@ class HpPromptModal extends Modal {
 }
 
 // ============================================================================
-// MAIN PLUGIN CLASS (Authentic D&D 5.5e Experience)
+// MAIN PLUGIN CLASS (Canonical D&D 5.5e Layout & Native Obsidian Theming)
 // ============================================================================
 module.exports = class DnD55eSheetPlugin extends Plugin {
   async onload() {
@@ -603,11 +603,11 @@ module.exports = class DnD55eSheetPlugin extends Plugin {
   updateHpColor(el, cur, max) {
     const ratio = cur / (max || 1);
     if (ratio > 0.5) {
-      el.style.color = "#2ecc71";
+      el.style.color = "var(--text-success, #2ecc71)";
     } else if (ratio > 0.25) {
-      el.style.color = "#f39c12";
+      el.style.color = "var(--text-warning, #f39c12)";
     } else {
-      el.style.color = "#e74c3c";
+      el.style.color = "var(--text-error, #e74c3c)";
     }
   }
 
@@ -664,7 +664,7 @@ module.exports = class DnD55eSheetPlugin extends Plugin {
       const errBox = el.createDiv({ cls: "dnd55-error" });
       errBox.createEl("h4", { text: "⚠️ Ошибка разбора карточки персонажа" });
       errBox.createEl("p", { text: e.message });
-      errBox.createEl("small", { text: "Подсказка: используйте кнопку «✏️ Заполнить / Редактировать» для безопасного заполнения без ошибок синтаксиса." });
+      errBox.createEl("small", { text: "Подсказка: используйте кнопку «✏️ Редактировать» для заполнения без ошибок синтаксиса." });
       return;
     }
 
@@ -721,7 +721,7 @@ module.exports = class DnD55eSheetPlugin extends Plugin {
     const savesList = Array.isArray(data.saves) ? data.saves.map(s => String(s).toLowerCase()) : [];
 
     // ========================================================================
-    // HEADER BANNER (Authentic D&D 2024 Presentation)
+    // HEADER BANNER (Authentic D&D 2024 Header Layout)
     // ========================================================================
     const header = container.createDiv({ cls: "dnd55-header" });
     
@@ -733,7 +733,7 @@ module.exports = class DnD55eSheetPlugin extends Plugin {
     const metaFields = [
       { label: "Класс и уровень", val: data.class || "—" },
       { label: "Предыстория", val: data.background || "—" },
-      { label: "Вид (Species)", val: data.species || "Гоблин" },
+      { label: "Вид / Народ", val: data.species || "Гоблин" },
       { label: "Мировоззрение", val: data.alignment || "Нейтральный" },
       { label: "Опыт (XP)", val: data.xp || "300 XP" },
       { label: "Игрок", val: data.player || "—" }
@@ -744,23 +744,23 @@ module.exports = class DnD55eSheetPlugin extends Plugin {
       item.createDiv({ cls: "dnd55-meta-val", text: String(f.val) });
     });
 
-    // NAVIGATION PILLS
+    // NAVIGATION PILLS (For quick jump between sections)
     const navTabs = container.createDiv({ cls: "dnd55-nav-tabs" });
     const tab1 = navTabs.createEl("button", { cls: "dnd55-nav-tab", text: "📊 1. Параметры и навыки" });
     const tab2 = navTabs.createEl("button", { cls: "dnd55-nav-tab", text: "⚔️ 2. Бой и здоровье" });
     const tab3 = navTabs.createEl("button", { cls: "dnd55-nav-tab", text: "🔮 3. Магия и особенности" });
 
-    // GRID
+    // GRID LAYOUT
     const grid = container.createDiv({ cls: "dnd55-grid" });
 
     // ========================================================================
-    // COLUMN 1: ABILITIES, SAVES, SKILLS, SENSES
+    // COLUMN 1: ABILITIES (Classic Box Matrix), SAVING THROWS & SKILLS
     // ========================================================================
     const col1 = grid.createDiv({ cls: "dnd55-col" });
     tab1.onclick = () => col1.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
 
     // Inspiration & Proficiency Row
-    const inspProf = col1.createDiv({ cls: "dnd55-inspiration-prof" });
+    const inspProf = col1.createDiv({ cls: "dnd55-insp-prof-row" });
     const inspBox = inspProf.createDiv({ cls: "dnd55-badge-box insp" });
     inspBox.createDiv({ cls: "dnd55-badge-label", text: "Вдохновение" });
     const inspVal = inspBox.createDiv({ cls: "dnd55-badge-val", text: data.inspiration ? "★ ДА" : "☆ НЕТ" });
@@ -776,36 +776,39 @@ module.exports = class DnD55eSheetPlugin extends Plugin {
     pbBox.createDiv({ cls: "dnd55-badge-label", text: "Мастерство" });
     pbBox.createDiv({ cls: "dnd55-badge-val", text: `+${pb}` });
 
-    // 6 Iconic Ability Cards
-    const abList = col1.createDiv({ cls: "dnd55-abilities-list" });
+    // 6 Iconic D&D Ability Score Boxes (Grid)
     const abilityDefs = [
-      { key: "str", name: "СИЛА", score: abilities.str !== undefined ? abilities.str : 10 },
-      { key: "dex", name: "ЛОВКОСТЬ", score: abilities.dex !== undefined ? abilities.dex : 10 },
-      { key: "con", name: "ТЕЛОСЛОЖЕНИЕ", score: abilities.con !== undefined ? abilities.con : 10 },
-      { key: "int", name: "ИНТЕЛЛЕКТ", score: abilities.int !== undefined ? abilities.int : 10 },
-      { key: "wis", name: "МУДРОСТЬ", score: abilities.wis !== undefined ? abilities.wis : 10 },
-      { key: "cha", name: "ХАРИЗМА", score: abilities.cha !== undefined ? abilities.cha : 10 }
+      { key: "str", name: "СИЛА", full: "Сила", score: abilities.str !== undefined ? abilities.str : 10 },
+      { key: "dex", name: "ЛОВКОСТЬ", full: "Ловкость", score: abilities.dex !== undefined ? abilities.dex : 10 },
+      { key: "con", name: "ТЕЛОСЛ.", full: "Телосложение", score: abilities.con !== undefined ? abilities.con : 10 },
+      { key: "int", name: "ИНТЕЛ.", full: "Интеллект", score: abilities.int !== undefined ? abilities.int : 10 },
+      { key: "wis", name: "МУДРОСТЬ", full: "Мудрость", score: abilities.wis !== undefined ? abilities.wis : 10 },
+      { key: "cha", name: "ХАРИЗМА", full: "Харизма", score: abilities.cha !== undefined ? abilities.cha : 10 }
     ];
 
+    const abGrid = col1.createDiv({ cls: "dnd55-abilities-grid" });
     abilityDefs.forEach(ab => {
-      const card = abList.createDiv({ cls: "dnd55-ability-card" });
-      
-      const leftCol = card.createDiv({ cls: "dnd55-ability-col-main" });
-      leftCol.createDiv({ cls: "dnd55-ability-name", text: ab.name });
-      
+      const box = abGrid.createDiv({ cls: "dnd55-ability-box" });
+      box.createDiv({ cls: "dnd55-ab-name", text: ab.name });
       const mod = mods[ab.key];
-      leftCol.createDiv({ cls: "dnd55-ability-mod-box", text: this.fmtMod(mod) });
-      leftCol.createDiv({ cls: "dnd55-ability-score-pill", text: String(ab.score) });
-
-      // Save on right
-      const isProf = savesList.includes(ab.key);
-      const saveBonus = isProf ? mod + pb : mod;
-      const saveEl = card.createDiv({ cls: `dnd55-ability-save ${isProf ? "proficient" : ""}` });
-      saveEl.createDiv({ cls: "dnd55-save-label", text: "СПАСБРОСОК" });
-      saveEl.createDiv({ cls: "dnd55-save-val", text: `${isProf ? "●" : "○"} ${this.fmtMod(saveBonus)}` });
+      box.createDiv({ cls: "dnd55-ab-mod", text: this.fmtMod(mod) });
+      box.createDiv({ cls: "dnd55-ab-score", text: String(ab.score) });
     });
 
-    // Skills Panel
+    // Dedicated Saving Throws Block (2-column layout like official sheet!)
+    const savesPanel = col1.createDiv({ cls: "dnd55-panel dnd55-saves-panel" });
+    savesPanel.createDiv({ cls: "dnd55-panel-title", text: "Спасброски (Saving Throws)" });
+    const savesGrid = savesPanel.createDiv({ cls: "dnd55-saves-grid" });
+    abilityDefs.forEach(ab => {
+      const isProf = savesList.includes(ab.key);
+      const saveBonus = isProf ? mods[ab.key] + pb : mods[ab.key];
+      const row = savesGrid.createDiv({ cls: `dnd55-save-row ${isProf ? "proficient" : ""}` });
+      row.createDiv({ cls: `dnd55-dot ${isProf ? "prof" : ""}`, text: isProf ? "●" : "○" });
+      row.createDiv({ cls: "dnd55-save-name", text: ab.full });
+      row.createDiv({ cls: "dnd55-save-bonus", text: this.fmtMod(saveBonus) });
+    });
+
+    // Dedicated Skills Panel
     const skillsPanel = col1.createDiv({ cls: "dnd55-panel dnd55-skills-panel" });
     skillsPanel.createDiv({ cls: "dnd55-panel-title", text: "Навыки (Skills)" });
 
@@ -867,34 +870,34 @@ module.exports = class DnD55eSheetPlugin extends Plugin {
     if (data.proficiencies) sensesPanel.createDiv({ cls: "dnd55-sense-item", text: `🛡 Владение: ${data.proficiencies}` });
 
     // ========================================================================
-    // COLUMN 2: COMBAT VITALS, HP, WEAPONS & MASTERY
+    // COLUMN 2: COMBAT VITALS, HEALTH, WEAPONS & MASTERY
     // ========================================================================
     const col2 = grid.createDiv({ cls: "dnd55-col" });
     tab2.onclick = () => col2.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
 
-    // Vitals Row: AC Shield, Initiative Diamond, Speed Crest, Size
+    // Vitals Row: AC, Initiative, Speed, Size
     const vitals = col2.createDiv({ cls: "dnd55-vitals-row" });
     
-    const acShield = vitals.createDiv({ cls: "dnd55-ac-shield" });
-    acShield.createDiv({ cls: "dnd55-vital-title", text: "КД" });
-    acShield.createDiv({ cls: "dnd55-vital-val dnd55-ac-val", text: String(data.ac !== undefined ? data.ac : 10 + dexMod) });
+    const acBox = vitals.createDiv({ cls: "dnd55-vital-box dnd55-ac-box" });
+    acBox.createDiv({ cls: "dnd55-vital-label", text: "КД (Броня)" });
+    acBox.createDiv({ cls: "dnd55-vital-val", text: String(data.ac !== undefined ? data.ac : 10 + dexMod) });
 
     const initBonus = data.initiative !== undefined ? data.initiative : dexMod;
-    const initBox = vitals.createDiv({ cls: "dnd55-init-box" });
-    initBox.createDiv({ cls: "dnd55-vital-title", text: "Инициатива" });
+    const initBox = vitals.createDiv({ cls: "dnd55-vital-box dnd55-init-box" });
+    initBox.createDiv({ cls: "dnd55-vital-label", text: "Инициатива" });
     initBox.createDiv({ cls: "dnd55-vital-val", text: this.fmtMod(initBonus) });
 
-    const speedBox = vitals.createDiv({ cls: "dnd55-speed-box" });
-    speedBox.createDiv({ cls: "dnd55-vital-title", text: "Скорость" });
+    const speedBox = vitals.createDiv({ cls: "dnd55-vital-box dnd55-speed-box" });
+    speedBox.createDiv({ cls: "dnd55-vital-label", text: "Скорость" });
     speedBox.createDiv({ cls: "dnd55-vital-val", text: `${data.speed || 30} фт.` });
 
-    const sizeBox = vitals.createDiv({ cls: "dnd55-size-box" });
-    sizeBox.createDiv({ cls: "dnd55-vital-title", text: "Размер" });
+    const sizeBox = vitals.createDiv({ cls: "dnd55-vital-box dnd55-size-box" });
+    sizeBox.createDiv({ cls: "dnd55-vital-label", text: "Размер" });
     const sizeStr = String(data.size || "Малый");
     sizeBox.createDiv({ cls: `dnd55-vital-val ${sizeStr.length > 4 ? "dnd55-vital-text" : ""}`, text: sizeStr });
 
-    // Authentic Hit Points Box
-    const hpCard = col2.createDiv({ cls: "dnd55-hp-box" });
+    // Hit Points Card
+    const hpCard = col2.createDiv({ cls: "dnd55-panel dnd55-hp-card" });
     
     const hpHeader = hpCard.createDiv({ cls: "dnd55-hp-header" });
     hpHeader.createDiv({ cls: "dnd55-hp-label", text: "❤️ Очки Здоровья (HP)" });
@@ -981,7 +984,7 @@ module.exports = class DnD55eSheetPlugin extends Plugin {
 
     // 5.5e Attacks & Weapon Mastery Table
     const atkPanel = col2.createDiv({ cls: "dnd55-panel" });
-    atkPanel.createDiv({ cls: "dnd55-panel-title", text: "Атаки и Мастерство оружия (Weapon Mastery)" });
+    atkPanel.createDiv({ cls: "dnd55-panel-title", text: "Атаки и Оружие (Weapon Mastery 5.5e)" });
 
     const attacks = data.attacks || [];
     if (attacks.length > 0) {
@@ -1046,12 +1049,12 @@ module.exports = class DnD55eSheetPlugin extends Plugin {
       spellPanel.createDiv({ cls: "dnd55-panel-title", text: "Заклинания и Магия" });
       
       const spVitals = spellPanel.createDiv({ cls: "dnd55-vitals-row dnd55-vitals-2" });
-      const dcBox = spVitals.createDiv({ cls: "dnd55-vital-badge" });
-      dcBox.createDiv({ cls: "dnd55-vital-title", text: "Сл спаса" });
+      const dcBox = spVitals.createDiv({ cls: "dnd55-vital-box" });
+      dcBox.createDiv({ cls: "dnd55-vital-label", text: "Сл спаса" });
       dcBox.createDiv({ cls: "dnd55-vital-val", text: String(data.spell_save_dc || 13) });
 
-      const spAtkBox = spVitals.createDiv({ cls: "dnd55-vital-badge" });
-      spAtkBox.createDiv({ cls: "dnd55-vital-title", text: "Атака" });
+      const spAtkBox = spVitals.createDiv({ cls: "dnd55-vital-box" });
+      spAtkBox.createDiv({ cls: "dnd55-vital-label", text: "Атака" });
       spAtkBox.createDiv({ cls: "dnd55-vital-val", text: this.fmtBonus(data.spell_attack || "+5") });
 
       if (data.spell_slots_1) {
@@ -1096,20 +1099,20 @@ module.exports = class DnD55eSheetPlugin extends Plugin {
       if (f.desc) item.createDiv({ cls: "dnd55-feature-desc", text: String(f.desc) });
     });
 
-    // Equipment & Currency (Coin metals)
+    // Equipment & Currency
     const eqPanel = col3.createDiv({ cls: "dnd55-panel" });
     eqPanel.createDiv({ cls: "dnd55-panel-title", text: "Монеты и Снаряжение" });
     
     const coinsGrid = eqPanel.createDiv({ cls: "dnd55-coins-grid" });
     const coins = data.coins || { cp: 0, sp: 0, ep: 0, gp: 0, pp: 0 };
     [
-      { label: "ММ", val: coins.cp || 0, cls: "cp", name: "Медь" },
-      { label: "СМ", val: coins.sp || 0, cls: "sp", name: "Серебро" },
-      { label: "ЭМ", val: coins.ep || 0, cls: "ep", name: "Электрум" },
-      { label: "ЗМ", val: coins.gp || 0, cls: "gp", name: "Золото" },
-      { label: "ПМ", val: coins.pp || 0, cls: "pp", name: "Платина" }
+      { label: "ММ", val: coins.cp || 0, name: "Медь" },
+      { label: "СМ", val: coins.sp || 0, name: "Серебро" },
+      { label: "ЭМ", val: coins.ep || 0, name: "Электрум" },
+      { label: "ЗМ", val: coins.gp || 0, name: "Золото" },
+      { label: "ПМ", val: coins.pp || 0, name: "Платина" }
     ].forEach(c => {
-      const cell = coinsGrid.createDiv({ cls: `dnd55-coin-cell ${c.cls}` });
+      const cell = coinsGrid.createDiv({ cls: "dnd55-coin-cell" });
       cell.setAttribute("title", c.name);
       cell.createDiv({ cls: "dnd55-coin-label", text: c.label });
       cell.createDiv({ cls: "dnd55-coin-val", text: String(c.val) });
