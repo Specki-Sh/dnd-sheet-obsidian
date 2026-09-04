@@ -19,8 +19,26 @@ module.exports = class DnD55eSheetPlugin extends Plugin {
     return mod >= 0 ? `+${mod}` : `${mod}`;
   }
 
+  fmtBonus(b) {
+    if (b === undefined || b === null) return "+0";
+    if (typeof b === "number") return b >= 0 ? `+${b}` : `${b}`;
+    let str = String(b).trim();
+    if (str.startsWith("+") || str.startsWith("-")) return str;
+    const num = parseInt(str, 10);
+    if (!isNaN(num) && String(num) === str) return num >= 0 ? `+${num}` : `${num}`;
+    return str;
+  }
+
   rollDice(formula, label = "Бросок") {
-    // Basic dice formula parser (e.g. 1d20+4, 2d6+3, 1d10)
+    if (!formula || typeof formula !== "string") return;
+    formula = formula.trim();
+
+    // Check if it is a DC or static text like "Сл 13"
+    if (/^сл\s*\d+/i.test(formula) || !/\d+d\d+/i.test(formula)) {
+      new Notice(`🎯 ${label}: ${formula}`);
+      return;
+    }
+
     const match = formula.match(/(\d+)d(\d+)(?:\s*([+-])\s*(\d+))?/i);
     if (!match) {
       new Notice(`🎲 ${label}: ${formula}`);
@@ -57,7 +75,10 @@ module.exports = class DnD55eSheetPlugin extends Plugin {
     try {
       data = parseYaml(source);
     } catch (e) {
-      el.createEl("div", { text: `Ошибка разбора YAML: ${e.message}`, cls: "dnd55-error" });
+      const errBox = el.createDiv({ cls: "dnd55-error" });
+      errBox.createEl("h4", { text: "⚠️ Ошибка разбора YAML в карточке персонажа" });
+      errBox.createEl("p", { text: e.message });
+      errBox.createEl("small", { text: "Подсказка: если в описании есть двоеточия (например, 'Свойство: Значение') или знак плюс ('+2'), возьмите строку в двойные кавычки: \"...\"" });
       return;
     }
 
@@ -76,7 +97,7 @@ module.exports = class DnD55eSheetPlugin extends Plugin {
     const chaMod = this.calcMod(abilities.cha);
 
     const mods = { str: strMod, dex: dexMod, con: conMod, int: intMod, wis: wisMod, cha: chaMod };
-    const savesList = Array.isArray(data.saves) ? data.saves.map(s => s.toLowerCase()) : [];
+    const savesList = Array.isArray(data.saves) ? data.saves.map(s => String(s).toLowerCase()) : [];
 
     const sheet = el.createDiv({ cls: "dnd55-sheet" });
 
@@ -234,7 +255,7 @@ module.exports = class DnD55eSheetPlugin extends Plugin {
     const initBonus = data.initiative !== undefined ? data.initiative : dexMod;
     const initBox = vitals.createDiv({ cls: "dnd55-vital-badge" });
     initBox.createDiv({ cls: "dnd55-vital-title", text: "Инициатива" });
-    const initVal = initBox.createDiv({ cls: "dnd55-vital-val", text: this.fmtMod(initBonus) });
+    initBox.createDiv({ cls: "dnd55-vital-val", text: this.fmtMod(initBonus) });
     initBox.onclick = () => this.rollDice(`1d20${this.fmtMod(initBonus)}`, "Инициатива");
 
     const speedBox = vitals.createDiv({ cls: "dnd55-vital-badge" });
@@ -306,18 +327,26 @@ module.exports = class DnD55eSheetPlugin extends Plugin {
 
         // Attack roll button
         const tdAtk = tr.createEl("td");
-        const atkBtn = tdAtk.createSpan({ cls: "dnd55-clickable-roll", text: atk.bonus || "+4" });
-        atkBtn.onclick = () => this.rollDice(`1d20${atk.bonus || "+4"}`, `Атака: ${atk.name}`);
+        const bStr = this.fmtBonus(atk.bonus);
+        const atkBtn = tdAtk.createSpan({ cls: "dnd55-clickable-roll", text: bStr });
+        atkBtn.onclick = () => {
+          if (bStr.startsWith("+") || bStr.startsWith("-")) {
+            this.rollDice(`1d20${bStr}`, `Атака: ${atk.name}`);
+          } else {
+            this.rollDice(bStr, `Сложность: ${atk.name}`);
+          }
+        };
 
         // Damage roll button
         const tdDmg = tr.createEl("td");
-        const dmgBtn = tdDmg.createSpan({ cls: "dnd55-clickable-roll", text: atk.damage || "1d6+4" });
-        dmgBtn.onclick = () => this.rollDice(atk.damage || "1d6+4", `Урон: ${atk.name}`);
+        const dmgStr = String(atk.damage || "1d6+4");
+        const dmgBtn = tdDmg.createSpan({ cls: "dnd55-clickable-roll", text: dmgStr });
+        dmgBtn.onclick = () => this.rollDice(dmgStr, `Урон: ${atk.name}`);
 
         // 5.5e Weapon Mastery
         const tdMast = tr.createEl("td");
         if (atk.mastery) {
-          tdMast.createSpan({ cls: "dnd55-mastery-tag", text: atk.mastery });
+          tdMast.createSpan({ cls: "dnd55-mastery-tag", text: String(atk.mastery) });
         } else {
           tdMast.createSpan({ text: "—", cls: "dnd55-skill-attr" });
         }
@@ -353,7 +382,7 @@ module.exports = class DnD55eSheetPlugin extends Plugin {
 
       const spAtkBox = spVitals.createDiv({ cls: "dnd55-vital-badge" });
       spAtkBox.createDiv({ cls: "dnd55-vital-title", text: "Атака" });
-      spAtkBox.createDiv({ cls: "dnd55-vital-val", text: String(data.spell_attack || "+5") });
+      spAtkBox.createDiv({ cls: "dnd55-vital-val", text: this.fmtBonus(data.spell_attack || "+5") });
 
       // Spell Slots pips
       if (data.spell_slots_1) {
@@ -370,7 +399,7 @@ module.exports = class DnD55eSheetPlugin extends Plugin {
         data.spells.forEach(sp => {
           const item = spellPanel.createDiv({ cls: "dnd55-feature-item" });
           item.createDiv({ cls: "dnd55-feature-title", text: `✨ ${sp.name || sp}` });
-          if (sp.desc) item.createDiv({ cls: "dnd55-feature-desc", text: sp.desc });
+          if (sp.desc) item.createDiv({ cls: "dnd55-feature-desc", text: String(sp.desc) });
         });
       }
     }
@@ -383,7 +412,7 @@ module.exports = class DnD55eSheetPlugin extends Plugin {
     features.forEach(f => {
       const item = featPanel.createDiv({ cls: "dnd55-feature-item" });
       const fHead = item.createDiv({ cls: "dnd55-feature-header" });
-      fHead.createDiv({ cls: "dnd55-feature-title", text: f.name });
+      fHead.createDiv({ cls: "dnd55-feature-title", text: String(f.name) });
       if (f.uses) {
         const uGroup = fHead.createDiv({ cls: "dnd55-pip-group" });
         uGroup.createSpan({ text: `${f.uses}: `, cls: "dnd55-feature-uses" });
@@ -393,7 +422,7 @@ module.exports = class DnD55eSheetPlugin extends Plugin {
           p.onclick = () => p.toggleClass("checked-slot");
         }
       }
-      if (f.desc) item.createDiv({ cls: "dnd55-feature-desc", text: f.desc });
+      if (f.desc) item.createDiv({ cls: "dnd55-feature-desc", text: String(f.desc) });
     });
 
     // Equipment & Coins
@@ -415,7 +444,7 @@ module.exports = class DnD55eSheetPlugin extends Plugin {
     });
 
     if (data.equipment) {
-      eqPanel.createDiv({ text: data.equipment, cls: "dnd55-feature-desc" });
+      eqPanel.createDiv({ text: String(data.equipment), cls: "dnd55-feature-desc" });
     }
 
     // Roleplay (5.5e Personality)
