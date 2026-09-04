@@ -3505,3 +3505,688 @@ textarea.dnd55-m-input {
   padding: 8px;
   box-sizing: border-box;
 }
+
+/* ==========================================================================
+   AUTHENTIC PRINT EDITIONS: DM SCREEN, HANDOUTS & ADVENTURE MODULE
+   ========================================================================== */
+
+/* Universal Page Breaks */
+.page-break, .dnd-page-break {
+  page-break-before: always !important;
+  break-before: page !important;
+}
+
+/* Base Handout & DM Sheet Containers */
+.dm-sheet, .handout-sheet, .map-sheet {
+  width: 100%;
+  max-width: 210mm;
+  margin: 0 auto;
+  background: #ffffff !important;
+  color: #111111 !important;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'PT Sans', Helvetica, Arial, sans-serif;
+  box-sizing: border-box;
+}
+
+/* DM Cheat Sheet Styles */
+.dm-header {
+  border: 1.5px solid #111111;
+  background: #ffffff;
+  padding: 5px 10px;
+  margin-bottom: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 3px;
+}
+.dm-title-box h1 {
+  margin: 0;
+  font-family: 'Cinzel', 'PT Serif Caption', 'Playfair Display', Georgia, serif;
+  font-size: 13pt;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  line-height: 1.1;
+  color: #111111;
+}
+.dm-title-box .dm-sub {
+  font-size: 7.5pt;
+  color: #444444;
+  font-weight: 600;
+  margin-top: 1px;
+}
+.dm-badge {
+  border: 1px solid #111111;
+  background: #f4f4f4;
+  padding: 3px 8px;
+  font-size: 7.5pt;
+  font-weight: 700;
+  border-radius: 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  color: #111111;
+}
+.dm-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+.dm-col {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.dm-card {
+  border: 1px solid #111111;
+  border-radius: 3px;
+  background: #ffffff;
+  overflow: hidden;
+}
+.dm-card-header {
+  background: #111111;
+  color: #ffffff;
+  font-family: 'Cinzel', 'PT Serif Caption', Georgia, serif;
+  font-size: 8pt;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 3.5px 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.dm-card-header.dm-card-alt {
+  background: #2b2b2b;
+}
+.dm-card-body {
+  padding: 4px 6px;
+}
+.timeline-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 3px;
+  margin-bottom: 4px;
+}
+.timeline-slot {
+  border: 0.75px solid #222222;
+  border-radius: 2px;
+  padding: 2.5px 2px;
+  text-align: center;
+  background: #fafafa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+.timeline-slot.sabotage {
+  background: #f0f0f0;
+  border: 1.2px solid #111111;
+  font-weight: bold;
+}
+.timeline-slot .slot-num {
+  font-size: 7.5pt;
+  font-weight: 800;
+}
+.timeline-slot .slot-box {
+  display: inline-block;
+  width: 9.5px;
+  height: 9.5px;
+  border: 0.9px solid #111111;
+  border-radius: 1px;
+  vertical-align: middle;
+  background: #ffffff;
+}
+.timeline-events {
+  font-size: 6.9pt;
+  line-height: 1.22;
+}
+.event-row {
+  margin-bottom: 2px;
+  padding-left: 4px;
+  border-left: 2px solid #222222;
+}
+.event-row.warn {
+  border-left: 2.5px solid #000000;
+  background: #f7f7f7;
+  padding: 1.5px 4px;
+}
+.event-badge {
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: 6.5pt;
+}
+table.dm-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 6.8pt;
+  line-height: 1.15;
+}
+table.dm-table th {
+  background: #e8e8e8;
+  color: #000000;
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: 6.2pt;
+  padding: 2px 3px;
+  border: 0.5px solid #111111;
+  text-align: left;
+}
+table.dm-table td {
+  padding: 2px 3px;
+  border: 0.5px solid #888888;
+  vertical-align: top;
+}
+table.dm-table tr:nth-child(even) td {
+  background: #fafafa;
+}
+table.dm-table th.center, table.dm-table td.center {
+  text-align: center;
+}
+.rules-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3px;
+  font-size: 6.9pt;
+}
+.rule-item {
+  background: #fbfbfb;
+  border: 0.5px solid #cccccc;
+  padding: 2.5px 5px;
+  border-radius: 2px;
+}
+.rule-title {
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: 6.5pt;
+  color: #000000;
+}
+.vp-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3px;
+  font-size: 6.8pt;
+}
+.vp-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 1.5px 2px;
+  border-bottom: 0.5px dotted #cccccc;
+}
+.vp-box {
+  width: 9.5px;
+  height: 9.5px;
+  border: 0.9px solid #000000;
+  border-radius: 1px;
+  flex-shrink: 0;
+  background: #ffffff;
+}
+.vp-pts {
+  font-weight: 800;
+  margin-left: auto;
+}
+.mini-box {
+  display: inline-block;
+  width: 7.5px;
+  height: 7.5px;
+  border: 0.75px solid #222;
+  margin-right: 2px;
+  vertical-align: middle;
+  background: #fff;
+}
+.dm-footer, .handout-footer, .map-footer {
+  border-top: 1px solid #111111;
+  padding-top: 2px;
+  margin-top: 3px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 6.5pt;
+  color: #555555;
+}
+
+/* Handout 07 (Notebook) Styles */
+.handout-sheet {
+  border: 2px solid #111111;
+  padding: 8px;
+}
+.handout-sheet .inner-border {
+  border: 0.75px solid #333333;
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.handout-hdr {
+  text-align: center;
+  border-bottom: 1.5px solid #111111;
+  padding-bottom: 8px;
+  margin-bottom: 8px;
+}
+.handout-hdr h1 {
+  font-family: 'Cinzel', 'PT Serif Caption', 'Playfair Display', Georgia, serif;
+  font-size: 14pt;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin: 0 0 2px 0;
+  color: #111111;
+}
+.handout-hdr .sub-title {
+  font-size: 7.5pt;
+  font-style: italic;
+  color: #444444;
+}
+.prop-badge {
+  display: inline-block;
+  border: 0.75px solid #111111;
+  background: #f5f5f5;
+  font-size: 6.5pt;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 1px 6px;
+  border-radius: 2px;
+  margin-top: 3px;
+  color: #111111;
+}
+.excerpt-box {
+  border: 1px solid #222222;
+  background: #fafafa;
+  border-radius: 3px;
+  padding: 8px 12px;
+  margin-bottom: 10px;
+}
+.excerpt-title {
+  font-family: 'Cinzel', 'PT Serif Caption', Georgia, serif;
+  font-size: 8.5pt;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-bottom: 0.75px solid #222222;
+  padding-bottom: 3px;
+  margin-bottom: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.excerpt-text {
+  font-family: Georgia, 'PT Serif', serif;
+  font-style: italic;
+  font-size: 8.5pt;
+  line-height: 1.4;
+  color: #1a1a1a;
+}
+.section-hdr {
+  font-family: 'Cinzel', 'PT Serif Caption', Georgia, serif;
+  font-size: 8.8pt;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-bottom: 1.5px solid #111111;
+  padding-bottom: 3px;
+  margin-bottom: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.formulas-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 10px;
+}
+.formula-card {
+  border: 0.8px solid #333333;
+  border-radius: 3px;
+  padding: 5px 8px;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+}
+.formula-idx {
+  position: absolute;
+  top: 2px;
+  right: 4px;
+  font-size: 6pt;
+  color: #888888;
+  font-family: sans-serif;
+}
+.formula-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 3px;
+  border-bottom: 0.5px solid #e0e0e0;
+  padding-bottom: 2px;
+  padding-right: 12px;
+}
+.formula-badge {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+  font-variant-numeric: lining-nums;
+  font-size: 8.5pt;
+  font-weight: 800;
+  color: #000000;
+  background: #ececec;
+  border: 0.75px solid #222222;
+  padding: 1.5px 6px;
+  border-radius: 2px;
+  letter-spacing: 0.02em;
+}
+.formula-quote {
+  font-family: Georgia, 'PT Serif', serif;
+  font-style: italic;
+  font-size: 7.6pt;
+  color: #222222;
+  text-align: right;
+  flex: 1;
+  margin-left: 6px;
+}
+.formula-pencil-area {
+  margin-top: 3px;
+  font-size: 7pt;
+}
+.pencil-lbl {
+  color: #555555;
+  font-size: 6.5pt;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  font-weight: 600;
+}
+.pencil-line {
+  border-bottom: 0.8px dotted #444444;
+  height: 13px;
+  margin-top: 2px;
+}
+
+/* Handout 08 (Inventory) Styles */
+.section-title {
+  font-family: 'Cinzel', 'PT Serif Caption', Georgia, serif;
+  font-size: 8.2pt;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: #222222;
+  color: #ffffff;
+  padding: 3px 7px;
+  border-radius: 2px;
+  margin: 0 0 4px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.section-title span.sub {
+  font-size: 6.8pt;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #eeeeee;
+}
+table.handout-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 7pt;
+  line-height: 1.2;
+  margin-bottom: 6px;
+}
+table.handout-table th {
+  background: #eaeaea;
+  color: #000000;
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: 6.5pt;
+  padding: 2.5px 4px;
+  border: 0.75px solid #222222;
+  text-align: left;
+}
+table.handout-table td {
+  padding: 2px 4px;
+  border: 0.5px solid #888888;
+  vertical-align: middle;
+}
+table.handout-table tr:nth-child(even) td {
+  background: #f8f8f8;
+}
+table.handout-table th.center, table.handout-table td.center {
+  text-align: center;
+}
+.flask-badge {
+  font-family: 'Cinzel', Georgia, serif;
+  font-weight: 900;
+  font-size: 8.5pt;
+  display: inline-block;
+  width: 20px;
+  text-align: center;
+  background: #f0f0f0;
+  border: 0.75px solid #222222;
+  border-radius: 2px;
+  padding: 1px 0;
+  box-sizing: border-box;
+}
+.flask-badge.secret {
+  background: #ffffff;
+  border: 1.2px dashed #000000;
+  font-weight: 900;
+}
+.pencil-write {
+  display: block;
+  width: 100%;
+  border-bottom: 0.8px dotted #555555;
+  height: 12px;
+  margin-bottom: 2px;
+}
+.pencil-write-double {
+  display: block;
+  width: 100%;
+  border-bottom: 0.8px dotted #555555;
+  height: 11px;
+}
+.box-check {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  border: 0.85px solid #000000;
+  border-radius: 1px;
+  vertical-align: middle;
+  background: #ffffff;
+  margin-right: 2px;
+}
+
+/* Handout 09 (Map) Styles */
+.map-sheet {
+  border: 2px solid #222222;
+  padding: 6px;
+}
+.map-sheet .inner-frame {
+  border: 0.75px solid #333333;
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.map-hdr {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1.5px solid #222222;
+  padding-bottom: 4px;
+  margin-bottom: 6px;
+}
+.map-title-box h1 {
+  font-family: 'Cinzel', 'PT Serif Caption', 'Playfair Display', Georgia, serif;
+  font-size: 13.5pt;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin: 0;
+  line-height: 1.1;
+  color: #111111;
+}
+.map-title-box .sub {
+  font-size: 7.2pt;
+  font-style: italic;
+  color: #444444;
+  margin-top: 1px;
+}
+.map-badge {
+  border: 1px solid #222222;
+  background: #f5f5f5;
+  font-size: 6.8pt;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 2px 7px;
+  border-radius: 2px;
+  color: #111111;
+}
+.map-container {
+  border: 1.2px solid #222222;
+  background: #ffffff;
+  border-radius: 3px;
+  overflow: hidden;
+  height: 148mm;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.legend-hdr {
+  font-family: 'Cinzel', 'PT Serif Caption', Georgia, serif;
+  font-size: 8.2pt;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: #222222;
+  color: #ffffff;
+  padding: 3px 7px;
+  border-radius: 2px;
+  margin: 6px 0 4px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.legend-hdr span.sub {
+  font-size: 6.8pt;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #eeeeee;
+}
+.poi-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px 12px;
+  margin-top: 2px;
+}
+.poi-item {
+  border: 0.75px solid #888888;
+  background: #ffffff;
+  border-radius: 2px;
+  padding: 3px 6px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.poi-top {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 7.2pt;
+  line-height: 1.2;
+}
+.poi-num {
+  background: #111111;
+  color: #ffffff;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  font-size: 7.5pt;
+  font-weight: 900;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-family: 'Cinzel', Georgia, serif;
+}
+.poi-title {
+  font-weight: 800;
+  color: #111111;
+}
+.poi-desc {
+  color: #444444;
+  font-size: 6.8pt;
+}
+.poi-pencil {
+  display: block;
+  width: 100%;
+  border-bottom: 0.8px dotted #666666;
+  height: 11px;
+  margin-top: 2px;
+}
+
+/* ==========================================================================
+   PRINT MEDIA RULES FOR ADVENTURE DOCUMENT & OBSIDIAN EXPORTS
+   ========================================================================== */
+@media print {
+  @page {
+    margin: 10mm 10mm 10mm 10mm;
+    size: A4 portrait;
+  }
+  
+  /* Avoid breaking monsters, tables, and callouts across page boundaries */
+  .statblock, .obsidian-statblock, .dnd55-statblock,
+  .callout, table, .timeline-box {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  /* Statblocks Clean Ink-Saving Print Mode */
+  .statblock, .obsidian-statblock {
+    background: #ffffff !important;
+    border: 1px solid #111111 !important;
+    color: #111111 !important;
+    box-shadow: none !important;
+    margin: 10px 0 !important;
+    border-radius: 3px !important;
+  }
+  .statblock .statblock-heading, .obsidian-statblock .heading {
+    background: #f2f2f2 !important;
+    color: #111111 !important;
+    border-bottom: 1.5px solid #111111 !important;
+    padding: 4px 8px !important;
+  }
+  .statblock hr, .obsidian-statblock hr {
+    border-color: #888888 !important;
+  }
+
+  /* Callout Boxes */
+  .callout[data-callout="read-aloud"], .callout[data-callout="quote"] {
+    background: #ffffff !important;
+    border: 1px solid #555555 !important;
+    border-left: 4.5px solid #111111 !important;
+    color: #111111 !important;
+    font-style: italic !important;
+    box-shadow: none !important;
+  }
+  .callout[data-callout="danger"], .callout[data-callout="warning"] {
+    background: #fafafa !important;
+    border: 1px solid #333333 !important;
+    border-left: 4.5px solid #000000 !important;
+    color: #000000 !important;
+    box-shadow: none !important;
+  }
+
+  /* Tables in Adventure */
+  .markdown-rendered table {
+    border: 1px solid #111111 !important;
+    border-collapse: collapse !important;
+  }
+  .markdown-rendered th {
+    background: #eeeeee !important;
+    color: #000000 !important;
+    border: 0.75px solid #222222 !important;
+  }
+  .markdown-rendered td {
+    border: 0.5px solid #888888 !important;
+  }
+}
