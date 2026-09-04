@@ -33,7 +33,6 @@ module.exports = class DnD55eSheetPlugin extends Plugin {
     if (!formula || typeof formula !== "string") return;
     formula = formula.trim();
 
-    // Check if it is a DC or static text like "Сл 13"
     if (/^сл\s*\d+/i.test(formula) || !/\d+d\d+/i.test(formula)) {
       new Notice(`🎯 ${label}: ${formula}`);
       return;
@@ -60,7 +59,6 @@ module.exports = class DnD55eSheetPlugin extends Plugin {
     const breakdown = rolls.length > 1 ? `(${rolls.join(" + ")})` : `${rolls[0]}`;
     const modStr = mod !== 0 ? ` ${sign} ${mod}` : "";
     
-    // Check for natural 20 or 1 on single d20
     let crit = "";
     if (count === 1 && sides === 20) {
       if (rolls[0] === 20) crit = " 🌟 КРИТ УСПЕХ!";
@@ -78,7 +76,7 @@ module.exports = class DnD55eSheetPlugin extends Plugin {
       const errBox = el.createDiv({ cls: "dnd55-error" });
       errBox.createEl("h4", { text: "⚠️ Ошибка разбора YAML в карточке персонажа" });
       errBox.createEl("p", { text: e.message });
-      errBox.createEl("small", { text: "Подсказка: если в описании есть двоеточия (например, 'Свойство: Значение') или знак плюс ('+2'), возьмите строку в двойные кавычки: \"...\"" });
+      errBox.createEl("small", { text: "Подсказка: если в строке есть двоеточия (например, 'Свойство: Значение') или знак плюс ('+2'), возьмите строку в двойные кавычки: \"...\"" });
       return;
     }
 
@@ -100,6 +98,45 @@ module.exports = class DnD55eSheetPlugin extends Plugin {
     const savesList = Array.isArray(data.saves) ? data.saves.map(s => String(s).toLowerCase()) : [];
 
     const sheet = el.createDiv({ cls: "dnd55-sheet" });
+
+    // ------------------------------------------------------------------------
+    // TOP TOOLBAR: FULLSCREEN & SCROLL MODES
+    // ------------------------------------------------------------------------
+    const topBar = sheet.createDiv({ cls: "dnd55-topbar" });
+    const toolbar = topBar.createDiv({ cls: "dnd55-toolbar" });
+
+    // Mode: 3 Columns with Scroll
+    const scrollBtn = toolbar.createEl("button", { cls: "dnd55-tool-btn", text: "↔ 3 колонки (скролл)" });
+    scrollBtn.onclick = () => {
+      sheet.toggleClass("dnd55-force-scroll", !sheet.hasClass("dnd55-force-scroll"));
+      const isScroll = sheet.hasClass("dnd55-force-scroll");
+      scrollBtn.setText(isScroll ? "⊞ Адаптивный вид" : "↔ 3 колонки (скролл)");
+      scrollBtn.toggleClass("active", isScroll);
+    };
+
+    // Mode: Fullscreen Overlay
+    const fsBtn = toolbar.createEl("button", { cls: "dnd55-tool-btn", text: "⛶ Во весь экран" });
+    let escListener = null;
+    fsBtn.onclick = () => {
+      sheet.toggleClass("dnd55-fullscreen", !sheet.hasClass("dnd55-fullscreen"));
+      const isFs = sheet.hasClass("dnd55-fullscreen");
+      fsBtn.setText(isFs ? "✕ Свернуть (Esc)" : "⛶ Во весь экран");
+      fsBtn.toggleClass("active", isFs);
+
+      if (isFs) {
+        escListener = (e) => {
+          if (e.key === "Escape") {
+            sheet.removeClass("dnd55-fullscreen");
+            fsBtn.setText("⛶ Во весь экран");
+            fsBtn.removeClass("active");
+            document.removeEventListener("keydown", escListener);
+          }
+        };
+        document.addEventListener("keydown", escListener);
+      } else if (escListener) {
+        document.removeEventListener("keydown", escListener);
+      }
+    };
 
     // ------------------------------------------------------------------------
     // HEADER BANNER (5.5e 2024)
@@ -125,7 +162,15 @@ module.exports = class DnD55eSheetPlugin extends Plugin {
     });
 
     // ------------------------------------------------------------------------
-    // 3-COLUMN GRID
+    // NAVIGATION PILLS (Quick Jump to Columns)
+    // ------------------------------------------------------------------------
+    const navTabs = sheet.createDiv({ cls: "dnd55-nav-tabs" });
+    const tab1 = navTabs.createEl("button", { cls: "dnd55-nav-tab", text: "📊 1. Параметры и навыки" });
+    const tab2 = navTabs.createEl("button", { cls: "dnd55-nav-tab", text: "⚔️ 2. Бой и здоровье" });
+    const tab3 = navTabs.createEl("button", { cls: "dnd55-nav-tab", text: "🔮 3. Магия и особенности" });
+
+    // ------------------------------------------------------------------------
+    // GRID
     // ------------------------------------------------------------------------
     const grid = sheet.createDiv({ cls: "dnd55-grid" });
 
@@ -133,6 +178,7 @@ module.exports = class DnD55eSheetPlugin extends Plugin {
     // COLUMN 1: ABILITIES, SAVES, SKILLS, SENSES
     // ========================================================================
     const col1 = grid.createDiv({ cls: "dnd55-col" });
+    tab1.onclick = () => col1.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
 
     // Heroic Inspiration & Proficiency Bonus
     const inspProf = col1.createDiv({ cls: "dnd55-inspiration-prof" });
@@ -244,6 +290,7 @@ module.exports = class DnD55eSheetPlugin extends Plugin {
     // COLUMN 2: COMBAT VITALS, HP, WEAPON MASTERY
     // ========================================================================
     const col2 = grid.createDiv({ cls: "dnd55-col" });
+    tab2.onclick = () => col2.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
 
     // Vitals Row: AC, Initiative, Speed, Size
     const vitals = col2.createDiv({ cls: "dnd55-vitals-row" });
@@ -369,6 +416,7 @@ module.exports = class DnD55eSheetPlugin extends Plugin {
     // COLUMN 3: FEATURES, SPELLS, EQUIPMENT, ROLEPLAY
     // ========================================================================
     const col3 = grid.createDiv({ cls: "dnd55-col" });
+    tab3.onclick = () => col3.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
 
     // Spells Section (if caster)
     if (data.spells || data.spell_save_dc) {

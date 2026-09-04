@@ -1,6 +1,6 @@
 /* ==========================================================================
    D&D 5.5e (2024 Player's Handbook) Character Sheet Plugin Styles
-   Ultra-responsive with Container Queries for Obsidian panes
+   With Fullscreen overlay, 3-column scroll slider, and Container Queries
    ========================================================================== */
 
 .dnd55-sheet {
@@ -11,17 +11,115 @@
   max-width: 100%;
   font-family: var(--font-text, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
   color: var(--text-normal);
-  background: var(--background-secondary-alt, #1e1e1e);
+  background: var(--background-secondary-alt, #1a1a1a);
   border: 2px solid var(--text-accent, #9c2b1b);
   border-radius: 8px;
   padding: 12px;
   margin: 1.2em 0;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  overflow-x: hidden;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+  position: relative;
+  transition: all 0.2s ease;
 }
 
 .dnd55-sheet * {
   box-sizing: border-box;
+}
+
+/* --------------------------------------------------------------------------
+   FULLSCREEN MODAL OVERLAY (⛶ Во весь экран)
+   -------------------------------------------------------------------------- */
+.dnd55-sheet.dnd55-fullscreen {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  max-width: 100vw !important;
+  max-height: 100vh !important;
+  z-index: 99999 !important;
+  margin: 0 !important;
+  border-radius: 0 !important;
+  border: none !important;
+  padding: 24px 40px !important;
+  background: var(--background-primary, #111) !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  box-shadow: none !important;
+}
+
+/* --------------------------------------------------------------------------
+   TOP TOOLBAR (Fullscreen & Scroll Mode Toggles)
+   -------------------------------------------------------------------------- */
+.dnd55-topbar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.dnd55-toolbar {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.dnd55-tool-btn {
+  background: var(--background-secondary);
+  border: 1.5px solid var(--background-modifier-border);
+  border-radius: 6px;
+  padding: 5px 12px;
+  font-size: 0.82em;
+  font-weight: 700;
+  cursor: pointer;
+  color: var(--text-normal);
+  transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.dnd55-tool-btn:hover {
+  border-color: var(--text-accent, #9c2b1b);
+  color: var(--text-accent, #9c2b1b);
+  background: var(--background-modifier-hover);
+}
+
+.dnd55-tool-btn.active {
+  background: var(--text-accent, #9c2b1b) !important;
+  color: #fff !important;
+  border-color: var(--text-accent, #9c2b1b) !important;
+}
+
+/* --------------------------------------------------------------------------
+   NAVIGATION TABS (Quick Column Slider Jump)
+   -------------------------------------------------------------------------- */
+.dnd55-nav-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.dnd55-nav-tab {
+  background: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 14px;
+  padding: 4px 12px;
+  font-size: 0.78em;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--text-muted);
+  white-space: nowrap;
+  transition: all 0.12s ease;
+}
+
+.dnd55-nav-tab:hover {
+  background: var(--background-secondary);
+  color: var(--text-normal);
+  border-color: var(--text-accent, #9c2b1b);
 }
 
 /* --------------------------------------------------------------------------
@@ -48,7 +146,7 @@
   background: var(--background-primary);
   border: 1.5px solid var(--background-modifier-border);
   border-radius: 6px;
-  padding: 6px 10px;
+  padding: 8px 12px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -56,7 +154,7 @@
 }
 
 .dnd55-name-title {
-  font-size: 1.4em;
+  font-size: 1.5em;
   font-weight: 800;
   color: var(--text-accent, #9c2b1b);
   line-height: 1.15;
@@ -66,7 +164,7 @@
 }
 
 .dnd55-name-sub {
-  font-size: 0.8em;
+  font-size: 0.82em;
   color: var(--text-muted);
   text-transform: uppercase;
   font-weight: 600;
@@ -85,7 +183,7 @@
   background: var(--background-primary);
   border: 1px solid var(--background-modifier-border);
   border-radius: 4px;
-  padding: 3px 6px;
+  padding: 4px 6px;
   display: flex;
   flex-direction: column;
   min-width: 0;
@@ -111,16 +209,15 @@
 }
 
 /* --------------------------------------------------------------------------
-   ADAPTIVE GRID (Fluid layout matching Obsidian pane width)
+   ADAPTIVE GRID (Default: 2-column or 3-column via Container Queries)
    -------------------------------------------------------------------------- */
-/* Default (Narrow pane < 650px): Single Column */
 .dnd55-grid {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  transition: all 0.2s ease;
 }
 
-/* Medium pane (650px - 950px - typical Obsidian pane with sidebars): 2 Columns */
 @container dndsheet (min-width: 650px) {
   .dnd55-grid {
     display: grid;
@@ -129,12 +226,11 @@
   }
 }
 
-/* Wide pane (>= 950px - full width / wide screen): 3 Columns */
 @container dndsheet (min-width: 950px) {
   .dnd55-grid {
     display: grid;
-    grid-template-columns: 1fr 1.15fr 1fr;
-    gap: 14px;
+    grid-template-columns: 1fr 1.2fr 1fr;
+    gap: 16px;
   }
 }
 
@@ -143,6 +239,46 @@
   flex-direction: column;
   gap: 12px;
   min-width: 0;
+}
+
+/* --------------------------------------------------------------------------
+   FORCE SCROLL / SLIDER MODE (3 Колонки рядом с горизонтальным скроллом)
+   -------------------------------------------------------------------------- */
+.dnd55-sheet.dnd55-force-scroll .dnd55-grid {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  overflow-x: auto !important;
+  scroll-snap-type: x mandatory !important;
+  gap: 16px !important;
+  padding-bottom: 14px !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+.dnd55-sheet.dnd55-force-scroll .dnd55-col {
+  flex: 0 0 320px !important;
+  min-width: 320px !important;
+  max-width: 340px !important;
+  scroll-snap-align: start !important;
+}
+
+/* Стильный горизонтальный скроллбар */
+.dnd55-sheet.dnd55-force-scroll .dnd55-grid::-webkit-scrollbar {
+  height: 8px;
+}
+
+.dnd55-sheet.dnd55-force-scroll .dnd55-grid::-webkit-scrollbar-track {
+  background: var(--background-secondary);
+  border-radius: 4px;
+}
+
+.dnd55-sheet.dnd55-force-scroll .dnd55-grid::-webkit-scrollbar-thumb {
+  background: var(--text-accent, #9c2b1b);
+  border-radius: 4px;
+}
+
+.dnd55-sheet.dnd55-force-scroll .dnd55-grid::-webkit-scrollbar-thumb:hover {
+  background: #c0392b;
 }
 
 /* --------------------------------------------------------------------------
@@ -610,6 +746,10 @@
   @page {
     size: A4 portrait;
     margin: 8mm 8mm 8mm 8mm;
+  }
+
+  .dnd55-topbar, .dnd55-nav-tabs {
+    display: none !important;
   }
 
   .dnd55-sheet {
